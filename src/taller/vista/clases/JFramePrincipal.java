@@ -8,52 +8,45 @@ package taller.vista.clases;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
-import taller.modelo.clases.Cliente;
+import taller.modelo.clases.Categoria;
 
 /**
  *
  * @author Matias
  */
+
 public class JFramePrincipal extends javax.swing.JFrame {
 
-    private Cliente c;
-
+    private String seccionSeleccionada;
+    
+    
     public JFramePrincipal() {
         initComponents();
         setVisible(true);
         setLocationRelativeTo(null);
     }
-        
+    
+    public String obtenerSeccionSeleccionada(){
+        return seccionSeleccionada;
+    }
     
     public void seleccionDeVentana(ActionListener al){
+        Categoria[] categorias = Categoria.values();
         for (int i = 0; i < jPanelAcciones.getComponents().length; i++) {
-            ((JButton) jPanelAcciones.getComponent(i)).addActionListener(al);
+            JButton j =  (JButton) jPanelAcciones.getComponent(i);
+            j.setName(categorias[i].toString());
+            j.addActionListener(al);
+            j.addActionListener(new InicializarCategoria());
+        }
+    }
+    
+    private class InicializarCategoria implements ActionListener{
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            seccionSeleccionada = ((JButton)e.getSource()).getName();
         }
     }
  
-
-
-//    public void addActionListenerBotonAgregar(ActionListener al) {
-//        this.jButtonAgregar.addActionListener(al);
-//    }
-//
-//    public void addActionListenerBotonEliminar(ActionListener al) {
-//        this.jButtonEliminar.addActionListener(al);
-//    }
-//
-//    public void addActionListenerBotonEditar(ActionListener al) {
-//        this.jButtonEditar.addActionListener(al);
-//    }
-//
-//    public void addKeyListenerJTextFieldFiltrar(KeyListener kl) {
-//        this.jTextFieldFiltrar.addKeyListener(kl);
-//    }
-//
-//    public void addActionListenerJComboBoxFiltrar(ActionListener al) {
-//        this.jComboBoxFiltro.addActionListener(al);
-//    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -160,63 +153,6 @@ public class JFramePrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //CLIENTES
-    //---------------------------------------------------------------------------
-//    public void agregarFiltro() {
-//        jComboBoxFiltro.setModel(new DefaultComboBoxModel(Categoria.CLIENTE.getNombreDeCategorias()));
-//    }
-//
-//    public String obtenerFiltroSeleccionado() {
-//        return (String) this.jComboBoxFiltro.getSelectedItem();
-//    }
-//
-//    public String obtenerBusqueda() {
-//        return this.jTextFieldFiltrar.getText();
-//    }
-
-//    public Cliente getCliente() {
-//        if (c == null) {
-//            throw new RuntimeException("Debe seleccionar un cliente");
-//        }
-//        return c;
-//    }
-
-//    public void mostrarClientes(Collection<Cliente> clientes) {
-//        for (Cliente emp : clientes) {
-//            agregarFila(emp);
-//        }
-//    }
-
-//    private void agregarFila(Cliente e) {
-//        Object[] datos = {e.getIdCliente(), e.getDni(), e.getNombre(), e.getApellido(), e.getMail(), e.getTelefono()};
-//        DefaultTableModel dtm = (DefaultTableModel) this.jTableClientes.getModel();
-//        dtm.addRow(datos);
-//    }
-
-
-
-//    public void actualizarListaClientes(Collection<Cliente> clientes) {
-//        vaciarClientes();
-//        mostrarClientes(clientes);
-//    }
-
-//    private void habilitarODeshabiliarBotones(boolean b) {
-//        jButtonEditar.setEnabled(b);
-//        jButtonEliminar.setEnabled(b);
-//    }
-
-    //---------------------------------------------------------------------------
-    public void mostrarMensaje(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje);
-    }
-
-    public boolean confirmacion(String mensaje) {
-        return JOptionPane.showConfirmDialog(this, mensaje) == 0;
-    }
-
-    public void mostrarMensajeError(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Error...", JOptionPane.ERROR_MESSAGE);
-    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -9,18 +9,20 @@ package taller.modelo.clases;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import taller.interfaces.Seccion;
 
 /**
  *
  * @author Matias
  */
-public class Servicio {
+public class Servicio implements Seccion{
     
     private int idServicio;
     private Date fechaDeRealizacion;
     private double costo;
     private String patenteDelAutomovil;
     private int cantKms ;
+    
 
     public Servicio(int idServicio, Date fechaDeRealizacion, double costo, String patenteDelAutomovil, int cantKms) {
         this.idServicio = idServicio;
@@ -71,12 +73,15 @@ public class Servicio {
     public String toString() {
         return "Servicio{" + "idServicio=" + idServicio + ", fechaDeRealizacion=" + fechaDeRealizacion + ", costo=" + costo + ", patenteDelAutomovil=" + patenteDelAutomovil + ", cantKms=" + cantKms + '}';
     }
+
+    @Override
+    public Object[] getArrayAtributos() {
+        return new Object[]{this.getIdServicio(), obtenerFechaLegible(), this.getCosto(), this.getPatenteDelAutomovil(), this.cantKms};
+    }
     
     
     
-    
- 
-    
+
     
     
 }

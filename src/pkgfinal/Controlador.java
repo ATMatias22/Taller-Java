@@ -12,33 +12,31 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import taller.modelo.clases.Automovil;
 import taller.modelo.clases.AutomovilDAO;
+import taller.modelo.clases.Categoria;
 import taller.modelo.clases.Cliente;
 import taller.modelo.clases.ClienteDAO;
 import taller.modelo.clases.Servicio;
 import taller.modelo.clases.ServicioDAO;
 import taller.vista.clases.JFrameFormularioAgregarCliente;
-import taller.vista.clases.JFrameAutomoviles;
-import taller.vista.clases.JFrameClientes;
 import taller.vista.clases.JFrameFormularioAgregarAutomovil;
 import taller.vista.clases.JFrameFormularioAgregarServicio;
 import taller.vista.clases.JFrameFormularioEditarAutomovil;
 import taller.vista.clases.JFrameFormularioEditarCliente;
 import taller.vista.clases.JFrameFormularioEditarServicio;
 import taller.vista.clases.JFramePrincipal;
-import taller.vista.clases.JFrameServicios;
+import taller.vista.clases.JFrameSecciones;
 
 /**
  *
  * @author Matias
  */
 public class Controlador {
+
     private JFramePrincipal vistaPrincipal;
     private ClienteDAO clienteDAO;
     private AutomovilDAO automovilDAO;
     private ServicioDAO servicioDAO;
-    private JFrameClientes vistaCliente;
-    private JFrameAutomoviles vistaAutomovil;
-    private JFrameServicios vistaServicio;
+    private JFrameSecciones vistaTemplate;
     private JFrameFormularioEditarCliente vistaEditarCliente;
     private JFrameFormularioEditarAutomovil vistaEditarAutomovil;
     private JFrameFormularioEditarServicio vistaEditarServicio;
@@ -55,27 +53,27 @@ public class Controlador {
     }
 
     private void addAllListenersCliente() {
-        vistaCliente.addActionListenerBotonAgregar(new PrincipalBotonAgregarListenerCliente());
-        vistaCliente.addActionListenerBotonEliminar(new PrincipalBotonEliminarListenerCliente());
-        vistaCliente.addActionListenerBotonEditar(new PrincipalBotonEditarListenerCliente());
-        vistaCliente.addKeyListenerJTextFieldFiltrar(new FiltrarClienteKeyListener());
-        vistaCliente.addActionListenerJComboBoxFiltrar(new FiltrarClienteActionListener());
+        vistaTemplate.addActionListenerBotonAgregar(new PrincipalBotonAgregarListenerCliente());
+        vistaTemplate.addActionListenerBotonEliminar(new PrincipalBotonEliminarListenerCliente());
+        vistaTemplate.addActionListenerBotonEditar(new PrincipalBotonEditarListenerCliente());
+        vistaTemplate.addKeyListenerJTextFieldFiltrar(new FiltrarClienteKeyListener());
+        vistaTemplate.addActionListenerJComboBoxFiltrar(new FiltrarClienteActionListener());
     }
 
     private void addAllListenersAutomovil() {
-        vistaAutomovil.addActionListenerBotonAgregar(new PrincipalBotonAgregarListenerAutomovil());
-        vistaAutomovil.addActionListenerBotonEliminar(new PrincipalBotonEliminarListenerAutomovil());
-        vistaAutomovil.addActionListenerBotonEditar(new PrincipalBotonEditarListenerAutomovil());
-        vistaAutomovil.addKeyListenerJTextFieldFiltrar(new FiltrarAutomovilKeyListener());
-        vistaAutomovil.addActionListenerJComboBoxFiltrar(new FiltrarAutomovilActionListener());
+        vistaTemplate.addActionListenerBotonAgregar(new PrincipalBotonAgregarListenerAutomovil());
+        vistaTemplate.addActionListenerBotonEliminar(new PrincipalBotonEliminarListenerAutomovil());
+        vistaTemplate.addActionListenerBotonEditar(new PrincipalBotonEditarListenerAutomovil());
+        vistaTemplate.addKeyListenerJTextFieldFiltrar(new FiltrarAutomovilKeyListener());
+        vistaTemplate.addActionListenerJComboBoxFiltrar(new FiltrarAutomovilActionListener());
     }
-    
-     private void addAllListenersServicio() {
-        vistaServicio.addActionListenerBotonAgregar(new PrincipalBotonAgregarListenerServicio());
-        vistaServicio.addActionListenerBotonEliminar(new PrincipalBotonEliminarListenerServicio());
-        vistaServicio.addActionListenerBotonEditar(new PrincipalBotonEditarListenerServicio());
-        vistaServicio.addKeyListenerJTextFieldFiltrar(new FiltrarServicioKeyListener());
-        vistaServicio.addActionListenerJComboBoxFiltrar(new FiltrarServicioActionListener());
+
+    private void addAllListenersServicio() {
+        vistaTemplate.addActionListenerBotonAgregar(new PrincipalBotonAgregarListenerServicio());
+        vistaTemplate.addActionListenerBotonEliminar(new PrincipalBotonEliminarListenerServicio());
+        vistaTemplate.addActionListenerBotonEditar(new PrincipalBotonEditarListenerServicio());
+        vistaTemplate.addKeyListenerJTextFieldFiltrar(new FiltrarServicioKeyListener());
+        vistaTemplate.addActionListenerJComboBoxFiltrar(new FiltrarServicioActionListener());
     }
 
     public void agregarCliente() {
@@ -83,7 +81,7 @@ public class Controlador {
             try {
                 clienteDAO.agregarCliente(this.vistaAgregarCliente.getClienteAAgregar());
                 vistaAgregarCliente.mostrarMensaje("Se agrego cliente");
-                vistaCliente.actualizarListaClientes(clienteDAO.obtenerClientes());
+                vistaTemplate.actualizarListaTabla(clienteDAO.obtenerClientes());
             } catch (Exception ex) {
                 vistaAgregarCliente.mostrarMensajeError(ex.getMessage());
             }
@@ -92,14 +90,14 @@ public class Controlador {
 
     public void eliminarCliente() {
         try {
-            Cliente c = vistaCliente.getCliente();
-            if (vistaCliente.confirmacion("Esta seguro que desea eliminar al cliente")) {
+            Cliente c = (Cliente) vistaTemplate.getSeccion();
+            if (vistaTemplate.confirmacion("Esta seguro que desea eliminar al cliente")) {
                 clienteDAO.eliminarCliente(c.getIdCliente());
-                vistaCliente.actualizarListaClientes(clienteDAO.obtenerClientes());
-                vistaCliente.mostrarMensaje("Se elimino el cliente");
+                vistaTemplate.actualizarListaTabla(clienteDAO.obtenerClientes());
+                vistaTemplate.mostrarMensaje("Se elimino el cliente");
             }
         } catch (Exception ex) {
-            vistaCliente.mostrarMensajeError(ex.getMessage());
+            vistaTemplate.mostrarMensajeError(ex.getMessage());
         }
 
     }
@@ -109,7 +107,7 @@ public class Controlador {
             try {
                 clienteDAO.editarCliente(vistaEditarCliente.getClienteEditado());
                 vistaEditarCliente.mostrarMensaje("Se edito el cliente");
-                vistaCliente.actualizarListaClientes(clienteDAO.obtenerClientes());
+                vistaTemplate.actualizarListaTabla(clienteDAO.obtenerClientes());
             } catch (Exception ex) {
                 vistaEditarCliente.mostrarMensajeError(ex.getMessage());
             }
@@ -117,7 +115,7 @@ public class Controlador {
     }
 
     public void filtrarCliente() {
-        vistaCliente.actualizarListaClientes(clienteDAO.filtrarClientes(vistaCliente.buscarEquivalenteDelFiltroEnBD(vistaCliente.obtenerFiltroSeleccionado()), vistaCliente.obtenerBusqueda()));
+        vistaTemplate.actualizarListaTabla(clienteDAO.filtrarClientes(vistaTemplate.buscarEquivalenteDelFiltroEnBD(vistaTemplate.obtenerFiltroSeleccionado()), vistaTemplate.obtenerBusqueda()));
     }
 
     public void agregarAutomovil() {
@@ -125,7 +123,7 @@ public class Controlador {
             try {
                 automovilDAO.agregarAutomovil(this.vistaAgregarAutomovil.getAutomovilAAgregar());
                 vistaAgregarAutomovil.mostrarMensaje("Se agrego automovil");
-                vistaAutomovil.actualizarListaAutomoviles(automovilDAO.obtenerAutomoviles());
+                vistaTemplate.actualizarListaTabla(automovilDAO.obtenerAutomoviles());
             } catch (Exception ex) {
                 vistaAgregarAutomovil.mostrarMensajeError(ex.getMessage());
             }
@@ -137,7 +135,7 @@ public class Controlador {
             try {
                 automovilDAO.agregarAutomovilConCliente(this.vistaAgregarAutomovil.getAutomovilAAgregar(vistaAgregarAutomovil.getClienteAAgregar().getDni()), this.vistaAgregarAutomovil.getClienteAAgregar());
                 vistaAgregarAutomovil.mostrarMensaje("Se agrego automovil con el cliente");
-                vistaAutomovil.actualizarListaAutomoviles(automovilDAO.obtenerAutomoviles());
+                vistaTemplate.actualizarListaTabla(automovilDAO.obtenerAutomoviles());
             } catch (Exception ex) {
                 vistaAgregarAutomovil.mostrarMensajeError(ex.getMessage());
             }
@@ -146,14 +144,14 @@ public class Controlador {
 
     public void eliminarAutomovil() {
         try {
-            Automovil a = vistaAutomovil.getAutomovil();
-            if (vistaAutomovil.confirmacion("Esta seguro que desea eliminar al automovil")) {
+            Automovil a = (Automovil) vistaTemplate.getSeccion();
+            if (vistaTemplate.confirmacion("Esta seguro que desea eliminar al automovil")) {
                 automovilDAO.eliminarAutomovil(a.getIdAutomovil());
-                vistaAutomovil.actualizarListaAutomoviles(automovilDAO.obtenerAutomoviles());
-                vistaAutomovil.mostrarMensaje("Se elimino el automovil");
+                vistaTemplate.actualizarListaTabla(automovilDAO.obtenerAutomoviles());
+                vistaTemplate.mostrarMensaje("Se elimino el automovil");
             }
         } catch (Exception ex) {
-            vistaAutomovil.mostrarMensajeError(ex.getMessage());
+            vistaTemplate.mostrarMensajeError(ex.getMessage());
         }
 
     }
@@ -163,7 +161,7 @@ public class Controlador {
             try {
                 automovilDAO.editarAutomovil(vistaEditarAutomovil.getAutomovilEditado());
                 vistaEditarAutomovil.mostrarMensaje("Se edito el automovil");
-                vistaAutomovil.actualizarListaAutomoviles(automovilDAO.obtenerAutomoviles());
+                vistaTemplate.actualizarListaTabla(automovilDAO.obtenerAutomoviles());
             } catch (Exception ex) {
                 vistaEditarAutomovil.mostrarMensajeError(ex.getMessage());
             }
@@ -171,10 +169,8 @@ public class Controlador {
     }
 
     public void filtrarAutomovil() {
-        vistaAutomovil.actualizarListaAutomoviles(automovilDAO.filtrarAutomoviles(vistaAutomovil.buscarEquivalenteEnBD(vistaAutomovil.obtenerFiltroSeleccionado()), vistaAutomovil.obtenerBusqueda()));
+        vistaTemplate.actualizarListaTabla(automovilDAO.filtrarAutomoviles(vistaTemplate.buscarEquivalenteDelFiltroEnBD(vistaTemplate.obtenerFiltroSeleccionado()), vistaTemplate.obtenerBusqueda()));
     }
-    
-   
 
     //SERVICIOS------------------------------------------------------------------
     public void agregarServicio() {
@@ -182,7 +178,7 @@ public class Controlador {
             try {
                 servicioDAO.agregarServicio(this.vistaAgregarServicio.getServicioAAgregar());
                 vistaAgregarServicio.mostrarMensaje("Se agrego servicio");
-                vistaServicio.actualizarListaServicio(servicioDAO.obtenerServicios());
+                vistaTemplate.actualizarListaTabla(servicioDAO.obtenerServicios());
             } catch (Exception ex) {
                 vistaAgregarServicio.mostrarMensajeError(ex.getMessage());
             }
@@ -191,14 +187,14 @@ public class Controlador {
 
     public void eliminarServicio() {
         try {
-            Servicio s = vistaServicio.getServicio();
-            if (vistaServicio.confirmacion("Esta seguro que desea eliminar al servicio")) {
+            Servicio s = (Servicio) vistaTemplate.getSeccion();
+            if (vistaTemplate.confirmacion("Esta seguro que desea eliminar al servicio")) {
                 servicioDAO.eliminarServicio(s.getIdServicio());
-                vistaServicio.actualizarListaServicio(servicioDAO.obtenerServicios());
-                vistaServicio.mostrarMensaje("Se elimino el servicio");
+                vistaTemplate.actualizarListaTabla(servicioDAO.obtenerServicios());
+                vistaTemplate.mostrarMensaje("Se elimino el servicio");
             }
         } catch (Exception ex) {
-            vistaServicio.mostrarMensajeError(ex.getMessage());
+            vistaTemplate.mostrarMensajeError(ex.getMessage());
         }
 
     }
@@ -208,7 +204,7 @@ public class Controlador {
             try {
                 servicioDAO.editarServicio(vistaEditarServicio.getServicioEditado());
                 vistaEditarServicio.mostrarMensaje("Se edito el servicio");
-                vistaServicio.actualizarListaServicio(servicioDAO.obtenerServicios());
+                vistaTemplate.actualizarListaTabla(servicioDAO.obtenerServicios());
             } catch (Exception ex) {
                 vistaEditarServicio.mostrarMensajeError(ex.getMessage());
             }
@@ -216,24 +212,25 @@ public class Controlador {
     }
 
     public void filtrarServicio() {
-        vistaServicio.actualizarListaServicio(servicioDAO.filtrarServicio(vistaServicio.buscarEquivalenteEnBD(vistaServicio.obtenerFiltroSeleccionado()), vistaServicio.obtenerBusqueda()));
+        vistaTemplate.actualizarListaTabla(servicioDAO.filtrarServicio(vistaTemplate.buscarEquivalenteDelFiltroEnBD(vistaTemplate.obtenerFiltroSeleccionado()), vistaTemplate.obtenerBusqueda()));
     }
 
     //--------------------------------------------------------------------------
     private class Ventena implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (e.getActionCommand().equalsIgnoreCase("Clientes")) {
-                vistaCliente = new JFrameClientes(vistaPrincipal);
-                vistaCliente.mostrarClientes(clienteDAO.obtenerClientes());
+            if (vistaPrincipal.obtenerSeccionSeleccionada().equalsIgnoreCase(Categoria.CLIENTE.toString())) {
+                vistaTemplate = new JFrameSecciones<Automovil>("Clientes", Categoria.CLIENTE, vistaPrincipal, "cliente.png");
+                vistaTemplate.mostrarEnTabla(clienteDAO.obtenerClientes());
                 addAllListenersCliente();
-            } else if (e.getActionCommand().equalsIgnoreCase("Automoviles")) {
-                vistaAutomovil = new JFrameAutomoviles(vistaPrincipal);
-                vistaAutomovil.mostrarAutomoviles(automovilDAO.obtenerAutomoviles());
+            } else if (vistaPrincipal.obtenerSeccionSeleccionada().equalsIgnoreCase(Categoria.AUTOMOVIL.toString())) {
+                vistaTemplate = new JFrameSecciones<Automovil>("Automovil", Categoria.AUTOMOVIL, vistaPrincipal, "automovil.png");
+                vistaTemplate.mostrarEnTabla(automovilDAO.obtenerAutomoviles());
                 addAllListenersAutomovil();
-            } else if (e.getActionCommand().equalsIgnoreCase("Servicios")) {
-                vistaServicio = new JFrameServicios(vistaPrincipal);
-                vistaServicio.mostrarServicios(servicioDAO.obtenerServicios());
+            } else if (vistaPrincipal.obtenerSeccionSeleccionada().equalsIgnoreCase(Categoria.SERVICIO.toString())) {
+                vistaTemplate = new JFrameSecciones<Automovil>("Servicio", Categoria.SERVICIO, vistaPrincipal, "servicio.png");
+                vistaTemplate.mostrarEnTabla(servicioDAO.obtenerServicios());
                 addAllListenersServicio();
             }
         }
@@ -244,7 +241,7 @@ public class Controlador {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            vistaAgregarCliente = new JFrameFormularioAgregarCliente(vistaCliente);
+            vistaAgregarCliente = new JFrameFormularioAgregarCliente(vistaTemplate);
             vistaAgregarCliente.addActionListenerBotonAgregar(new HandlerJFrameAgregarBotonAgregarCliente());
         }
     }
@@ -261,7 +258,7 @@ public class Controlador {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            vistaEditarCliente = new JFrameFormularioEditarCliente(vistaCliente.getCliente(), vistaPrincipal);
+            vistaEditarCliente = new JFrameFormularioEditarCliente((Cliente) vistaTemplate.getSeccion(), vistaPrincipal);
             vistaEditarCliente.addActionListenerBotonEditar(new HandlerJFrameEditarBotonEditarCliente());
         }
     }
@@ -303,7 +300,7 @@ public class Controlador {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            vistaAgregarAutomovil = new JFrameFormularioAgregarAutomovil(vistaAutomovil, (ArrayList<String>) clienteDAO.obtenerDNIClientes());
+            vistaAgregarAutomovil = new JFrameFormularioAgregarAutomovil(vistaTemplate, (ArrayList<String>) clienteDAO.obtenerDNIClientes());
             vistaAgregarAutomovil.addActionListenerBotonAgregar(new HandlerJFrameAgregarBotonAgregarAutomovil());
         }
     }
@@ -324,7 +321,7 @@ public class Controlador {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            vistaEditarAutomovil = new JFrameFormularioEditarAutomovil(vistaAutomovil.getAutomovil(), vistaAutomovil, (ArrayList<String>) clienteDAO.obtenerDNIClientes());
+            vistaEditarAutomovil = new JFrameFormularioEditarAutomovil((Automovil) vistaTemplate.getSeccion(), vistaTemplate, (ArrayList<String>) clienteDAO.obtenerDNIClientes());
             vistaEditarAutomovil.addActionListenerBotonEditar(new HandlerJFrameEditarBotonEditarAutomovil());
         }
     }
@@ -366,7 +363,7 @@ public class Controlador {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            vistaAgregarServicio = new JFrameFormularioAgregarServicio(vistaServicio, (ArrayList<String>) servicioDAO.obtenerPatentesAutomoviles());
+            vistaAgregarServicio = new JFrameFormularioAgregarServicio(vistaTemplate, (ArrayList<String>) servicioDAO.obtenerPatentesAutomoviles());
             vistaAgregarServicio.addActionListenerBotonAgregar(new HandlerJFrameAgregarBotonAgregarServicio());
         }
     }
@@ -383,7 +380,7 @@ public class Controlador {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            vistaEditarServicio = new JFrameFormularioEditarServicio(vistaServicio.getServicio(), vistaServicio, (ArrayList<String>) servicioDAO.obtenerPatentesAutomoviles());
+            vistaEditarServicio = new JFrameFormularioEditarServicio((Servicio) vistaTemplate.getSeccion(), vistaTemplate, (ArrayList<String>) servicioDAO.obtenerPatentesAutomoviles());
             vistaEditarServicio.addActionListenerBotonEditar(new HandlerJFrameEditarBotonEditarServicio());
         }
     }
