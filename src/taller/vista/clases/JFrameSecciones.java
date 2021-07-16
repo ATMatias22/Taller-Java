@@ -271,7 +271,6 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
 
     private URL getURL(String ruta) {
         URL u = getClass().getResource(ruta);
-        System.out.println(getClass().getResource(ruta));
         if (u == null) {
             throw new RuntimeException("No se pudo cargar recurso " + ruta);
         }

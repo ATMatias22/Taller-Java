@@ -30,7 +30,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanelPrincipal" alignment="0" max="32767" attributes="0"/>
+          <Component id="jPanelPrincipal" min="-2" max="-2" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -45,12 +45,15 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Component id="jPanelFormulario" alignment="0" pref="677" max="32767" attributes="0"/>
               <Component id="jLabelTitulo" alignment="0" max="32767" attributes="0"/>
-              <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace max="32767" attributes="0"/>
+              <Group type="102" alignment="0" attributes="0">
+                  <Component id="jPanelFormulario" min="-2" pref="457" max="-2" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+              </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="153" max="-2" attributes="0"/>
                   <Component id="jButtonEditar" min="-2" pref="147" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="263" max="-2" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -58,11 +61,11 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="jLabelTitulo" min="-2" pref="56" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
-                  <Component id="jPanelFormulario" min="-2" pref="204" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace pref="33" max="32767" attributes="0"/>
+                  <Component id="jPanelFormulario" min="-2" pref="236" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                   <Component id="jButtonEditar" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="22" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -99,47 +102,34 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                              <Group type="103" alignment="0" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jLabelCliente" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jLabelAnioFabricacion" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabelModelo" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
-                                  </Group>
+                          <Group type="103" alignment="0" groupAlignment="0" attributes="0">
+                              <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                                  <Component id="jLabelCliente" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelAnioFabricacion" alignment="0" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabelMarca" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jLabelModelo" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jLabelPatente" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jLabelPatente" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="jLabelMarca" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jTextFieldAnioFabricacion" max="32767" attributes="0"/>
-                          <Component id="jTextFieldModelo" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jTextFieldMarca" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jTextFieldPatente" alignment="0" max="32767" attributes="0"/>
-                          <Component id="jComboBoxCliente" alignment="0" min="-2" pref="334" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jComboBoxCliente" alignment="0" min="-2" pref="212" max="-2" attributes="0"/>
+                          <Component id="jTextFieldAnioFabricacion" min="-2" pref="212" max="-2" attributes="0"/>
+                          <Component id="jTextFieldMarca" alignment="0" min="-2" pref="212" max="-2" attributes="0"/>
+                          <Component id="jTextFieldPatente" alignment="0" min="-2" pref="212" max="-2" attributes="0"/>
+                          <Component id="jTextFieldModelo" min="-2" pref="212" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="33" max="32767" attributes="0"/>
+                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="0" pref="3" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="7" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jTextFieldPatente" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabelPatente" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -155,11 +145,11 @@
                           <Component id="jTextFieldModelo" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabelAnioFabricacion" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextFieldAnioFabricacion" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabelAnioFabricacion" min="-2" max="-2" attributes="0"/>
+                          <Component id="jTextFieldAnioFabricacion" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabelCliente" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="jComboBoxCliente" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -220,7 +210,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="24" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="A&#xf1;o de fabricacion"/>
+                <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;p&gt;A&#xf1;o de&lt;/p&gt; fabricacion&lt;/html&gt;"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextFieldAnioFabricacion">
