@@ -150,20 +150,7 @@ public class AutomovilDAO {
         }
     }
 
-    public Collection<Automovil> listarAutomovilesConAntiguedadYUnSoloServicio() {
-        try (Statement stmt = ConexionBD.getConexion().createStatement()) {
-            Collection<Automovil> automoviles = new ArrayList<>();
-            String query = "SELECT * FROM Automovil GROUP BY patente";
-            try (ResultSet rs = stmt.executeQuery(query)) {
-                while (rs.next()) {
-                    automoviles.add(generarAutomovil(rs));
-                }
-                return automoviles;
-            }
-        } catch (Exception ex) {
-            throw new RuntimeException("No se pudieron obtener los automoviles", ex);
-        }
-    }
+  
 
     //----------------------------------------------------------------------------------
 }

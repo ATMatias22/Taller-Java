@@ -43,13 +43,15 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanelPrincipal = new javax.swing.JPanel();
-        jScrollPaneDatos = new javax.swing.JScrollPane();
-        jTableDatos = new javax.swing.JTable();
         jLabelTitulo = new javax.swing.JLabel();
         jPanelFiltrar = new javax.swing.JPanel();
         jComboBoxFiltrar = new javax.swing.JComboBox<>();
         jTextFieldFiltrar = new javax.swing.JTextField();
         jLabelFiltrar = new javax.swing.JLabel();
+        jPanelFormulario = new javax.swing.JPanel();
+        jScrollPaneDatos = new javax.swing.JScrollPane();
+        jTableDatos = new javax.swing.JTable();
+        jLabelAviso = new javax.swing.JLabel();
         jLabelLogo = new javax.swing.JLabel();
         jPanelAcciones = new javax.swing.JPanel();
         jButtonAgregar = new javax.swing.JButton();
@@ -61,6 +63,25 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
         setResizable(false);
 
         jPanelPrincipal.setBackground(new java.awt.Color(255, 204, 204));
+
+        jLabelTitulo.setBackground(new java.awt.Color(255, 255, 255));
+        jLabelTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        jLabelTitulo.setForeground(new java.awt.Color(255, 0, 0));
+        jLabelTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelTitulo.setText("Clientes");
+        jLabelTitulo.setOpaque(true);
+
+        jPanelFiltrar.setBackground(new java.awt.Color(255, 204, 204));
+
+        jComboBoxFiltrar.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jComboBoxFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jTextFieldFiltrar.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+
+        jLabelFiltrar.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelFiltrar.setText("Filtrar por");
+
+        jPanelFormulario.setBackground(new java.awt.Color(255, 204, 204));
 
         jScrollPaneDatos.setForeground(new java.awt.Color(255, 255, 255));
         jScrollPaneDatos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -87,22 +108,32 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
         jTableDatos.setSelectionBackground(new java.awt.Color(255, 153, 153));
         jScrollPaneDatos.setViewportView(jTableDatos);
 
-        jLabelTitulo.setBackground(new java.awt.Color(255, 255, 255));
-        jLabelTitulo.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabelTitulo.setForeground(new java.awt.Color(255, 0, 0));
-        jLabelTitulo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelTitulo.setText("Clientes");
-        jLabelTitulo.setOpaque(true);
+        jLabelAviso.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        jLabelAviso.setForeground(new java.awt.Color(255, 102, 102));
+        jLabelAviso.setText("Debe hacer doble click para poder editar o eliminar un automovil");
 
-        jPanelFiltrar.setBackground(new java.awt.Color(255, 204, 204));
-
-        jComboBoxFiltrar.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jComboBoxFiltrar.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jTextFieldFiltrar.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
-        jLabelFiltrar.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabelFiltrar.setText("Filtrar por");
+        javax.swing.GroupLayout jPanelFormularioLayout = new javax.swing.GroupLayout(jPanelFormulario);
+        jPanelFormulario.setLayout(jPanelFormularioLayout);
+        jPanelFormularioLayout.setHorizontalGroup(
+            jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormularioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelAviso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(jScrollPaneDatos, javax.swing.GroupLayout.DEFAULT_SIZE, 758, Short.MAX_VALUE))
+        );
+        jPanelFormularioLayout.setVerticalGroup(
+            jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelFormularioLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabelAviso, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(319, Short.MAX_VALUE))
+            .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormularioLayout.createSequentialGroup()
+                    .addGap(0, 48, Short.MAX_VALUE)
+                    .addComponent(jScrollPaneDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 314, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
 
         javax.swing.GroupLayout jPanelFiltrarLayout = new javax.swing.GroupLayout(jPanelFiltrar);
         jPanelFiltrar.setLayout(jPanelFiltrarLayout);
@@ -114,6 +145,7 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
                 .addComponent(jComboBoxFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, 308, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jTextFieldFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanelFormulario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelFiltrarLayout.setVerticalGroup(
             jPanelFiltrarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,6 +155,8 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
                     .addComponent(jComboBoxFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelFiltrar)
                     .addComponent(jTextFieldFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelFormulario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -159,7 +193,7 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
             .addGroup(jPanelAccionesLayout.createSequentialGroup()
                 .addGap(59, 59, 59)
                 .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -172,14 +206,13 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
         jPanelAccionesLayout.setVerticalGroup(
             jPanelAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelAccionesLayout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(0, 0, 0)
                 .addGroup(jPanelAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonEditar)
                     .addComponent(jButtonAgregar)
                     .addComponent(jButtonEliminar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonListarAntiguedad, javax.swing.GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE)
-                .addGap(6, 6, 6))
+                .addComponent(jButtonListarAntiguedad, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanelPrincipalLayout = new javax.swing.GroupLayout(jPanelPrincipal);
@@ -190,15 +223,11 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
                 .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jLabelTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanelAcciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanelPrincipalLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelPrincipalLayout.createSequentialGroup()
-                        .addComponent(jScrollPaneDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 762, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 8, Short.MAX_VALUE))
-                    .addComponent(jPanelFiltrar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanelFiltrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
-            .addComponent(jPanelAcciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelPrincipalLayout.setVerticalGroup(
             jPanelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -207,11 +236,10 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
                     .addComponent(jLabelTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanelFiltrar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
-                .addComponent(jScrollPaneDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanelAcciones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanelFiltrar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelAcciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -237,6 +265,7 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
         habilitarODeshabiliarBotones(false);
         jLabelLogo.setIcon(getImagen(nombreDeImagen));
         habilitarBotonDeListar(false);
+        jLabelAviso.setText("Debe hacer doble click para poder editar o eliminar un " + c.getNombre());
 
     }
 
@@ -414,11 +443,13 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
     private javax.swing.JButton jButtonEliminar;
     private javax.swing.JButton jButtonListarAntiguedad;
     private javax.swing.JComboBox<String> jComboBoxFiltrar;
+    private javax.swing.JLabel jLabelAviso;
     private javax.swing.JLabel jLabelFiltrar;
     private javax.swing.JLabel jLabelLogo;
     private javax.swing.JLabel jLabelTitulo;
     private javax.swing.JPanel jPanelAcciones;
     private javax.swing.JPanel jPanelFiltrar;
+    private javax.swing.JPanel jPanelFormulario;
     private javax.swing.JPanel jPanelPrincipal;
     private javax.swing.JScrollPane jScrollPaneDatos;
     private javax.swing.JTable jTableDatos;

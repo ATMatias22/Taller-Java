@@ -15,17 +15,18 @@ import taller.modelo.clases.TipoSeccion;
  *
  * @author Matias
  */
-public class JFrameListarAutomoviles extends javax.swing.JFrame {
+public class JFrameListarAutomovilesAntiguedad extends javax.swing.JFrame {
 
     /**
      * Creates new form JFrameListarAutomoviles
      */
-    public JFrameListarAutomoviles(Collection<Automovil> automoviles, Component parent) {
+    public JFrameListarAutomovilesAntiguedad(Collection<Automovil> automoviles, Component parent) {
         initComponents();
         setVisible(true);
         setLocationRelativeTo(parent);
         insertarColumnasEnLaTabla(TipoSeccion.AUTOMOVIL.getNombreDeCategoriasParaLaTabla());
         mostrarEnTabla(automoviles);
+        ocultarColumnaID() ;
     }
 
     private void insertarColumnasEnLaTabla(String[] columnas) {
@@ -61,6 +62,13 @@ public class JFrameListarAutomoviles extends javax.swing.JFrame {
         return arrayBooleano;
     }
     
+    private void ocultarColumnaID() {
+        this.jTableAutomovil.getTableHeader().getColumnModel().getColumn(0).setMaxWidth(0);
+        this.jTableAutomovil.getTableHeader().getColumnModel().getColumn(0).setMinWidth(0);
+        this.jTableAutomovil.getColumnModel().getColumn(0).setMaxWidth(0);
+        this.jTableAutomovil.getColumnModel().getColumn(0).setMinWidth(0);
+    }
+    
     public void cerrar(){
         this.dispose();
     }
@@ -73,9 +81,10 @@ public class JFrameListarAutomoviles extends javax.swing.JFrame {
         jTableAutomovil = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Automoviles");
+        setTitle("Automoviles a llamar");
         setResizable(false);
 
+        jTableAutomovil.setBackground(new java.awt.Color(204, 255, 204));
         jTableAutomovil.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -87,6 +96,7 @@ public class JFrameListarAutomoviles extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jTableAutomovil.setSelectionBackground(new java.awt.Color(255, 153, 153));
         jScrollPane1.setViewportView(jTableAutomovil);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

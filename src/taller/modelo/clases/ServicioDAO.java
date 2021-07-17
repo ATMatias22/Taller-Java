@@ -18,6 +18,7 @@ import java.sql.Date;
  * @author Matias
  */
 public class ServicioDAO {
+
     public Collection<Servicio> obtenerServicios() {
         try (Statement stmt = ConexionBD.getConexion().createStatement()) {
             Collection<Servicio> servicios = new ArrayList<>();
@@ -32,8 +33,8 @@ public class ServicioDAO {
             throw new RuntimeException("No se pudieron obtener los servicios", ex);
         }
     }
-    
-     public Collection<String> obtenerPatentesAutomoviles() {
+
+    public Collection<String> obtenerPatentesAutomoviles() {
         try (Statement stmt = ConexionBD.getConexion().createStatement()) {
             Collection<String> patenteAutomoviles = new ArrayList<>();
             String query = "SELECT patente FROM Automovil";
@@ -48,11 +49,10 @@ public class ServicioDAO {
         }
     }
 
-
     public Collection<Servicio> filtrarServicio(String filtro, String busqueda) {
         try (Statement stmt = ConexionBD.getConexion().createStatement()) {
             Collection<Servicio> servicios = new ArrayList<>();
-            String query = "SELECT * FROM Servicio where "+filtro+ " LIKE '"+ busqueda+ "%'";
+            String query = "SELECT * FROM Servicio where " + filtro + " LIKE '" + busqueda + "%'";
             try (ResultSet rs = stmt.executeQuery(query)) {
                 while (rs.next()) {
                     servicios.add(generarServicio(rs));
@@ -78,19 +78,17 @@ public class ServicioDAO {
 
     }
 
- 
     public void agregarServicio(Servicio se) throws SQLException {
         String query = "INSERT INTO Servicio VALUES (null,?,?,?,?)";
         try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query);) {
             cargarDatosDeServicioEnSentencia(se, ps);
             ps.executeUpdate();
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo agregar servicio\n" + se +" "+ ex.getMessage());
+            throw new RuntimeException("No se pudo agregar servicio\n" + se + " " + ex.getMessage());
         }
     }
-    
-    
-   private Servicio generarServicio(ResultSet rs) throws SQLException {
+
+    private Servicio generarServicio(ResultSet rs) throws SQLException {
         int id = rs.getInt(1);
         String fechaRealizacion = rs.getString(2);
         double costo = rs.getDouble(3);
@@ -101,7 +99,7 @@ public class ServicioDAO {
     }
 
     private void cargarDatosDeServicioEnSentencia(Servicio se, PreparedStatement ps) throws SQLException {
-        ps.setString(1,se.getFechaDeRealizacion());
+        ps.setString(1, se.getFechaDeRealizacion());
         ps.setDouble(2, se.getCosto());
         ps.setString(3, se.getPatenteDelAutomovil());
         ps.setInt(4, se.getCantKms());
@@ -125,6 +123,27 @@ public class ServicioDAO {
             ps.executeUpdate();
         } catch (Exception ex) {
             throw new RuntimeException("No se pudo actualizar el servicio\n" + se, ex);
+        }
+    }
+
+    public Collection<Automovil> listarAutomovilesConAntiguedadYUnSoloServicio() {
+        try (Statement stmt = ConexionBD.getConexion().createStatement()) {
+            Collection<Automovil> automoviles = new ArrayList<>();
+            String query = "select a.* from Servicio as s inner join Automovil as a on s.patenteDelAutomovil = a.patente GROUP BY patenteDelAutomovil HAVING COUNT(*) = 1 AND s.fechaDeRealizacion <= date('now','-3 year')";
+            try (ResultSet rs = stmt.executeQuery(query)) {
+                while (rs.next()) {
+                    int id = rs.getInt(1);
+                    String patente = rs.getString(2);
+                    String marca = rs.getString(3);
+                    String modelo = rs.getString(4);
+                    int anioFabricacion = rs.getInt(5);
+                    String dniCliente = rs.getString(6);
+                    automoviles.add(new Automovil(id, patente, marca, modelo, anioFabricacion, dniCliente));
+                }
+                return automoviles;
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException("No se pudieron obtener los automoviles", ex);
         }
     }
 }

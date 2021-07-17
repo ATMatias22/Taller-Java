@@ -24,7 +24,7 @@ import taller.vista.clases.JFrameFormularioAgregarServicio;
 import taller.vista.clases.JFrameFormularioEditarAutomovil;
 import taller.vista.clases.JFrameFormularioEditarCliente;
 import taller.vista.clases.JFrameFormularioEditarServicio;
-import taller.vista.clases.JFrameListarAutomoviles;
+import taller.vista.clases.JFrameListarAutomovilesAntiguedad;
 import taller.vista.clases.JFramePrincipal;
 import taller.vista.clases.JFrameServicio;
 
@@ -47,7 +47,7 @@ public class Controlador {
     private JFrameFormularioAgregarCliente vistaAgregarCliente;
     private JFrameFormularioAgregarAutomovil vistaAgregarAutomovil;
     private JFrameFormularioAgregarServicio vistaAgregarServicio;
-    private JFrameListarAutomoviles vistaListarAutomoviles;
+    private JFrameListarAutomovilesAntiguedad vistaListarAutomoviles;
 
     public void iniciar() {
         clienteDAO = new ClienteDAO();
@@ -79,7 +79,7 @@ public class Controlador {
         vistaServicio.addActionListenerBotonEditar(new PrincipalBotonEditarListenerServicio());
         vistaServicio.addKeyListenerJTextFieldFiltrar(new FiltrarServicioKeyListener());
         vistaServicio.addActionListenerJComboBoxFiltrar(new FiltrarServicioActionListener());
-        vistaServicio.addActionListenerListarAutomoviles(new PrincipalBotonListarAutomovilesListenerSsrvicio());
+        vistaServicio.addActionListenerListarAutomoviles(new PrincipalBotonListarAutomovilesAntiguedadListenerServicio());
     }
 
     //---------------------------------------------------CLIENTES------------------------------------------------------------------
@@ -428,13 +428,13 @@ public class Controlador {
         }
     }
     
-    private class PrincipalBotonListarAutomovilesListenerSsrvicio implements ActionListener{
+    private class PrincipalBotonListarAutomovilesAntiguedadListenerServicio implements ActionListener{
         @Override
         public void actionPerformed(ActionEvent e) {
              if (vistaListarAutomoviles != null) {
                 vistaListarAutomoviles.cerrar();
             }
-             vistaListarAutomoviles = new JFrameListarAutomoviles(automovilDAO.obtenerAutomoviles(), vistaServicio);
+             vistaListarAutomoviles = new JFrameListarAutomovilesAntiguedad(servicioDAO.listarAutomovilesConAntiguedadYUnSoloServicio(), vistaServicio);
             
         }
     }
