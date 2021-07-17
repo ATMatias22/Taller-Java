@@ -9,25 +9,41 @@ package taller.modelo.clases;
  *
  * @author Matias
  */
-public enum Categoria  {
+public enum TipoSeccion  {
 
-    CLIENTE(new String[]{"dni", "nombre", "apellido", "mail", "telefono"}, 
+    CLIENTE("Cliente",
+            "cliente.png",
+            "cliente_mini.png",
+            new String[]{"dni", "nombre", "apellido", "mail", "telefono"}, 
             new String[]{"id", "dni", "nombre", "apellido", "mail", "telefono"}, 
             new String[]{"idCliente", "dni", "nombre", "apellido", "mail", "telefono"}),
     
-    AUTOMOVIL(new String[]{"patente", "marca", "modelo", "año de fabricacion", "dni cliente"},
+    AUTOMOVIL("Automovil",
+            "automovil.png",
+            "automovil_mini.png",
+            new String[]{"patente", "marca", "modelo", "año de fabricacion", "dni cliente"},
             new String[]{"id", "patente", "marca", "modelo", "año de fabricacion", "dni cliente"},
             new String[]{"idAutomovil", "patente", "marca", "modelo", "anioFabricacion", "dniCliente"}),
     
-    SERVICIO(new String[]{"fecha de realizacion", "costo", "patente del automovil", "cantidad de kilometros"},
+    SERVICIO("Servicio",
+            "servicio.png",
+            "servicio_mini.png",
+            new String[]{"fecha de realizacion", "costo", "patente del automovil", "cantidad de kilometros"},
             new String[]{"id", "fecha de realizacion", "costo", "patente del automovil", "cantidad de kilometros"},
             new String[]{"idServicio", "fechaDeRealizacion", "costo", "patenteDelAutomovil", "cantKms"});
 
+    private String nombre;
+    private String nombreLogo;
+    private String nombreLogoMini;
     private String[] nombresDeCategoriasParaElFiltro;
     private String[] nombreDeCategoriasParaLaTabla;
     private String[] nombreEnBD;
+    
 
-    private Categoria(String[] nombresDeCategoriasParaElFiltro, String[] nombreDeCategoriasParaLaTabla, String[] nombreEnBD) {
+    private TipoSeccion(String nombre,String nombreLogo, String nombreLogoMini,String[] nombresDeCategoriasParaElFiltro, String[] nombreDeCategoriasParaLaTabla, String[] nombreEnBD) {
+        this.nombre = nombre;
+        this.nombreLogo = nombreLogo;
+        this.nombreLogoMini = nombreLogoMini;
         this.nombresDeCategoriasParaElFiltro = nombresDeCategoriasParaElFiltro;
         this.nombreDeCategoriasParaLaTabla = nombreDeCategoriasParaLaTabla;
         this.nombreEnBD = nombreEnBD;
@@ -35,6 +51,18 @@ public enum Categoria  {
 
     public String[] getNombreDeCategoriasParaElFiltro() {
         return this.nombresDeCategoriasParaElFiltro;
+    }
+    
+    public String getNombre(){
+        return this.nombre;
+    }
+    
+    public String getNombreLogo(){
+        return this.nombreLogo;
+    }
+    
+    public String getNombreLogoMini(){
+        return this.nombreLogoMini;
     }
 
     public String[] getNombreDeCategoriasParaLaTabla() {

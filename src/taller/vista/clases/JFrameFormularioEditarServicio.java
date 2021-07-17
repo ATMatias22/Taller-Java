@@ -5,38 +5,57 @@
  */
 package taller.vista.clases;
 
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Date;
-import javax.swing.JOptionPane;
+import java.util.Collection;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import taller.modelo.clases.TipoSeccion;
 import taller.modelo.clases.Servicio;
 
 /**
  *
  * @author Matias
  */
-public class JFrameFormularioEditarServicio extends javax.swing.JFrame {
+public class JFrameFormularioEditarServicio extends JFrameFormularioTemplate {
 
     private Servicio se;
+    private final static String NOMBRE_LOGO = TipoSeccion.SERVICIO.getNombreLogoMini();
+    private final static String TITULO = "Editar Servicio";
+    private final static String TEXTO_BOTON = "Editar Servicio";
+    private final static Color COLOR_FONDO = new Color(255, 204, 0);
+    private final static Color COLOR_TEXTO = new Color(153, 102, 0);
+    private final static int HEIGHT_PANEL_FORMULARIO = 253;
 
-    public JFrameFormularioEditarServicio(Servicio se, Component parent, ArrayList<String> patentesAutomoviles) {
-        System.out.println("Hola");
-        initComponents();
+    public JFrameFormularioEditarServicio(Servicio se, Component parent, Collection<String> patentesAutomoviles) {
+        super(NOMBRE_LOGO, TITULO, TEXTO_BOTON, parent, COLOR_FONDO, COLOR_TEXTO, HEIGHT_PANEL_FORMULARIO);
         this.se = se;
-        setVisible(true);
-        setLocationRelativeTo(parent);
-        colocarServicioEnFormulario(patentesAutomoviles);
+        iniciar(patentesAutomoviles);
     }
 
-    public void colocarServicioEnFormulario(ArrayList<String> patentesAutomoviles) {
-        rSDateChooserFechaRealizacion.setDate(se.getFechaDeRealizacion());
+    private void iniciar(Collection<String> patentesAutomoviles) {
+        jLabelFechaRealizacion = new javax.swing.JLabel();
+        jLabelCosto = new javax.swing.JLabel();
+        jTextFieldCosto = new javax.swing.JTextField();
+        jLabelPatenteAuto = new javax.swing.JLabel();
+        jLabelCantKMS = new javax.swing.JLabel();
+        jTextFieldCantKMS = new javax.swing.JTextField();
+        rSDateChooserFechaRealizacion = new newscomponents.RSDateChooser();
+        jComboBoxPatenteAuto = new javax.swing.JComboBox<>();
+        estilosFormulario();
+        rSDateChooserFechaRealizacion.setFormatDate("dd-MM-YYYY");
+        colocarServicioEnFormulario(patentesAutomoviles);
+
+    }
+
+    public void colocarServicioEnFormulario(Collection<String> patentesAutomoviles) {
         jTextFieldCosto.setText(se.getCosto() + "");
         colocarPatentesAutomoviles(patentesAutomoviles);
         jTextFieldCantKMS.setText(se.getCantKms() + "");
     }
 
-    public void colocarPatentesAutomoviles(ArrayList<String> patentesAutomoviles) {
+    public void colocarPatentesAutomoviles(Collection<String> patentesAutomoviles) {
         String[] patentes = new String[patentesAutomoviles.size()];
         patentesAutomoviles.toArray(patentes);
         jComboBoxPatenteAuto.setModel(new javax.swing.DefaultComboBoxModel<>(patentes));
@@ -44,19 +63,21 @@ public class JFrameFormularioEditarServicio extends javax.swing.JFrame {
     }
 
     public Servicio getServicioEditado() {
+        SimpleDateFormat formato = new SimpleDateFormat("YYYY-MM-dd");
         int id = se.getIdServicio();
-        Date fechaRealizacion =  rSDateChooserFechaRealizacion.getDate();
+        String fechaRealizacion = formato.format(rSDateChooserFechaRealizacion.getDate());
         double costo = Double.parseDouble(jTextFieldCosto.getText());
         String patenteDelAutomovil = (String) this.jComboBoxPatenteAuto.getSelectedItem();
         int cantKms = Integer.parseInt(jTextFieldCantKMS.getText());
         return new Servicio(id, fechaRealizacion, costo, patenteDelAutomovil, cantKms);
     }
 
-    public int colocarPorDefectoLaPatenteEnComboBox(ArrayList<String> patentesAutomoviles, String dato) {
+    public int colocarPorDefectoLaPatenteEnComboBox(Collection<String> patentesAutomoviles, String dato) {
         int posicion = 0;
         boolean encontrado = false;
-        while (posicion < patentesAutomoviles.size() && !encontrado) {
-            if (patentesAutomoviles.get(posicion).equalsIgnoreCase(dato)) {
+        ArrayList<String> patentes = (ArrayList<String>) patentesAutomoviles;
+        while (posicion < patentes.size() && !encontrado) {
+            if (patentes.get(posicion).equalsIgnoreCase(dato)) {
                 encontrado = true;
             }
             posicion++;
@@ -64,21 +85,70 @@ public class JFrameFormularioEditarServicio extends javax.swing.JFrame {
         return --posicion;
     }
 
-    public void addActionListenerBotonEditar(ActionListener al) {
-        this.jButtonEditar.addActionListener(al);
-    }
+    private void estilosFormulario() {
+        jLabelFechaRealizacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelFechaRealizacion.setText("<html><p>Fecha de</p> Realizacion</html>");
 
-    public boolean confirmacion(String mensaje) {
-        return JOptionPane.showConfirmDialog(this, mensaje) == 0;
-    }
+        jLabelCosto.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelCosto.setText("Costo");
 
-    public void mostrarMensaje(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje);
-        this.dispose();
-    }
+        jTextFieldCosto.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
-    public void mostrarMensajeError(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Error...", JOptionPane.ERROR_MESSAGE);
+        jLabelPatenteAuto.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelPatenteAuto.setText("<html><p>Patente</p> del auto</html>");
+
+        jLabelCantKMS.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelCantKMS.setText("<html><p>Cantidad</p>de kms</html>");
+
+        jTextFieldCantKMS.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+
+        rSDateChooserFechaRealizacion.setBackground(new java.awt.Color(0, 0, 0));
+        rSDateChooserFechaRealizacion.setBgColor(new java.awt.Color(0, 0, 0));
+        rSDateChooserFechaRealizacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        rSDateChooserFechaRealizacion.setFormatDate("d-M-YYYY");
+
+        jComboBoxPatenteAuto.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+
+        javax.swing.GroupLayout jPanelFormularioLayout = new javax.swing.GroupLayout(super.getPanelFormulario());
+        super.getPanelFormulario().setLayout(jPanelFormularioLayout);
+        jPanelFormularioLayout.setHorizontalGroup(
+                jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormularioLayout.createSequentialGroup()
+                                .addGap(42, 42, 42)
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabelFechaRealizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabelPatenteAuto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabelCosto)
+                                        .addComponent(jLabelCantKMS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(rSDateChooserFechaRealizacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(jComboBoxPatenteAuto, 0, 212, Short.MAX_VALUE)
+                                                .addComponent(jTextFieldCantKMS, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
+                                        .addComponent(jTextFieldCosto, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(42, 42, 42))
+        );
+        jPanelFormularioLayout.setVerticalGroup(
+                jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelFormularioLayout.createSequentialGroup()
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabelFechaRealizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(rSDateChooserFechaRealizacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jTextFieldCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabelCosto))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabelPatenteAuto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jComboBoxPatenteAuto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(19, 19, 19)
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabelCantKMS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldCantKMS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
     }
 
     @SuppressWarnings("unchecked")
@@ -89,7 +159,7 @@ public class JFrameFormularioEditarServicio extends javax.swing.JFrame {
         jLabelTitulo = new javax.swing.JLabel();
         jPanelFormulario = new javax.swing.JPanel();
         jLabelFechaRealizacion = new javax.swing.JLabel();
-        jLabelCosto2 = new javax.swing.JLabel();
+        jLabelCosto = new javax.swing.JLabel();
         jTextFieldCosto = new javax.swing.JTextField();
         jLabelPatenteAuto = new javax.swing.JLabel();
         jLabelCantKMS = new javax.swing.JLabel();
@@ -118,8 +188,8 @@ public class JFrameFormularioEditarServicio extends javax.swing.JFrame {
         jLabelFechaRealizacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelFechaRealizacion.setText("<html><p>Fecha de</p> Realizacion</html>");
 
-        jLabelCosto2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabelCosto2.setText("Costo");
+        jLabelCosto.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelCosto.setText("Costo");
 
         jTextFieldCosto.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
@@ -133,8 +203,9 @@ public class JFrameFormularioEditarServicio extends javax.swing.JFrame {
 
         rSDateChooserFechaRealizacion.setBackground(new java.awt.Color(0, 0, 0));
         rSDateChooserFechaRealizacion.setBgColor(new java.awt.Color(0, 0, 0));
+        rSDateChooserFechaRealizacion.setDate(null);
         rSDateChooserFechaRealizacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        rSDateChooserFechaRealizacion.setFormatDate("d-M-YYYY");
+        rSDateChooserFechaRealizacion.setFormatDate("dd-MM-YYYY");
 
         jComboBoxPatenteAuto.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
@@ -147,7 +218,7 @@ public class JFrameFormularioEditarServicio extends javax.swing.JFrame {
                 .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabelFechaRealizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelPatenteAuto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelCosto2)
+                    .addComponent(jLabelCosto)
                     .addComponent(jLabelCantKMS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -167,7 +238,7 @@ public class JFrameFormularioEditarServicio extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelCosto2))
+                    .addComponent(jLabelCosto))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabelPatenteAuto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -229,7 +300,7 @@ public class JFrameFormularioEditarServicio extends javax.swing.JFrame {
     private javax.swing.JButton jButtonEditar;
     private javax.swing.JComboBox<String> jComboBoxPatenteAuto;
     private javax.swing.JLabel jLabelCantKMS;
-    private javax.swing.JLabel jLabelCosto2;
+    private javax.swing.JLabel jLabelCosto;
     private javax.swing.JLabel jLabelFechaRealizacion;
     private javax.swing.JLabel jLabelPatenteAuto;
     private javax.swing.JLabel jLabelTitulo;

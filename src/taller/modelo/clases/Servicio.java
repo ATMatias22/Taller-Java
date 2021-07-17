@@ -5,36 +5,28 @@
  */
 package taller.modelo.clases;
 
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import taller.interfaces.Seccion;
 
 /**
  *
  * @author Matias
  */
-public class Servicio implements Seccion{
-    
+public class Servicio implements Seccion {
+
     private int idServicio;
-    private Date fechaDeRealizacion;
+    private String fechaDeRealizacion;
     private double costo;
     private String patenteDelAutomovil;
-    private int cantKms ;
-    
+    private int cantKms;
 
-    public Servicio(int idServicio, Date fechaDeRealizacion, double costo, String patenteDelAutomovil, int cantKms) {
+    public Servicio(int idServicio, String fechaDeRealizacion, double costo, String patenteDelAutomovil, int cantKms) {
         this.idServicio = idServicio;
         this.fechaDeRealizacion = fechaDeRealizacion;
-        this.costo = costo;
-        this.patenteDelAutomovil = patenteDelAutomovil;
-        this.cantKms = cantKms;
-    }
-    
-     public Servicio(int idServicio, String fechaDeRealizacion, double costo, String patenteDelAutomovil, int cantKms) {
-        this.idServicio = idServicio;
-        this.fechaDeRealizacion =  convertirFechaLegibleADate(fechaDeRealizacion);
         this.costo = costo;
         this.patenteDelAutomovil = patenteDelAutomovil;
         this.cantKms = cantKms;
@@ -44,7 +36,7 @@ public class Servicio implements Seccion{
         return idServicio;
     }
 
-    public Date getFechaDeRealizacion() {
+    public String getFechaDeRealizacion() {
         return fechaDeRealizacion;
     }
 
@@ -59,14 +51,11 @@ public class Servicio implements Seccion{
     public int getCantKms() {
         return cantKms;
     }
-    
-    public String obtenerFechaLegible(){
-        LocalDate fechaFormato =LocalDate.parse(fechaDeRealizacion.toString());
-        return fechaFormato.getDayOfMonth()+"-"+ fechaFormato.getMonthValue()+"-"+fechaFormato.getYear();
-    }
-    
-    public Date convertirFechaLegibleADate(String fechaDeRealizacion){
-        return java.sql.Date.valueOf(LocalDate.parse(fechaDeRealizacion, DateTimeFormatter.ofPattern("d-M-yyyy")));
+
+    public String obtenerFechaLegible() {
+        LocalDate l = LocalDate.parse(fechaDeRealizacion);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return l.format(formatter);
     }
 
     @Override
@@ -78,10 +67,5 @@ public class Servicio implements Seccion{
     public Object[] getArrayAtributos() {
         return new Object[]{this.getIdServicio(), obtenerFechaLegible(), this.getCosto(), this.getPatenteDelAutomovil(), this.cantKms};
     }
-    
-    
-    
 
-    
-    
 }

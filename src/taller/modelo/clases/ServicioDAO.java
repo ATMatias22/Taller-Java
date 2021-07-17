@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -78,16 +78,7 @@ public class ServicioDAO {
 
     }
 
-    private Servicio generarServicio(ResultSet rs) throws SQLException {
-        int id = rs.getInt(1);
-        Date fechaRealizacion = rs.getDate(2);
-        double costo = rs.getDouble(3);
-        String patenteAutomovil = rs.getString(4);
-        int cantKMS = rs.getInt(5);
-
-        return new Servicio(id, fechaRealizacion, costo, patenteAutomovil, cantKMS);
-    }
-
+ 
     public void agregarServicio(Servicio se) throws SQLException {
         String query = "INSERT INTO Servicio VALUES (null,?,?,?,?)";
         try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query);) {
@@ -99,9 +90,18 @@ public class ServicioDAO {
     }
     
     
+   private Servicio generarServicio(ResultSet rs) throws SQLException {
+        int id = rs.getInt(1);
+        String fechaRealizacion = rs.getString(2);
+        double costo = rs.getDouble(3);
+        String patenteAutomovil = rs.getString(4);
+        int cantKMS = rs.getInt(5);
+
+        return new Servicio(id, fechaRealizacion, costo, patenteAutomovil, cantKMS);
+    }
 
     private void cargarDatosDeServicioEnSentencia(Servicio se, PreparedStatement ps) throws SQLException {
-        ps.setObject(1,se.getFechaDeRealizacion());
+        ps.setString(1,se.getFechaDeRealizacion());
         ps.setDouble(2, se.getCosto());
         ps.setString(3, se.getPatenteDelAutomovil());
         ps.setInt(4, se.getCantKms());

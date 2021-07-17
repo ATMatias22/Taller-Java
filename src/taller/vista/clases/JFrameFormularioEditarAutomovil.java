@@ -5,29 +5,50 @@
  */
 package taller.vista.clases;
 
+import java.awt.Color;
 import java.awt.Component;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
+import java.util.Collection;
 import taller.modelo.clases.Automovil;
+import taller.modelo.clases.TipoSeccion;
 
 /**
  *
  * @author Matias
  */
-public class JFrameFormularioEditarAutomovil extends javax.swing.JFrame {
+public class JFrameFormularioEditarAutomovil extends JFrameFormularioTemplate {
 
     private Automovil au;
+    private final static String NOMBRE_LOGO = TipoSeccion.AUTOMOVIL.getNombreLogoMini();
+    private final static String TITULO = "Editar Automovil";
+    private final static String TEXTO_BOTON = "Editar Automovil";
+    private final static Color COLOR_FONDO = new Color(255, 204, 0);
+    private final static Color COLOR_TEXTO = new Color(153, 102, 0);
+    private final static int HEIGHT_PANEL_FORMULARIO = 236;
 
-    public JFrameFormularioEditarAutomovil(Automovil au, Component parent, ArrayList<String> dniClientes) {
-        initComponents();
+    public JFrameFormularioEditarAutomovil(Automovil au, Component parent, Collection<String> dniClientes) {
+        super(NOMBRE_LOGO, TITULO, TEXTO_BOTON, parent, COLOR_FONDO, COLOR_TEXTO, HEIGHT_PANEL_FORMULARIO);
         this.au = au;
-        setVisible(true);
-        setLocationRelativeTo(parent);
-        colocarAutomovilEnFormulario(dniClientes);
+        iniciar(dniClientes);
     }
 
-    public void colocarAutomovilEnFormulario(ArrayList<String> dniClientes) {
+    private void iniciar(Collection<String> dniClientes) {
+        jLabelPatente = new javax.swing.JLabel();
+        jTextFieldPatente = new javax.swing.JTextField();
+        jLabelMarca = new javax.swing.JLabel();
+        jTextFieldMarca = new javax.swing.JTextField();
+        jLabelModelo = new javax.swing.JLabel();
+        jTextFieldModelo = new javax.swing.JTextField();
+        jLabelAnioFabricacion = new javax.swing.JLabel();
+        jTextFieldAnioFabricacion = new javax.swing.JTextField();
+        jLabelCliente = new javax.swing.JLabel();
+        jComboBoxCliente = new javax.swing.JComboBox<>();
+        estilosFormulario();
+        colocarAutomovilEnFormulario(dniClientes);
+
+    }
+
+    public void colocarAutomovilEnFormulario(Collection<String> dniClientes) {
         jTextFieldPatente.setText(au.getPatente());
         jTextFieldMarca.setText(au.getMarca());
         jTextFieldModelo.setText(au.getModelo());
@@ -35,11 +56,11 @@ public class JFrameFormularioEditarAutomovil extends javax.swing.JFrame {
         colocarDNIClientes(dniClientes);
     }
 
-    public void colocarDNIClientes(ArrayList<String> dniClientes) {
+    public void colocarDNIClientes(Collection<String> dniClientes) {
         String[] dni = new String[dniClientes.size()];
         dniClientes.toArray(dni);
         jComboBoxCliente.setModel(new javax.swing.DefaultComboBoxModel<>(dni));
-        jComboBoxCliente.setSelectedIndex(colocarPorDefectoElClienteEnComboBox(dniClientes, au.getDniCliente() ));
+        jComboBoxCliente.setSelectedIndex(colocarPorDefectoElClienteEnComboBox(dniClientes, au.getDniCliente()));
     }
 
     public Automovil getAutomovilEditado() {
@@ -51,12 +72,13 @@ public class JFrameFormularioEditarAutomovil extends javax.swing.JFrame {
         String cliente = (String) this.jComboBoxCliente.getSelectedItem();
         return new Automovil(id, patente, marca, modelo, anioFabricacion, cliente);
     }
-    
-    public int colocarPorDefectoElClienteEnComboBox(ArrayList<String> dniClientes, String dato){
+
+    public int colocarPorDefectoElClienteEnComboBox(Collection<String> dniClientes, String dato) {
         int posicion = 0;
         boolean encontrado = false;
-        while (posicion < dniClientes.size() && !encontrado) {            
-            if(dniClientes.get(posicion).equalsIgnoreCase(dato)){
+        ArrayList<String> dni = (ArrayList<String>) dniClientes;
+        while (posicion < dni.size() && !encontrado) {
+            if (dni.get(posicion).equalsIgnoreCase(dato)) {
                 encontrado = true;
             }
             posicion++;
@@ -64,21 +86,82 @@ public class JFrameFormularioEditarAutomovil extends javax.swing.JFrame {
         return --posicion;
     }
 
-    public void addActionListenerBotonEditar(ActionListener al) {
-        this.jButtonEditar.addActionListener(al);
-    }
+    private void estilosFormulario() {
 
-    public boolean confirmacion(String mensaje) {
-        return JOptionPane.showConfirmDialog(this, mensaje) == 0;
-    }
+        jLabelPatente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelPatente.setText("Patente");
 
-    public void mostrarMensaje(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje);
-        this.dispose();
-    }
-    
-     public void mostrarMensajeError(String mensaje) {
-        JOptionPane.showMessageDialog(this, mensaje, "Error...", JOptionPane.ERROR_MESSAGE);
+        jTextFieldPatente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+
+        jLabelMarca.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelMarca.setText("Marca");
+
+        jTextFieldMarca.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+
+        jLabelModelo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelModelo.setText("Modelo");
+        jLabelModelo.setToolTipText("");
+
+        jTextFieldModelo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+
+        jLabelAnioFabricacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelAnioFabricacion.setText("<html><p>Año de</p> fabricacion</html>");
+
+        jTextFieldAnioFabricacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+
+        jLabelCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelCliente.setText("DNI Cliente");
+
+        jComboBoxCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+
+        javax.swing.GroupLayout jPanelFormularioLayout = new javax.swing.GroupLayout(super.getPanelFormulario());
+        super.getPanelFormulario().setLayout(jPanelFormularioLayout);
+        jPanelFormularioLayout.setHorizontalGroup(
+                jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelFormularioLayout.createSequentialGroup()
+                                .addGap(42, 42, 42)
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabelCliente)
+                                                        .addComponent(jLabelAnioFabricacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(jLabelModelo))
+                                        .addComponent(jLabelPatente)
+                                        .addComponent(jLabelMarca))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jComboBoxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldAnioFabricacion, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldPatente, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(42, 42, 42))
+        );
+        jPanelFormularioLayout.setVerticalGroup(
+                jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanelFormularioLayout.createSequentialGroup()
+                                .addGap(0, 7, Short.MAX_VALUE)
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jTextFieldPatente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabelPatente))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabelMarca)
+                                        .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabelModelo)
+                                        .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabelAnioFabricacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldAnioFabricacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabelCliente)
+                                        .addComponent(jComboBoxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
     }
 
     @SuppressWarnings("unchecked")

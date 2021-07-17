@@ -3,11 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/modelo/clases/Categoria.java</file>
-            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/vista/clases/JFrameAutomoviles.java</file>
-            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/pkgfinal/Main.java</file>
-            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/vista/clases/JFrameServicios.java</file>
-            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/vista/clases/JFrameTemplate.java</file>
+            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/modelo/clases/AutomovilDAO.java</file>
+            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/vista/clases/JFrameListarAutomoviles.java</file>
+            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/vista/clases/JFrameAutomovil.java</file>
+            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/vista/clases/JFrameServicio.java</file>
         </group>
     </open-files>
 </project-private>

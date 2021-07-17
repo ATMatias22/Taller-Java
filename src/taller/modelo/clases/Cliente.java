@@ -7,14 +7,13 @@ package taller.modelo.clases;
 
 import taller.interfaces.Seccion;
 
-
 /**
  *
  * @author Matias
  */
-public class Cliente implements Seccion{
-    
-    private int idCliente ;
+public class Cliente implements Seccion {
+
+    private int idCliente;
     private String dni;
     private String nombre;
     private String apellido;
@@ -37,7 +36,6 @@ public class Cliente implements Seccion{
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }
-    
 
     public String getDni() {
         return dni;
@@ -68,11 +66,6 @@ public class Cliente implements Seccion{
     public Object[] getArrayAtributos() {
         return new Object[]{this.getIdCliente(), this.getDni(), this.getNombre(), this.getApellido(), this.getMail(), this.getTelefono()};
     }
-    
-    
-    
-    
-    
-    
-    
+
+
 }

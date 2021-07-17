@@ -12,5 +12,7 @@ package taller.interfaces;
 public interface Seccion {
     
     Object[] getArrayAtributos();
+ 
+    
     
 }

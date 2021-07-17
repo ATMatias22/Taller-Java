@@ -7,13 +7,12 @@ package taller.modelo.clases;
 
 import taller.interfaces.Seccion;
 
-
 /**
  *
  * @author Matias
  */
-public class Automovil implements Seccion{
-    
+public class Automovil implements Seccion {
+
     private int idAutomovil;
     private String patente;
     private String marca;
@@ -21,7 +20,6 @@ public class Automovil implements Seccion{
     private int anioFabricacion;
     private String dniCliente;
 
-    
     public Automovil(int idAutomovil, String patente, String marca, String modelo, int anioFabricacion, String dniCliente) {
         this.idAutomovil = idAutomovil;
         this.patente = patente;
@@ -30,6 +28,7 @@ public class Automovil implements Seccion{
         this.anioFabricacion = anioFabricacion;
         this.dniCliente = dniCliente;
     }
+
     public int getIdAutomovil() {
         return idAutomovil;
     }
@@ -63,7 +62,9 @@ public class Automovil implements Seccion{
     public Object[] getArrayAtributos() {
         return new Object[]{this.getIdAutomovil(), this.getPatente(), this.getMarca(), this.getModelo(), this.getAnioFabricacion(), this.getDniCliente()};
     }
+
     
-    
-    
+
+  
+
 }

@@ -17,6 +17,7 @@ import java.util.Collection;
  * @author Matias
  */
 public class ClienteDAO {
+
     public Collection<Cliente> obtenerClientes() {
         try (Statement stmt = ConexionBD.getConexion().createStatement()) {
             Collection<Cliente> clientes = new ArrayList<>();
@@ -31,8 +32,8 @@ public class ClienteDAO {
             throw new RuntimeException("No se pudieron obtener los clientes", ex);
         }
     }
-    
-     public Collection<String> obtenerDNIClientes() {
+
+    public Collection<String> obtenerDNIClientes() {
         try (Statement stmt = ConexionBD.getConexion().createStatement()) {
             Collection<String> dniClientes = new ArrayList<>();
             String query = "SELECT dni FROM Cliente";
@@ -47,11 +48,10 @@ public class ClienteDAO {
         }
     }
 
-
     public Collection<Cliente> filtrarClientes(String filtro, String busqueda) {
         try (Statement stmt = ConexionBD.getConexion().createStatement()) {
             Collection<Cliente> clientes = new ArrayList<>();
-            String query = "SELECT * FROM Cliente where "+filtro+ " LIKE '"+ busqueda+ "%'";
+            String query = "SELECT * FROM Cliente where " + filtro + " LIKE '" + busqueda + "%'";
             try (ResultSet rs = stmt.executeQuery(query)) {
                 while (rs.next()) {
                     clientes.add(generarCliente(rs));
@@ -94,7 +94,7 @@ public class ClienteDAO {
             cargarDatosDeClienteEnSentencia(cl, ps);
             ps.executeUpdate();
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo agregar clientes\n" + cl +" "+ ex.getMessage());
+            throw new RuntimeException("No se pudo agregar clientes\n" + cl + " " + ex.getMessage());
         }
     }
 
@@ -107,25 +107,32 @@ public class ClienteDAO {
     }
 
     public void eliminarCliente(int id) throws SQLException {
-        String query = "DELETE FROM Cliente WHERE idCliente = ?";
-        try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query)) {
-            ps.setInt(1, id);
-            ps.execute();
+        String query = "PRAGMA Foreign_keys = ON;DELETE FROM Cliente WHERE idCliente = " + id;
+
+        try (Statement s = ConexionBD.getConexion().createStatement()) {
+            s.executeUpdate(query);
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo borrar cliente con id " + id, ex);
+            throw new RuntimeException("No se pudo borrar contacto con id " + id, ex);
         }
     }
 
     public void editarCliente(Cliente cl) throws SQLException {
-        String campos = "dni = ?, nombre = ?, apellido = ?, mail = ?";
-        campos += ", telefono = ?";
-        String query = "UPDATE Cliente SET " + campos + " WHERE idCliente = " + cl.getIdCliente();
-        try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query)) {
-            cargarDatosDeClienteEnSentencia(cl, ps);
-            ps.executeUpdate();
+//        String campos = "dni = ?, nombre = ?, apellido = ?, mail = ?";
+//        campos += ", telefono = ?";
+//        String query = "UPDATE Cliente SET " + campos + " WHERE idCliente = " + cl.getIdCliente();
+//        try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query)) {
+//            cargarDatosDeClienteEnSentencia(cl, ps);
+//            ps.executeUpdate();
+//        } catch (Exception ex) {
+//            throw new RuntimeException("No se pudo actualizar clientes\n" + cl, ex);
+//        }
+        String campos = "dni='" + cl.getDni() + "', nombre='" + cl.getNombre() + "', apellido='" + cl.getApellido() + "', mail='" + cl.getMail() + "', telefono=" + cl.getTelefono();
+        String query = "PRAGMA Foreign_keys = ON;UPDATE Cliente SET " + campos + " WHERE idCliente = " + cl.getIdCliente();
+        try (Statement s = ConexionBD.getConexion().createStatement()) {
+            s.executeUpdate(query);
         } catch (Exception ex) {
             throw new RuntimeException("No se pudo actualizar clientes\n" + cl, ex);
         }
     }
-    
+
 }

@@ -97,9 +97,9 @@ public class AutomovilDAO {
             ConexionBD.getConexion().commit();
         } catch (Exception ex) {
             ConexionBD.getConexion().rollback();
-            throw new RuntimeException("No se pudieron agregar los datos \n" + au +"\n"+ cl + ex);
-        }finally{
-              ConexionBD.getConexion().setAutoCommit(true);
+            throw new RuntimeException("No se pudieron agregar los datos \n" + au + "\n" + cl + ex);
+        } finally {
+            ConexionBD.getConexion().setAutoCommit(true);
         }
     }
 
@@ -110,7 +110,7 @@ public class AutomovilDAO {
         ps.setString(4, cl.getMail());
         ps.setInt(5, cl.getTelefono());
     }
-    
+
     private void cargarDatosDeAutomovilEnSentencia(Automovil au, PreparedStatement ps) throws SQLException {
         ps.setString(1, au.getPatente());
         ps.setString(2, au.getMarca());
@@ -120,25 +120,50 @@ public class AutomovilDAO {
     }
 
     public void eliminarAutomovil(int id) throws SQLException {
-        String query = "DELETE FROM Automovil WHERE idAutomovil = ?";
-        try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query)) {
-            ps.setInt(1, id);
-            ps.execute();
+        String query = "PRAGMA Foreign_keys = ON;DELETE FROM Automovil WHERE idAutomovil = " + id;
+        try (Statement s = ConexionBD.getConexion().createStatement()) {
+            s.executeUpdate(query);
         } catch (Exception ex) {
             throw new RuntimeException("No se pudo borrar el automovil con id " + id, ex);
+
         }
     }
 
     public void editarAutomovil(Automovil au) throws SQLException {
-        String campos = "patente = ?, marca = ?, modelo = ?, anioFabricacion = ?";
-        campos += ", dniCliente = ?";
-        String query = "UPDATE Automovil SET " + campos + " WHERE idAutomovil = " + au.getIdAutomovil();
-        try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query)) {
-            cargarDatosDeAutomovilEnSentencia(au, ps);
-            ps.executeUpdate();
+//        String campos = "patente = ?, marca = ?, modelo = ?, anioFabricacion = ?";
+//        campos += ", dniCliente = ?";
+//        String query = "UPDATE Automovil SET " + campos + " WHERE idAutomovil = " + au.getIdAutomovil();
+//        try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query)) {
+//            cargarDatosDeAutomovilEnSentencia(au, ps);
+//            ps.executeUpdate();
+//        } catch (Exception ex) {
+//            throw new RuntimeException("No se pudo actualizar el automovil\n" + au, ex);
+//        }
+
+        String campos = "patente='" + au.getPatente() + "', marca='" + au.getMarca() + "', modelo='" + au.getModelo() + "', anioFabricacion=" + au.getAnioFabricacion();
+        String query = "PRAGMA Foreign_keys = ON;UPDATE Automovil SET " + campos + " WHERE idAutomovil = " + au.getIdAutomovil();
+        try (Statement s = ConexionBD.getConexion().createStatement()) {
+            s.executeUpdate(query);
         } catch (Exception ex) {
             throw new RuntimeException("No se pudo actualizar el automovil\n" + au, ex);
+
         }
     }
+
+    public Collection<Automovil> listarAutomovilesConAntiguedadYUnSoloServicio() {
+        try (Statement stmt = ConexionBD.getConexion().createStatement()) {
+            Collection<Automovil> automoviles = new ArrayList<>();
+            String query = "SELECT * FROM Automovil GROUP BY patente";
+            try (ResultSet rs = stmt.executeQuery(query)) {
+                while (rs.next()) {
+                    automoviles.add(generarAutomovil(rs));
+                }
+                return automoviles;
+            }
+        } catch (Exception ex) {
+            throw new RuntimeException("No se pudieron obtener los automoviles", ex);
+        }
+    }
+
     //----------------------------------------------------------------------------------
 }

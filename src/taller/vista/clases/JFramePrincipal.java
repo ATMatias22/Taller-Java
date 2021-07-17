@@ -8,45 +8,48 @@ package taller.vista.clases;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
-import taller.modelo.clases.Categoria;
+import taller.modelo.clases.TipoSeccion;
 
 /**
  *
  * @author Matias
  */
-
 public class JFramePrincipal extends javax.swing.JFrame {
 
     private String seccionSeleccionada;
-    
-    
+
     public JFramePrincipal() {
         initComponents();
         setVisible(true);
         setLocationRelativeTo(null);
     }
-    
-    public String obtenerSeccionSeleccionada(){
+
+    public String obtenerSeccionSeleccionada() {
         return seccionSeleccionada;
     }
-    
-    public void seleccionDeVentana(ActionListener al){
-        Categoria[] categorias = Categoria.values();
+
+    public TipoSeccion devolverSeccionSeleccionada() {
+        return TipoSeccion.valueOf(seccionSeleccionada);
+    }
+
+    public void seleccionDeVentana(ActionListener al) {
+        TipoSeccion[] categorias = TipoSeccion.values();
         for (int i = 0; i < jPanelAcciones.getComponents().length; i++) {
-            JButton j =  (JButton) jPanelAcciones.getComponent(i);
+            JButton j = (JButton) jPanelAcciones.getComponent(i);
             j.setName(categorias[i].toString());
             j.addActionListener(al);
             j.addActionListener(new InicializarCategoria());
         }
     }
-    
-    private class InicializarCategoria implements ActionListener{
+
+    private class InicializarCategoria implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            seccionSeleccionada = ((JButton)e.getSource()).getName();
+            seccionSeleccionada = ((JButton) e.getSource()).getName();
         }
     }
- 
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -152,7 +155,6 @@ public class JFramePrincipal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

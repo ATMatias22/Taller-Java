@@ -8,21 +8,17 @@ package taller.vista.clases;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.util.Collection;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import taller.interfaces.Seccion;
-import taller.modelo.clases.Automovil;
-import taller.modelo.clases.Categoria;
-import taller.modelo.clases.Cliente;
-import taller.modelo.clases.Servicio;
+import taller.modelo.clases.TipoSeccion;
 
 /**
  *
@@ -30,11 +26,10 @@ import taller.modelo.clases.Servicio;
  */
 public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
 
-    private T seccion;
-    private Categoria c;
+    private TipoSeccion c;
     private final static String PATH_RECURSOS = "/taller/vista/recursos/";
 
-    public JFrameSecciones(String titulo, Categoria c, JFrame parent, String nombreDeImagen) {
+    public JFrameSecciones(String titulo, TipoSeccion c, JFrame parent, String nombreDeImagen) {
         initComponents();
         this.setVisible(true);
         this.setLocationRelativeTo(parent);
@@ -60,6 +55,7 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
         jButtonAgregar = new javax.swing.JButton();
         jButtonEditar = new javax.swing.JButton();
         jButtonEliminar = new javax.swing.JButton();
+        jButtonListarAntiguedad = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -153,6 +149,9 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
         jButtonEliminar.setText("Eliminar");
         jButtonEliminar.setBorderPainted(false);
 
+        jButtonListarAntiguedad.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jButtonListarAntiguedad.setText("Automoviles con mas de 3 años de antiguedad y un solo servicio realizado");
+
         javax.swing.GroupLayout jPanelAccionesLayout = new javax.swing.GroupLayout(jPanelAcciones);
         jPanelAcciones.setLayout(jPanelAccionesLayout);
         jPanelAccionesLayout.setHorizontalGroup(
@@ -160,11 +159,15 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
             .addGroup(jPanelAccionesLayout.createSequentialGroup()
                 .addGap(59, 59, 59)
                 .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addComponent(jButtonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(50, 50, 50)
                 .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60))
+            .addGroup(jPanelAccionesLayout.createSequentialGroup()
+                .addGap(37, 37, 37)
+                .addComponent(jButtonListarAntiguedad, javax.swing.GroupLayout.PREFERRED_SIZE, 717, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelAccionesLayout.setVerticalGroup(
             jPanelAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,7 +177,9 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
                     .addComponent(jButtonEditar)
                     .addComponent(jButtonAgregar)
                     .addComponent(jButtonEliminar))
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButtonListarAntiguedad, javax.swing.GroupLayout.PREFERRED_SIZE, 30, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
 
         javax.swing.GroupLayout jPanelPrincipalLayout = new javax.swing.GroupLayout(jPanelPrincipal);
@@ -223,7 +228,7 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void iniciar(Categoria c, String nombreDeImagen) {
+    private void iniciar(TipoSeccion c, String nombreDeImagen) {
         insertarColumnasEnLaTabla(c.getNombreDeCategoriasParaLaTabla());
         insertarFiltrosEnElJComboBox(c.getNombreDeCategoriasParaElFiltro());
         puedeEditarColumnas(false, c.getNombreDeCategoriasParaLaTabla());
@@ -231,19 +236,13 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
         getTabla().setRowSelectionAllowed(false);
         habilitarODeshabiliarBotones(false);
         jLabelLogo.setIcon(getImagen(nombreDeImagen));
-        jTableDatos.addMouseListener(new LlenarFormularioConLaSeccionSeleccionado());
+        habilitarBotonDeListar(false);
+
     }
 
     private void colocarTitulos(String titulo) {
         this.setTitle(titulo);
         this.jLabelTitulo.setText(titulo);
-    }
-
-    public T getSeccion() {
-        if (seccion == null) {
-            throw new RuntimeException("Debe seleccionar un " + seccion.getClass().getName());
-        }
-        return seccion;
     }
 
     public String buscarEquivalenteDelFiltroEnBD(String filtroElegido) {
@@ -289,7 +288,23 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
                 return canEdit[columnIndex];
             }
         });
+    }
 
+    public void actualizarListaTabla(Collection<T> datosDeLaSeccion) {
+        vaciar();
+        mostrarEnTabla(datosDeLaSeccion);
+    }
+
+    public void mostrarEnTabla(Collection<T> datosDeLaSeccion) {
+        for (T emp : datosDeLaSeccion) {
+            agregarFila(emp);
+        }
+    }
+
+    private void agregarFila(T e) {
+        Object[] datos = e.getArrayAtributos();
+        DefaultTableModel dtm = (DefaultTableModel) getTabla().getModel();
+        dtm.addRow(datos);
     }
 
     private boolean[] puedeEditarColumnas(boolean b, String[] columnas) {
@@ -316,22 +331,13 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
     public JComboBox getComboBox() {
         return this.jComboBoxFiltrar;
     }
-
-    public void actualizarListaTabla(Collection<T> valoresDeLaSeccion) {
-        vaciar();
-        mostrarEnTabla(valoresDeLaSeccion);
+    
+    public JButton getButtonListar(){
+        return this.jButtonListarAntiguedad;
     }
 
-    public void mostrarEnTabla(Collection<T> valoresDeLaSeccion) {
-        for (T emp : valoresDeLaSeccion) {
-            agregarFila(emp);
-        }
-    }
-
-    private void agregarFila(T e) {
-        Object[] datos = e.getArrayAtributos();
-        DefaultTableModel dtm = (DefaultTableModel) getTabla().getModel();
-        dtm.addRow(datos);
+    public void cerrar() {
+        this.dispose();
     }
 
     public void habilitarODeshabiliarBotones(boolean b) {
@@ -344,6 +350,10 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
             jButtonEditar.setBackground(new Color(255, 204, 0));
             jButtonEliminar.setBackground(new Color(255, 0, 0));
         }
+    }
+
+    public void habilitarBotonDeListar(boolean flag) {
+        jButtonListarAntiguedad.setVisible(flag);
     }
 
     public String obtenerFiltroSeleccionado() {
@@ -397,36 +407,12 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
         this.jComboBoxFiltrar.addActionListener(al);
     }
 
-    private class LlenarFormularioConLaSeccionSeleccionado extends MouseAdapter {
-
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            if (e.getClickCount() == 2) {
-                getTabla().setRowSelectionAllowed(true);
-                int fila = getTabla().rowAtPoint(e.getPoint());
-                if (c.equals(Categoria.AUTOMOVIL)) {
-                    seccion = (T) new Automovil((int) getTabla().getValueAt(fila, 0), getTabla().getValueAt(fila, 1).toString(), getTabla().getValueAt(fila, 2).toString(), getTabla().getValueAt(fila, 3).toString(), (int) getTabla().getValueAt(fila, 4), getTabla().getValueAt(fila, 5).toString());
-                } else if (c.equals(Categoria.CLIENTE)) {
-                    seccion = (T) new Cliente((int) getTabla().getValueAt(fila, 0), getTabla().getValueAt(fila, 1).toString(), getTabla().getValueAt(fila, 2).toString(), getTabla().getValueAt(fila, 3).toString(), getTabla().getValueAt(fila, 4).toString(), (int) getTabla().getValueAt(fila, 5));
-                } else if (c.equals(Categoria.SERVICIO)) {
-                    seccion = (T) new Servicio((int) getTabla().getValueAt(fila, 0), getTabla().getValueAt(fila, 1).toString(), (double) getTabla().getValueAt(fila, 2), getTabla().getValueAt(fila, 3).toString(), (int) getTabla().getValueAt(fila, 4));
-                }
-                habilitarODeshabiliarBotones(true);
-
-            } else if (e.getClickCount() == 1) {
-                seccion = null;
-                getTabla().setRowSelectionAllowed(false);
-                habilitarODeshabiliarBotones(false);
-            }
-
-        }
-    }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAgregar;
     private javax.swing.JButton jButtonEditar;
     private javax.swing.JButton jButtonEliminar;
+    private javax.swing.JButton jButtonListarAntiguedad;
     private javax.swing.JComboBox<String> jComboBoxFiltrar;
     private javax.swing.JLabel jLabelFiltrar;
     private javax.swing.JLabel jLabelLogo;
