@@ -212,7 +212,7 @@
                               <Component id="jLabelCliente" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jComboBoxCliente" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="4" max="32767" attributes="0"/>
                           <Component id="jCheckBoxHabilitarCliente" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>

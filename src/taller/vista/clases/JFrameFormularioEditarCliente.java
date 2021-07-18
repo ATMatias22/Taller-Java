@@ -7,17 +7,15 @@ package taller.vista.clases;
 
 import java.awt.Color;
 import java.awt.Component;
-import taller.modelo.clases.TipoSeccion;
 import taller.modelo.clases.Cliente;
 
 /**
  *
  * @author Matias
  */
-public class JFrameFormularioEditarCliente extends JFrameFormularioTemplate {
+public class JFrameFormularioEditarCliente extends JFrameFormularioCliente {
 
     private Cliente cl;
-    private final static String NOMBRE_LOGO = TipoSeccion.CLIENTE.getNombreLogoMini();
     private final static String TITULO = "Editar Cliente";
     private final static String TEXTO_BOTON = "Editar Cliente";
     private final static Color COLOR_FONDO = new Color(255, 204, 0);
@@ -25,119 +23,31 @@ public class JFrameFormularioEditarCliente extends JFrameFormularioTemplate {
     private final static int HEIGHT_PANEL_FORMULARIO = 204;
 
     public JFrameFormularioEditarCliente(Cliente cl, Component parent) {
-        super(NOMBRE_LOGO, TITULO, TEXTO_BOTON, parent, COLOR_FONDO, COLOR_TEXTO, HEIGHT_PANEL_FORMULARIO);
+        super(parent, TITULO, TEXTO_BOTON, COLOR_FONDO, COLOR_TEXTO, HEIGHT_PANEL_FORMULARIO);
         this.cl = cl;
         iniciar();
     }
 
     private void iniciar() {
-        jLabelDNI = new javax.swing.JLabel();
-        jTextFieldDNI = new javax.swing.JTextField();
-        jLabelNombre = new javax.swing.JLabel();
-        jTextFieldNombre = new javax.swing.JTextField();
-        jLabelApellido = new javax.swing.JLabel();
-        jTextFieldApellido = new javax.swing.JTextField();
-        jLabelMail = new javax.swing.JLabel();
-        jTextFieldMail = new javax.swing.JTextField();
-        jLabelTelefono = new javax.swing.JLabel();
-        jTextFieldTelefono = new javax.swing.JTextField();
-        estilosFormulario();
-        colocarClienteEnFormulario() ;
+        colocarClienteEnFormulario();
     }
 
     public void colocarClienteEnFormulario() {
-        jTextFieldDNI.setText(cl.getDni());
-        jTextFieldNombre.setText(cl.getNombre());
-        jTextFieldApellido.setText(cl.getApellido());
-        jTextFieldMail.setText(cl.getMail());
-        jTextFieldTelefono.setText(cl.getTelefono() + "");
+        getTextFieldDNI().setText(cl.getDni());
+        getTextFieldNombre().setText(cl.getNombre());
+        getTextFieldApellido().setText(cl.getApellido());
+        getTextFieldMail().setText(cl.getMail());
+        getTextFieldTelefono().setText(cl.getTelefono() + "");
+    }
+//
+    @Override
+    public Cliente getCliente() {
+        Cliente cNuevo = super.getCliente();
+        cNuevo.setIdCliente(cl.getIdCliente());
+        return cNuevo;
     }
 
-    public Cliente getClienteEditado() {
-        int id = cl.getIdCliente();
-        String dni = jTextFieldDNI.getText();
-        String nombre = jTextFieldNombre.getText();
-        String apellido = jTextFieldApellido.getText();
-        String mail = jTextFieldMail.getText();
-        int telefono = Integer.parseInt(jTextFieldTelefono.getText());
-        return new Cliente(id, dni, nombre, apellido, mail, telefono);
-    }
-
-    private void estilosFormulario() {
-        jLabelDNI.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabelDNI.setText("DNI");
-
-        jTextFieldDNI.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
-        jLabelNombre.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabelNombre.setText("Nombre");
-
-        jTextFieldNombre.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
-        jLabelApellido.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabelApellido.setText("Apellido");
-
-        jTextFieldApellido.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
-        jLabelMail.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabelMail.setText("Mail");
-
-        jTextFieldMail.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
-        jLabelTelefono.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabelTelefono.setText("Telefono");
-
-        jTextFieldTelefono.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
-        javax.swing.GroupLayout jPanelFormularioLayout = new javax.swing.GroupLayout(super.getPanelFormulario());
-        super.getPanelFormulario().setLayout(jPanelFormularioLayout);
-        jPanelFormularioLayout.setHorizontalGroup(
-                jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelFormularioLayout.createSequentialGroup()
-                                .addGap(42, 42, 42)
-                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabelTelefono)
-                                                        .addComponent(jLabelMail))
-                                                .addComponent(jLabelApellido))
-                                        .addComponent(jLabelDNI)
-                                        .addComponent(jLabelNombre))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldMail, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(42, 42, 42))
-        );
-        jPanelFormularioLayout.setVerticalGroup(
-                jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanelFormularioLayout.createSequentialGroup()
-                                .addGap(0, 5, Short.MAX_VALUE)
-                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jTextFieldDNI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabelDNI))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabelNombre)
-                                        .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabelApellido)
-                                        .addComponent(jTextFieldApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabelMail)
-                                        .addComponent(jTextFieldMail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabelTelefono)
-                                        .addComponent(jTextFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
-    }
-
+ 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

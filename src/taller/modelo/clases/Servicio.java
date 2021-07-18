@@ -32,6 +32,10 @@ public class Servicio implements Seccion {
         this.cantKms = cantKms;
     }
 
+    public void setIdServicio(int idServicio) {
+        this.idServicio = idServicio;
+    }
+
     public int getIdServicio() {
         return idServicio;
     }

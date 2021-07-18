@@ -334,7 +334,7 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
                                 .addGap(0, 0, 0))
         );
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -646,7 +646,6 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    //758 500
     private class MostrarFormularioCliente implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

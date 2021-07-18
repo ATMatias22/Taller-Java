@@ -33,6 +33,11 @@ public class Automovil implements Seccion {
         return idAutomovil;
     }
 
+    public void setIdAutomovil(int idAutomovil) {
+        this.idAutomovil = idAutomovil;
+    }
+    
+
     public String getPatente() {
         return patente;
     }

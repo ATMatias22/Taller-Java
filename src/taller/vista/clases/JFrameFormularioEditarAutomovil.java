@@ -164,6 +164,7 @@ public class JFrameFormularioEditarAutomovil extends JFrameFormularioTemplate {
 
     }
 
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

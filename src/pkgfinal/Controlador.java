@@ -86,7 +86,7 @@ public class Controlador {
     public void agregarCliente() {
         if (vistaAgregarCliente.confirmacion("Esta seguro que desea agregar a este cliente ")) {
             try {
-                clienteDAO.agregarCliente(this.vistaAgregarCliente.getClienteAAgregar());
+                clienteDAO.agregarCliente(this.vistaAgregarCliente.getCliente());
                 vistaAgregarCliente.mostrarMensaje("Se agrego cliente");
                 vistaCliente.actualizarListaTabla(clienteDAO.obtenerClientes());
             } catch (Exception ex) {
@@ -112,7 +112,7 @@ public class Controlador {
     public void editarCliente() {
         if (vistaEditarCliente.confirmacion("Esta seguro que desea editar al cliente")) {
             try {
-                clienteDAO.editarCliente(vistaEditarCliente.getClienteEditado());
+                clienteDAO.editarCliente(vistaEditarCliente.getCliente());
                 vistaEditarCliente.mostrarMensaje("Se edito el cliente");
                 vistaCliente.actualizarListaTabla(clienteDAO.obtenerClientes());
             } catch (Exception ex) {
@@ -185,7 +185,7 @@ public class Controlador {
     public void agregarServicio() {
         if (vistaAgregarServicio.confirmacion("Esta seguro que desea agregar a este servicio ")) {
             try {
-                servicioDAO.agregarServicio(this.vistaAgregarServicio.getServicioAAgregar());
+                servicioDAO.agregarServicio(this.vistaAgregarServicio.getServicio());
                 vistaAgregarServicio.mostrarMensaje("Se agrego servicio");
                 vistaServicio.actualizarListaTabla(servicioDAO.obtenerServicios());
             } catch (Exception ex) {
@@ -211,7 +211,7 @@ public class Controlador {
     public void editarServicio() {
         if (vistaEditarServicio.confirmacion("Esta seguro que desea editar al servicio")) {
             try {
-                servicioDAO.editarServicio(vistaEditarServicio.getServicioEditado());
+                servicioDAO.editarServicio(vistaEditarServicio.getServicio());
                 vistaEditarServicio.mostrarMensaje("Se edito el servicio");
                 vistaServicio.actualizarListaTabla(servicioDAO.obtenerServicios());
             } catch (Exception ex) {
