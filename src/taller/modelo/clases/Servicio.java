@@ -5,18 +5,15 @@
  */
 package taller.modelo.clases;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import taller.interfaces.Seccion;
+import taller.interfaces.SeccionDeNegocio;
 
 /**
  *
  * @author Matias
  */
-public class Servicio implements Seccion {
+public class Servicio implements SeccionDeNegocio {
 
     private int idServicio;
     private String fechaDeRealizacion;

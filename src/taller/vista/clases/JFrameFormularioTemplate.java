@@ -33,6 +33,10 @@ public class JFrameFormularioTemplate extends javax.swing.JFrame {
     public JPanel getPanelFormulario() {
         return jPanelFormulario;
     }
+    
+    public JPanel getPanelPrincipal(){
+        return getPanelPrincipal();
+    }
 
     private void iniciar(String logo, String titulo, String textButton, Color colorFondoButtonYTitulo, Color colorTextoButtonYTitulo, int heightPanelFormulario) {
         aumentarTamanioJFrameSegunElFormulario(heightPanelFormulario);

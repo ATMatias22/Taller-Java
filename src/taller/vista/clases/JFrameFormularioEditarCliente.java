@@ -32,7 +32,7 @@ public class JFrameFormularioEditarCliente extends JFrameFormularioCliente {
         colocarClienteEnFormulario();
     }
 
-    public void colocarClienteEnFormulario() {
+    private void colocarClienteEnFormulario() {
         getTextFieldDNI().setText(cl.getDni());
         getTextFieldNombre().setText(cl.getNombre());
         getTextFieldApellido().setText(cl.getApellido());

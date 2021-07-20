@@ -9,7 +9,7 @@ package taller.interfaces;
  *
  * @author Matias
  */
-public interface Seccion {
+public interface SeccionDeNegocio {
     
     Object[] getArrayAtributos();
  

@@ -19,7 +19,7 @@ import taller.modelo.clases.Cliente;
  * @author Matias
  */
 public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
-
+    
     private final static int WIDTH_JFRAME = 457;
     private final static int HEIGHT_JFRAME_MIN = 470;
     private final static int HEIGHT_JFRAME_MAX = 794;
@@ -29,12 +29,12 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
     private final static String TEXTO_BOTON = "Agregar Automovil";
     private final static Color COLOR_FONDO = new Color(0, 153, 0);
     private final static Color COLOR_TEXTO = new Color(255, 255, 255);
-
+    
     public JFrameFormularioAgregarAutomovil(Component parent, Collection<String> dniClientes) {
         super(NOMBRE_LOGO, TITULO, TEXTO_BOTON, parent, COLOR_FONDO, COLOR_TEXTO, HEIGHT_PANEL_FORMULARIO);
         iniciar(parent, dniClientes);
     }
-
+    
     private void iniciar(Component parent, Collection<String> dniClientes) {
         jPanelFormularioAgregarAutomovil = new javax.swing.JPanel();
         jLabelPatente = new javax.swing.JLabel();
@@ -67,16 +67,17 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         estilosFormulario();
         colocarDNIClientes(dniClientes);
         this.jCheckBoxHabilitarCliente.addActionListener(new MostrarFormularioCliente());
-
+        
     }
-
+    
     private void colocarDNIClientes(Collection<String> dniClientes) {
         String[] dni = new String[dniClientes.size()];
         dniClientes.toArray(dni);
         jComboBoxCliente.setModel(new javax.swing.DefaultComboBoxModel<>(dni));
     }
-
+    
     public Automovil getAutomovilAAgregar() {
+        validarCamposAutomovil();
         String patente = jTextFieldPatente.getText();
         String marca = jTextFieldMarca.getText();
         String modelo = jTextFieldModelo.getText();
@@ -84,17 +85,15 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         String dniCliente = (String) this.jComboBoxCliente.getSelectedItem();
         return new Automovil(0, patente, marca, modelo, anioFabricacion, dniCliente);
     }
-
+    
     public Automovil getAutomovilAAgregar(String dni) {
-        String patente = jTextFieldPatente.getText();
-        String marca = jTextFieldMarca.getText();
-        String modelo = jTextFieldModelo.getText();
-        int anioFabricacion = Integer.parseInt(jTextFieldAnioFabricacion.getText());
-        String dniCliente = dni;
-        return new Automovil(0, patente, marca, modelo, anioFabricacion, dniCliente);
+        Automovil automovil = getAutomovilAAgregar();
+        automovil.setDniCliente(dni);
+        return automovil;
     }
-
+    
     public Cliente getClienteAAgregar() {
+        validarCamposCliente();
         String dni = jTextFieldDNICliente.getText();
         String nombre = jTextFieldNombreCliente.getText();
         String apellido = jTextFieldApellidoCliente.getText();
@@ -102,53 +101,96 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         int telefono = Integer.parseInt(jTextFieldTelefonoCliente.getText());
         return new Cliente(0, dni, nombre, apellido, mail, telefono);
     }
-
+    
+    private void validarCamposCliente() {
+        if (VALIDACIONES.estaVacio(jTextFieldDNICliente.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldDNICliente.getName() + "\" está vacío");
+        }
+        if (VALIDACIONES.estaVacio(jTextFieldNombreCliente.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldNombreCliente.getName() + "\" está vacío");
+        }
+        if (VALIDACIONES.estaVacio(jTextFieldApellidoCliente.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldApellidoCliente.getName() + "\" está vacío");
+        }
+        
+        if (!VALIDACIONES.esMailValido(jTextFieldMailCliente.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldMailCliente.getName() + "\" no es un mail valido");
+        }
+        if (!VALIDACIONES.esNumeroEntero(jTextFieldTelefonoCliente.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldTelefonoCliente.getName() + "\" no es un numero");
+        }
+    }
+    
+    private void validarCamposAutomovil() {
+        if (VALIDACIONES.estaVacio(jTextFieldPatente.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldPatente.getName() + "\" está vacío");
+        }
+        if (VALIDACIONES.estaVacio(jTextFieldMarca.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldMarca.getName() + "\" está vacío");
+        }
+        if (VALIDACIONES.estaVacio(jTextFieldModelo.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldModelo.getName() + "\" está vacío");
+        }
+        
+        if (!VALIDACIONES.esNumeroEntero(jTextFieldAnioFabricacion.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldAnioFabricacion.getName() + "\" no es un numero valido");
+        }
+        if (VALIDACIONES.estaVacio((String) jComboBoxCliente.getSelectedItem())) {
+            throw new IllegalStateException("El campo \"" + jComboBoxCliente.getName() + "\" esta vacio");
+        }
+    }
+    
     public boolean conCliente() {
         return jCheckBoxHabilitarCliente.isSelected();
     }
-
+    
     private void tamanioVentana(int height, boolean b) {
         jPanelFormularioAgregarCliente.setVisible(!b);
         this.setSize(WIDTH_JFRAME, height);
         jLabelCliente.setVisible(b);
         jComboBoxCliente.setVisible(b);
     }
-
+    
     private void estilosFormulario() {
         jPanelFormularioAgregarAutomovil.setBackground(new java.awt.Color(255, 204, 204));
         jPanelFormularioAgregarAutomovil.setPreferredSize(new java.awt.Dimension(800, 227));
         jPanelFormularioAgregarAutomovil.setRequestFocusEnabled(false);
-
+        
         jLabelPatente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelPatente.setText("Patente");
-
+        
         jTextFieldPatente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldPatente.setName("patente");
+        
         jLabelMarca.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelMarca.setText("Marca");
-
+        
         jTextFieldMarca.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldMarca.setName("marca");
+        
         jLabelModelo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelModelo.setText("Modelo");
         jLabelModelo.setToolTipText("");
-
+        
         jTextFieldModelo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldModelo.setName("modelo");
+        
         jLabelAnioFabricacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelAnioFabricacion.setText("<html><p>Año de</p> fabricacion</html>");
-
+        
         jLabelCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelCliente.setText("DNI Cliente");
-
+        
         jComboBoxCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jComboBoxCliente.setName("dni");
+        
         jTextFieldAnioFabricacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldAnioFabricacion.setName("año de fabricacion");
+        
         jCheckBoxHabilitarCliente.setBackground(new java.awt.Color(255, 204, 204));
         jCheckBoxHabilitarCliente.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jCheckBoxHabilitarCliente.setText("En caso de no tener el dni del cliente");
-
+        
         javax.swing.GroupLayout jPanelFormularioAgregarAutomovilLayout = new javax.swing.GroupLayout(jPanelFormularioAgregarAutomovil);
         jPanelFormularioAgregarAutomovil.setLayout(jPanelFormularioAgregarAutomovilLayout);
         jPanelFormularioAgregarAutomovilLayout.setHorizontalGroup(
@@ -206,43 +248,44 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 4, Short.MAX_VALUE)
                                 .addComponent(jCheckBoxHabilitarCliente))
         );
-
+        
         jPanelFormularioAgregarCliente.setBackground(new java.awt.Color(255, 204, 204));
-
+        
         jLabelTituloCliente.setBackground(new java.awt.Color(0, 153, 0));
         jLabelTituloCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelTituloCliente.setForeground(new java.awt.Color(255, 255, 255));
         jLabelTituloCliente.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelTituloCliente.setText("Agregar Cliente");
         jLabelTituloCliente.setOpaque(true);
-
+        
         jPanelFormularioCliente.setBackground(new java.awt.Color(255, 204, 204));
-
+        
         jLabelDNICliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelDNICliente.setText("DNI");
-
+        
         jLabelNombreCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelNombreCliente.setText("Nombre");
-
+        
         jLabelApellidoCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelApellidoCliente.setText("Apellido");
-
+        
         jLabelMailCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelMailCliente.setText("Mail");
-
+        
         jLabelTelefonoCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelTelefonoCliente.setText("Telefono");
-
+        
         jTextFieldTelefonoCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldTelefonoCliente.setName("telefono");
+        
         jTextFieldMailCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldMailCliente.setName("mail");
         jTextFieldApellidoCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldApellidoCliente.setName("apellido");
         jTextFieldNombreCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldNombreCliente.setName("nombre");
         jTextFieldDNICliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldDNICliente.setName("dni");
         javax.swing.GroupLayout jPanelFormularioClienteLayout = new javax.swing.GroupLayout(jPanelFormularioCliente);
         jPanelFormularioCliente.setLayout(jPanelFormularioClienteLayout);
         jPanelFormularioClienteLayout.setHorizontalGroup(
@@ -295,7 +338,7 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
                                         .addComponent(jLabelTelefonoCliente))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
+        
         javax.swing.GroupLayout jPanelFormularioAgregarClienteLayout = new javax.swing.GroupLayout(jPanelFormularioAgregarCliente);
         jPanelFormularioAgregarCliente.setLayout(jPanelFormularioAgregarClienteLayout);
         jPanelFormularioAgregarClienteLayout.setHorizontalGroup(
@@ -312,7 +355,7 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
                                 .addComponent(jPanelFormularioCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(33, 33, 33))
         );
-
+        
         javax.swing.GroupLayout jPanelFormularioLayout = new javax.swing.GroupLayout(super.getPanelFormulario());
         super.getPanelFormulario().setLayout(jPanelFormularioLayout);
         jPanelFormularioLayout.setHorizontalGroup(
@@ -647,6 +690,7 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
     }// </editor-fold>//GEN-END:initComponents
 
     private class MostrarFormularioCliente implements ActionListener {
+
         @Override
         public void actionPerformed(ActionEvent e) {
             boolean conCliente = conCliente();

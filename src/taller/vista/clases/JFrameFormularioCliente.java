@@ -18,7 +18,7 @@ import taller.modelo.clases.Cliente;
 public class JFrameFormularioCliente extends JFrameFormularioTemplate {
 
     private final static String NOMBRE_LOGO = TipoSeccion.CLIENTE.getNombreLogoMini();
- 
+
 //    private javax.swing.JLabel jLabelApellido;
 //    private javax.swing.JLabel jLabelDNI;
 //    private javax.swing.JLabel jLabelMail;
@@ -29,8 +29,7 @@ public class JFrameFormularioCliente extends JFrameFormularioTemplate {
 //    private javax.swing.JTextField jTextFieldMail;
 //    private javax.swing.JTextField jTextFieldNombre;
 //    private javax.swing.JTextField jTextFieldTelefono;
-
-    public JFrameFormularioCliente(Component parent,String titulo, String textoBoton, Color colorFondo, Color colorTexto, int altoPanel) {
+    public JFrameFormularioCliente(Component parent, String titulo, String textoBoton, Color colorFondo, Color colorTexto, int altoPanel) {
         super(NOMBRE_LOGO, titulo, textoBoton, parent, colorFondo, colorTexto, altoPanel);
         iniciar();
     }
@@ -48,32 +47,55 @@ public class JFrameFormularioCliente extends JFrameFormularioTemplate {
         jTextFieldTelefono = new javax.swing.JTextField();
         estilosFormulario();
     }
-    
-    public JTextField getTextFieldDNI(){
+
+    public JTextField getTextFieldDNI() {
         return jTextFieldDNI;
     }
-    
-   public JTextField getTextFieldNombre(){
+
+    public JTextField getTextFieldNombre() {
         return jTextFieldNombre;
     }
-   public JTextField getTextFieldApellido(){
-       return jTextFieldApellido;
-   }
-   
-   public JTextField getTextFieldMail(){
-       return jTextFieldMail;
-   }
-    public JTextField getTextFieldTelefono(){
-       return jTextFieldTelefono;
-   }
-   
+
+    public JTextField getTextFieldApellido() {
+        return jTextFieldApellido;
+    }
+
+    public JTextField getTextFieldMail() {
+        return jTextFieldMail;
+    }
+
+    public JTextField getTextFieldTelefono() {
+        return jTextFieldTelefono;
+    }
+
     public Cliente getCliente() {
+        validarCampos();
         String dni = jTextFieldDNI.getText();
         String nombre = jTextFieldNombre.getText();
         String apellido = jTextFieldApellido.getText();
         String mail = jTextFieldMail.getText();
         int telefono = Integer.parseInt(jTextFieldTelefono.getText());
+
         return new Cliente(0, dni, nombre, apellido, mail, telefono);
+    }
+
+    private void validarCampos() {
+        if (VALIDACIONES.estaVacio(jTextFieldDNI.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldDNI.getName() + "\" está vacío");
+        }
+        if (VALIDACIONES.estaVacio(jTextFieldNombre.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldNombre.getName() + "\" está vacío");
+        }
+        if (VALIDACIONES.estaVacio(jTextFieldApellido.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldApellido.getName() + "\" está vacío");
+        }
+        
+        if (!VALIDACIONES.esMailValido(jTextFieldMail.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldMail.getName() + "\" no es un mail valido");
+        }
+        if (!VALIDACIONES.esNumeroEntero(jTextFieldTelefono.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldTelefono.getName() + "\" no es un numero");
+        }
     }
 
     private void estilosFormulario() {
@@ -81,26 +103,31 @@ public class JFrameFormularioCliente extends JFrameFormularioTemplate {
         jLabelDNI.setText("DNI");
 
         jTextFieldDNI.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldDNI.setName("DNI");
 
         jLabelNombre.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelNombre.setText("Nombre");
 
         jTextFieldNombre.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldNombre.setName("nombre");
 
         jLabelApellido.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelApellido.setText("Apellido");
 
         jTextFieldApellido.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldApellido.setName("apellido");
 
         jLabelMail.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelMail.setText("Mail");
 
         jTextFieldMail.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldMail.setName("mail");
 
         jLabelTelefono.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelTelefono.setText("Telefono");
 
         jTextFieldTelefono.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldTelefono.setName("telefono");
 
         javax.swing.GroupLayout jPanelFormularioLayout = new javax.swing.GroupLayout(super.getPanelFormulario());
         super.getPanelFormulario().setLayout(jPanelFormularioLayout);
@@ -194,26 +221,31 @@ public class JFrameFormularioCliente extends JFrameFormularioTemplate {
         jLabelDNI.setText("DNI");
 
         jTextFieldDNI.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldDNI.setName("DNI"); // NOI18N
 
         jLabelNombre.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelNombre.setText("Nombre");
 
         jTextFieldNombre.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldNombre.setName("nombre"); // NOI18N
 
         jLabelApellido.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelApellido.setText("Apellido");
 
         jTextFieldApellido.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldApellido.setName("apellido"); // NOI18N
 
         jLabelMail.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelMail.setText("Mail");
 
         jTextFieldMail.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldMail.setName("mail"); // NOI18N
 
         jLabelTelefono.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelTelefono.setText("Telefono");
 
         jTextFieldTelefono.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldTelefono.setName("telefono"); // NOI18N
 
         javax.swing.GroupLayout jPanelFormularioLayout = new javax.swing.GroupLayout(jPanelFormulario);
         jPanelFormulario.setLayout(jPanelFormularioLayout);

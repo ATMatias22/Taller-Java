@@ -192,11 +192,9 @@
                 <Property name="bgColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="0" red="0" type="rgb"/>
                 </Property>
-                <Property name="date" type="java.util.Date" value="null"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="24" style="1"/>
                 </Property>
-                <Property name="formatDate" type="java.lang.String" value="dd-MM-YYYY"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JComboBox" name="jComboBoxPatenteAuto">

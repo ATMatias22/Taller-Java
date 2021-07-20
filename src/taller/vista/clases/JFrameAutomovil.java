@@ -8,21 +8,21 @@ package taller.vista.clases;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
-import taller.interfaces.Seccion;
 import taller.modelo.clases.Automovil;
 import taller.modelo.clases.TipoSeccion;
+import taller.interfaces.SeccionDeNegocio;
 
 /**
  *
  * @author Matias
  */
-public class JFrameAutomovil<T extends Seccion> extends JFrameSecciones<T> {
+public class JFrameAutomovil<T extends SeccionDeNegocio> extends JFrameSecciones<T> {
 
     private Automovil au;
     private final static String TITULO = "Automoviles";
 
     public JFrameAutomovil(JFrame parent) {
-        super(TITULO, TipoSeccion.AUTOMOVIL, parent, TipoSeccion.AUTOMOVIL.getNombreLogo());
+        super(TITULO, TipoSeccion.AUTOMOVIL, parent);
         getTabla().addMouseListener(new LlenarFormularioConLaSeccionSeleccionado());
     }
 
@@ -206,7 +206,7 @@ public class JFrameAutomovil<T extends Seccion> extends JFrameSecciones<T> {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void llenarFormularioConDatos(int fila) {
+    private void llenarFormularioConDatos(int fila) {
       au = new Automovil((int) getTabla().getValueAt(fila, 0), getTabla().getValueAt(fila, 1).toString(), getTabla().getValueAt(fila, 2).toString(), getTabla().getValueAt(fila, 3).toString(), (int) getTabla().getValueAt(fila, 4), getTabla().getValueAt(fila, 5).toString());
     }
 

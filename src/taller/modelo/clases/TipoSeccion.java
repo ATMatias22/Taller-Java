@@ -16,21 +16,21 @@ public enum TipoSeccion  {
             "cliente_mini.png",
             new String[]{"dni", "nombre", "apellido", "mail", "telefono"}, 
             new String[]{"id", "dni", "nombre", "apellido", "mail", "telefono"}, 
-            new String[]{"idCliente", "dni", "nombre", "apellido", "mail", "telefono"}),
+            new String[]{"dni", "nombre", "apellido", "mail", "telefono"}),
     
     AUTOMOVIL("Automovil",
             "automovil.png",
             "automovil_mini.png",
             new String[]{"patente", "marca", "modelo", "año de fabricacion", "dni cliente"},
             new String[]{"id", "patente", "marca", "modelo", "año de fabricacion", "dni cliente"},
-            new String[]{"idAutomovil", "patente", "marca", "modelo", "anioFabricacion", "dniCliente"}),
+            new String[]{"patente", "marca", "modelo", "anioFabricacion", "dniCliente"}),
     
     SERVICIO("Servicio",
             "servicio.png",
             "servicio_mini.png",
-            new String[]{"fecha de realizacion", "costo", "patente del automovil", "cantidad de kilometros"},
+            new String[]{"costo", "patente del automovil", "cantidad de kilometros"},
             new String[]{"id", "fecha de realizacion", "costo", "patente del automovil", "cantidad de kilometros"},
-            new String[]{"idServicio", "fechaDeRealizacion", "costo", "patenteDelAutomovil", "cantKms"});
+            new String[]{"costo", "patenteDelAutomovil", "cantKms"});
 
     private String nombre;
     private String nombreLogo;

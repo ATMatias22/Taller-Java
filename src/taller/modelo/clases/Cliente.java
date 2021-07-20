@@ -5,13 +5,13 @@
  */
 package taller.modelo.clases;
 
-import taller.interfaces.Seccion;
+import taller.interfaces.SeccionDeNegocio;
 
 /**
  *
  * @author Matias
  */
-public class Cliente implements Seccion {
+public class Cliente implements SeccionDeNegocio {
 
     private int idCliente;
     private String dni;

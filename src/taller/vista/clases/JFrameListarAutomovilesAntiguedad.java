@@ -42,7 +42,7 @@ public class JFrameListarAutomovilesAntiguedad extends javax.swing.JFrame {
         });
     }
 
-    public void mostrarEnTabla(Collection<Automovil> automoviles) {
+    private void mostrarEnTabla(Collection<Automovil> automoviles) {
         for (Automovil emp : automoviles) {
             agregarFila(emp);
         }

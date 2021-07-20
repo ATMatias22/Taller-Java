@@ -17,7 +17,7 @@ import taller.modelo.clases.TipoSeccion;
  * @author Matias
  */
 public class JFrameFormularioEditarAutomovil extends JFrameFormularioTemplate {
-
+    
     private Automovil au;
     private final static String NOMBRE_LOGO = TipoSeccion.AUTOMOVIL.getNombreLogoMini();
     private final static String TITULO = "Editar Automovil";
@@ -25,13 +25,13 @@ public class JFrameFormularioEditarAutomovil extends JFrameFormularioTemplate {
     private final static Color COLOR_FONDO = new Color(255, 204, 0);
     private final static Color COLOR_TEXTO = new Color(153, 102, 0);
     private final static int HEIGHT_PANEL_FORMULARIO = 236;
-
+    
     public JFrameFormularioEditarAutomovil(Automovil au, Component parent, Collection<String> dniClientes) {
         super(NOMBRE_LOGO, TITULO, TEXTO_BOTON, parent, COLOR_FONDO, COLOR_TEXTO, HEIGHT_PANEL_FORMULARIO);
         this.au = au;
         iniciar(dniClientes);
     }
-
+    
     private void iniciar(Collection<String> dniClientes) {
         jLabelPatente = new javax.swing.JLabel();
         jTextFieldPatente = new javax.swing.JTextField();
@@ -45,25 +45,26 @@ public class JFrameFormularioEditarAutomovil extends JFrameFormularioTemplate {
         jComboBoxCliente = new javax.swing.JComboBox<>();
         estilosFormulario();
         colocarAutomovilEnFormulario(dniClientes);
-
+        
     }
-
-    public void colocarAutomovilEnFormulario(Collection<String> dniClientes) {
+    
+    private void colocarAutomovilEnFormulario(Collection<String> dniClientes) {
         jTextFieldPatente.setText(au.getPatente());
         jTextFieldMarca.setText(au.getMarca());
         jTextFieldModelo.setText(au.getModelo());
         jTextFieldAnioFabricacion.setText(au.getAnioFabricacion() + "");
         colocarDNIClientes(dniClientes);
     }
-
-    public void colocarDNIClientes(Collection<String> dniClientes) {
+    
+    private void colocarDNIClientes(Collection<String> dniClientes) {
         String[] dni = new String[dniClientes.size()];
         dniClientes.toArray(dni);
         jComboBoxCliente.setModel(new javax.swing.DefaultComboBoxModel<>(dni));
         jComboBoxCliente.setSelectedIndex(colocarPorDefectoElClienteEnComboBox(dniClientes, au.getDniCliente()));
     }
-
+    
     public Automovil getAutomovilEditado() {
+        validarCamposAutomovil();
         int id = au.getIdAutomovil();
         String patente = jTextFieldPatente.getText();
         String marca = jTextFieldMarca.getText();
@@ -72,8 +73,27 @@ public class JFrameFormularioEditarAutomovil extends JFrameFormularioTemplate {
         String cliente = (String) this.jComboBoxCliente.getSelectedItem();
         return new Automovil(id, patente, marca, modelo, anioFabricacion, cliente);
     }
-
-    public int colocarPorDefectoElClienteEnComboBox(Collection<String> dniClientes, String dato) {
+    
+    private void validarCamposAutomovil() {
+        if (VALIDACIONES.estaVacio(jTextFieldPatente.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldPatente.getName() + "\" está vacío");
+        }
+        if (VALIDACIONES.estaVacio(jTextFieldMarca.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldMarca.getName() + "\" está vacío");
+        }
+        if (VALIDACIONES.estaVacio(jTextFieldModelo.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldModelo.getName() + "\" está vacío");
+        }
+        
+        if (!VALIDACIONES.esNumeroEntero(jTextFieldAnioFabricacion.getText())) {
+            throw new IllegalStateException("El campo \"" + jTextFieldAnioFabricacion.getName() + "\" no es un numero valido");
+        }
+        if (VALIDACIONES.estaVacio((String) jComboBoxCliente.getSelectedItem())) {
+            throw new IllegalStateException("El campo \"" + jComboBoxCliente.getName() + "\" esta vacio");
+        }
+    }
+    
+    private int colocarPorDefectoElClienteEnComboBox(Collection<String> dniClientes, String dato) {
         int posicion = 0;
         boolean encontrado = false;
         ArrayList<String> dni = (ArrayList<String>) dniClientes;
@@ -85,35 +105,37 @@ public class JFrameFormularioEditarAutomovil extends JFrameFormularioTemplate {
         }
         return --posicion;
     }
-
+    
     private void estilosFormulario() {
-
+        
         jLabelPatente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelPatente.setText("Patente");
-
+        
         jTextFieldPatente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldPatente.setName("patente");
         jLabelMarca.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelMarca.setText("Marca");
-
+        
         jTextFieldMarca.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldMarca.setName("marca");
+        
         jLabelModelo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelModelo.setText("Modelo");
         jLabelModelo.setToolTipText("");
-
+        
         jTextFieldModelo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldModelo.setName("modelo");
+        
         jLabelAnioFabricacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelAnioFabricacion.setText("<html><p>Año de</p> fabricacion</html>");
-
+        
         jTextFieldAnioFabricacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jTextFieldAnioFabricacion.setName("año de fabricacion");
         jLabelCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelCliente.setText("DNI Cliente");
-
+        
         jComboBoxCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
+        jComboBoxCliente.setName("dni");
         javax.swing.GroupLayout jPanelFormularioLayout = new javax.swing.GroupLayout(super.getPanelFormulario());
         super.getPanelFormulario().setLayout(jPanelFormularioLayout);
         jPanelFormularioLayout.setHorizontalGroup(
@@ -161,10 +183,9 @@ public class JFrameFormularioEditarAutomovil extends JFrameFormularioTemplate {
                                         .addComponent(jLabelCliente)
                                         .addComponent(jComboBoxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
-
+        
     }
-
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

@@ -140,7 +140,7 @@ public class AutomovilDAO {
 //            throw new RuntimeException("No se pudo actualizar el automovil\n" + au, ex);
 //        }
 
-        String campos = "patente='" + au.getPatente() + "', marca='" + au.getMarca() + "', modelo='" + au.getModelo() + "', anioFabricacion=" + au.getAnioFabricacion();
+        String campos = "patente='" + au.getPatente() + "', marca='" + au.getMarca() + "', modelo='" + au.getModelo() + "', anioFabricacion=" + au.getAnioFabricacion() + ", dniCliente = '" + au.getDniCliente() + "'";
         String query = "PRAGMA Foreign_keys = ON;UPDATE Automovil SET " + campos + " WHERE idAutomovil = " + au.getIdAutomovil();
         try (Statement s = ConexionBD.getConexion().createStatement()) {
             s.executeUpdate(query);
@@ -149,8 +149,6 @@ public class AutomovilDAO {
 
         }
     }
-
-  
 
     //----------------------------------------------------------------------------------
 }

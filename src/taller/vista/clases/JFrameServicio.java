@@ -9,21 +9,21 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
-import taller.interfaces.Seccion;
 import taller.modelo.clases.Servicio;
 import taller.modelo.clases.TipoSeccion;
+import taller.interfaces.SeccionDeNegocio;
 
 /**
  *
  * @author Matias
  */
-public class JFrameServicio<T extends Seccion> extends JFrameSecciones<T> {
+public class JFrameServicio<T extends SeccionDeNegocio> extends JFrameSecciones<T> {
 
     private Servicio se;
     private final static String TITULO = "Servicios";
 
     public JFrameServicio(JFrame parent) {
-        super(TITULO, TipoSeccion.SERVICIO, parent, TipoSeccion.SERVICIO.getNombreLogo());
+        super(TITULO, TipoSeccion.SERVICIO, parent);
         habilitarBotonDeListar(true);
         getTabla().addMouseListener(new LlenarFormularioConLaSeccionSeleccionado());
     }
@@ -208,7 +208,7 @@ public class JFrameServicio<T extends Seccion> extends JFrameSecciones<T> {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void llenarFormularioConDatos(int fila) {
+    private void llenarFormularioConDatos(int fila) {
         se = new Servicio((int) getTabla().getValueAt(fila, 0), getTabla().getValueAt(fila, 1).toString(), (double) getTabla().getValueAt(fila, 2), getTabla().getValueAt(fila, 3).toString(), (int) getTabla().getValueAt(fila, 4));
     }
 

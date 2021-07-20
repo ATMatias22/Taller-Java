@@ -3,10 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/vista/clases/JFrameAutomovil.java</file>
-            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/vista/clases/JFrameCliente.java</file>
+            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/modelo/clases/Servicio.java</file>
+            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/vista/clases/JFrameFormularioServicio.java</file>
             <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/vista/clases/JFrameFormularioAgregarServicio.java</file>
-            <file>file:/C:/Users/Matias/OneDrive/Documentos/NetBeansProjects/TercerCuatrimestre/Final/taller-master/src/taller/vista/clases/JFrameSecciones.java</file>
         </group>
     </open-files>
 </project-private>

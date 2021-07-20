@@ -17,25 +17,25 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import taller.interfaces.Seccion;
 import taller.modelo.clases.TipoSeccion;
+import taller.interfaces.SeccionDeNegocio;
 
 /**
  *
  * @author Matias
  */
-public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
+public class JFrameSecciones<T extends SeccionDeNegocio> extends javax.swing.JFrame {
 
     private TipoSeccion c;
     private final static String PATH_RECURSOS = "/taller/vista/recursos/";
 
-    public JFrameSecciones(String titulo, TipoSeccion c, JFrame parent, String nombreDeImagen) {
+    public JFrameSecciones(String titulo, TipoSeccion c, JFrame parent) {
         initComponents();
         this.setVisible(true);
         this.setLocationRelativeTo(parent);
         this.c = c;
         colocarTitulos(titulo);
-        iniciar(c, nombreDeImagen);
+        iniciar(c, c.getNombreLogo());
     }
 
     @SuppressWarnings("unchecked")
@@ -284,7 +284,7 @@ public class JFrameSecciones<T extends Seccion> extends javax.swing.JFrame {
             }
             acumulador++;
         }
-        return c.buscarEquivalenteEnBD(acumulador);
+        return c.buscarEquivalenteEnBD(--acumulador);
     }
 
     private ImageIcon getImagen(String nombreImagen) {

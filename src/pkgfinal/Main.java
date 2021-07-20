@@ -5,9 +5,6 @@
  */
 package pkgfinal;
 
-import taller.modelo.clases.Cliente;
-import taller.modelo.clases.TipoSeccion;
-import taller.vista.clases.JFrameSecciones;
 
 /**
  *

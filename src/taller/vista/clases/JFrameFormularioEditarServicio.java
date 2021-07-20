@@ -7,6 +7,7 @@ package taller.vista.clases;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import taller.modelo.clases.Servicio;
@@ -25,20 +26,22 @@ public class JFrameFormularioEditarServicio extends JFrameFormularioServicio {
     private final static int HEIGHT_PANEL_FORMULARIO = 253;
 
 
-    public JFrameFormularioEditarServicio(Servicio se, Component parent, Collection<String> patentesAutomoviles) {
+    public JFrameFormularioEditarServicio(Servicio se, Component parent, Collection<String> patentesAutomoviles)  {
         super(parent, patentesAutomoviles,TITULO, TEXTO_BOTON, COLOR_FONDO, COLOR_TEXTO, HEIGHT_PANEL_FORMULARIO);
         this.se = se;
         iniciar(patentesAutomoviles);
     }
 
-    private void iniciar(Collection<String> patentesAutomoviles) {
+    private void iniciar(Collection<String> patentesAutomoviles)  {
         colocarServicioEnFormulario(patentesAutomoviles);
     }
-//
-    public void colocarServicioEnFormulario(Collection<String> patentesAutomoviles) {
+
+    private void colocarServicioEnFormulario(Collection<String> patentesAutomoviles)  {
         getTextFieldCosto().setText(se.getCosto() + "");
         getTextFieldKms().setText(se.getCantKms() + "");
         getComboBoxPatentes().setSelectedIndex(colocarPorDefectoLaPatenteEnComboBox(patentesAutomoviles, se.getPatenteDelAutomovil()));
+//        setearFecha(se.getFechaDeRealizacion());
+        setearFecha(se.getFechaDeRealizacion());
     }
     
     @Override
@@ -47,7 +50,6 @@ public class JFrameFormularioEditarServicio extends JFrameFormularioServicio {
         sNuevo.setIdServicio(se.getIdServicio());
         return sNuevo;
     }
-
 
     public int colocarPorDefectoLaPatenteEnComboBox(Collection<String> patentesAutomoviles, String dato) {
         int posicion = 0;
@@ -116,7 +118,6 @@ public class JFrameFormularioEditarServicio extends JFrameFormularioServicio {
         rSDateChooserFechaRealizacion.setBgColor(new java.awt.Color(0, 0, 0));
         rSDateChooserFechaRealizacion.setDate(null);
         rSDateChooserFechaRealizacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        rSDateChooserFechaRealizacion.setFormatDate("dd-MM-YYYY");
 
         jComboBoxPatenteAuto.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 

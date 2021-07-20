@@ -69,9 +69,7 @@ public class JFrameFormularioAgregarServicio extends JFrameFormularioServicio {
 
         rSDateChooserFechaRealizacion.setBackground(new java.awt.Color(0, 0, 0));
         rSDateChooserFechaRealizacion.setBgColor(new java.awt.Color(0, 0, 0));
-        rSDateChooserFechaRealizacion.setDate(null);
         rSDateChooserFechaRealizacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        rSDateChooserFechaRealizacion.setFormatDate("dd-MM-YYYY");
 
         jComboBoxPatenteAuto.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 

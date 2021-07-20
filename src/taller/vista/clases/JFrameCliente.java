@@ -8,21 +8,21 @@ package taller.vista.clases;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JFrame;
-import taller.interfaces.Seccion;
 import taller.modelo.clases.TipoSeccion;
 import taller.modelo.clases.Cliente;
+import taller.interfaces.SeccionDeNegocio;
 
 /**
  *
  * @author Matias
  */
-public class JFrameCliente<T extends Seccion> extends JFrameSecciones<T> {
+public class JFrameCliente<T extends SeccionDeNegocio> extends JFrameSecciones<T> {
 
     private Cliente cl;
     private final static String TITULO = "Clientes";
 
     public JFrameCliente(JFrame parent) {
-        super(TITULO, TipoSeccion.CLIENTE, parent, TipoSeccion.CLIENTE.getNombreLogo());
+        super(TITULO, TipoSeccion.CLIENTE, parent);
         getTabla().addMouseListener(new LlenarFormularioConLaSeccionSeleccionado());
     }
 
@@ -213,7 +213,7 @@ public class JFrameCliente<T extends Seccion> extends JFrameSecciones<T> {
         return cl;
     }
     
-    public void llenarFormularioConDatos(int fila) {
+    private void llenarFormularioConDatos(int fila) {
         cl = new Cliente((int) getTabla().getValueAt(fila, 0), getTabla().getValueAt(fila, 1).toString(), getTabla().getValueAt(fila, 2).toString(), getTabla().getValueAt(fila, 3).toString(), getTabla().getValueAt(fila, 4).toString(), (int) getTabla().getValueAt(fila, 5));
     }
 

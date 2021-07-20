@@ -5,13 +5,13 @@
  */
 package taller.modelo.clases;
 
-import taller.interfaces.Seccion;
+import taller.interfaces.SeccionDeNegocio;
 
 /**
  *
  * @author Matias
  */
-public class Automovil implements Seccion {
+public class Automovil implements SeccionDeNegocio {
 
     private int idAutomovil;
     private String patente;
@@ -58,6 +58,11 @@ public class Automovil implements Seccion {
         return dniCliente;
     }
 
+    public void setDniCliente(String dniCliente) {
+        this.dniCliente = dniCliente;
+    }
+
+    
     @Override
     public String toString() {
         return "Automovil{" + "idAutomovil=" + idAutomovil + ", patente=" + patente + ", marca=" + marca + ", modelo=" + modelo + ", anioFabricacion=" + anioFabricacion + ", dniCliente=" + dniCliente + '}';
