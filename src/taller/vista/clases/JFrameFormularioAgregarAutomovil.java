@@ -13,13 +13,14 @@ import java.util.Collection;
 import taller.modelo.clases.Automovil;
 import taller.modelo.clases.TipoSeccion;
 import taller.modelo.clases.Cliente;
+import taller.modelo.clases.Marca;
 
 /**
  *
  * @author Matias
  */
 public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
-    
+
     private final static int WIDTH_JFRAME = 457;
     private final static int HEIGHT_JFRAME_MIN = 470;
     private final static int HEIGHT_JFRAME_MAX = 794;
@@ -29,25 +30,25 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
     private final static String TEXTO_BOTON = "Agregar Automovil";
     private final static Color COLOR_FONDO = new Color(0, 153, 0);
     private final static Color COLOR_TEXTO = new Color(255, 255, 255);
-    
+
     public JFrameFormularioAgregarAutomovil(Component parent, Collection<String> dniClientes) {
         super(NOMBRE_LOGO, TITULO, TEXTO_BOTON, parent, COLOR_FONDO, COLOR_TEXTO, HEIGHT_PANEL_FORMULARIO);
         iniciar(parent, dniClientes);
     }
-    
+
     private void iniciar(Component parent, Collection<String> dniClientes) {
         jPanelFormularioAgregarAutomovil = new javax.swing.JPanel();
         jLabelPatente = new javax.swing.JLabel();
         jTextFieldPatente = new javax.swing.JTextField();
         jLabelMarca = new javax.swing.JLabel();
-        jTextFieldMarca = new javax.swing.JTextField();
         jLabelModelo = new javax.swing.JLabel();
-        jTextFieldModelo = new javax.swing.JTextField();
         jLabelAnioFabricacion = new javax.swing.JLabel();
         jLabelCliente = new javax.swing.JLabel();
         jComboBoxCliente = new javax.swing.JComboBox<>();
         jTextFieldAnioFabricacion = new javax.swing.JTextField();
         jCheckBoxHabilitarCliente = new javax.swing.JCheckBox();
+        jComboBoxMarca = new javax.swing.JComboBox<>();
+        jComboBoxModelo = new javax.swing.JComboBox<>();
         jPanelFormularioAgregarCliente = new javax.swing.JPanel();
         jLabelTituloCliente = new javax.swing.JLabel();
         jPanelFormularioCliente = new javax.swing.JPanel();
@@ -61,37 +62,46 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         jTextFieldApellidoCliente = new javax.swing.JTextField();
         jTextFieldNombreCliente = new javax.swing.JTextField();
         jTextFieldDNICliente = new javax.swing.JTextField();
-        
+
         tamanioVentana(HEIGHT_JFRAME_MIN, true);
         setLocationRelativeTo(parent);
         estilosFormulario();
         colocarDNIClientes(dniClientes);
         this.jCheckBoxHabilitarCliente.addActionListener(new MostrarFormularioCliente());
-        
+        this.jComboBoxMarca.addActionListener(new CambiarModelosSegunMarca());
+        colocarMarcas();
+        colocarModeloSegunMarca();
+        System.out.println(jComboBoxCliente.getSelectedObjects().length);
+
     }
-    
+
     private void colocarDNIClientes(Collection<String> dniClientes) {
         String[] dni = new String[dniClientes.size()];
         dniClientes.toArray(dni);
         jComboBoxCliente.setModel(new javax.swing.DefaultComboBoxModel<>(dni));
     }
-    
+
     public Automovil getAutomovilAAgregar() {
-        validarCamposAutomovil();
+        validarCamposAutomovilConDni();
         String patente = jTextFieldPatente.getText();
-        String marca = jTextFieldMarca.getText();
-        String modelo = jTextFieldModelo.getText();
+        String marca = (String) jComboBoxMarca.getSelectedItem();
+        String modelo = (String) jComboBoxModelo.getSelectedItem();
         int anioFabricacion = Integer.parseInt(jTextFieldAnioFabricacion.getText());
         String dniCliente = (String) this.jComboBoxCliente.getSelectedItem();
         return new Automovil(0, patente, marca, modelo, anioFabricacion, dniCliente);
     }
-    
+
     public Automovil getAutomovilAAgregar(String dni) {
-        Automovil automovil = getAutomovilAAgregar();
-        automovil.setDniCliente(dni);
-        return automovil;
+        validarCamposAutomovilSinDni();
+        String patente = jTextFieldPatente.getText();
+        String marca = (String) jComboBoxMarca.getSelectedItem();
+        String modelo = (String) jComboBoxModelo.getSelectedItem();
+        int anioFabricacion = Integer.parseInt(jTextFieldAnioFabricacion.getText());
+        String dniCliente = dni;
+        return new Automovil(0, patente, marca, modelo, anioFabricacion, dniCliente);
+
     }
-    
+
     public Cliente getClienteAAgregar() {
         validarCamposCliente();
         String dni = jTextFieldDNICliente.getText();
@@ -101,7 +111,7 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         int telefono = Integer.parseInt(jTextFieldTelefonoCliente.getText());
         return new Cliente(0, dni, nombre, apellido, mail, telefono);
     }
-    
+
     private void validarCamposCliente() {
         if (VALIDACIONES.estaVacio(jTextFieldDNICliente.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldDNICliente.getName() + "\" está vacío");
@@ -112,7 +122,7 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         if (VALIDACIONES.estaVacio(jTextFieldApellidoCliente.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldApellidoCliente.getName() + "\" está vacío");
         }
-        
+
         if (!VALIDACIONES.esMailValido(jTextFieldMailCliente.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldMailCliente.getName() + "\" no es un mail valido");
         }
@@ -120,77 +130,101 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
             throw new IllegalStateException("El campo \"" + jTextFieldTelefonoCliente.getName() + "\" no es un numero");
         }
     }
-    
-    private void validarCamposAutomovil() {
+
+    private void validarCamposAutomovilSinDni() {
         if (VALIDACIONES.estaVacio(jTextFieldPatente.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldPatente.getName() + "\" está vacío");
         }
-        if (VALIDACIONES.estaVacio(jTextFieldMarca.getText())) {
-            throw new IllegalStateException("El campo \"" + jTextFieldMarca.getName() + "\" está vacío");
+        if (VALIDACIONES.estaVacio((String) jComboBoxMarca.getSelectedItem())) {
+            throw new IllegalStateException("El campo \"" + jComboBoxMarca.getName() + "\" está vacío");
         }
-        if (VALIDACIONES.estaVacio(jTextFieldModelo.getText())) {
-            throw new IllegalStateException("El campo \"" + jTextFieldModelo.getName() + "\" está vacío");
+        if (VALIDACIONES.estaVacio((String) jComboBoxModelo.getSelectedItem())) {
+            throw new IllegalStateException("El campo \"" + jComboBoxModelo.getName() + "\" está vacío");
         }
-        
+
         if (!VALIDACIONES.esNumeroEntero(jTextFieldAnioFabricacion.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldAnioFabricacion.getName() + "\" no es un numero valido");
         }
+    }
+    
+    private void validarCamposAutomovilConDni(){
+        validarCamposAutomovilSinDni();
         if (VALIDACIONES.estaVacio((String) jComboBoxCliente.getSelectedItem())) {
             throw new IllegalStateException("El campo \"" + jComboBoxCliente.getName() + "\" esta vacio");
         }
+        
     }
-    
+
     public boolean conCliente() {
         return jCheckBoxHabilitarCliente.isSelected();
     }
-    
+
     private void tamanioVentana(int height, boolean b) {
         jPanelFormularioAgregarCliente.setVisible(!b);
         this.setSize(WIDTH_JFRAME, height);
         jLabelCliente.setVisible(b);
         jComboBoxCliente.setVisible(b);
     }
-    
+
+    private void colocarMarcas() {
+        Marca[] categorias = Marca.values();
+        String[] categoriasAColocar = new String[categorias.length];
+
+        for (int i = 0; i < categoriasAColocar.length; i++) {
+            categoriasAColocar[i] = categorias[i].name();
+        }
+
+        jComboBoxMarca.setModel(new javax.swing.DefaultComboBoxModel<>(categoriasAColocar));
+    }
+
+    private void colocarModeloSegunMarca() {
+        String marcaElegida = (String) jComboBoxMarca.getSelectedItem();
+        jComboBoxModelo.setModel(new javax.swing.DefaultComboBoxModel<>(Marca.valueOf(marcaElegida).getNombreModelos()));
+
+    }
+
     private void estilosFormulario() {
         jPanelFormularioAgregarAutomovil.setBackground(new java.awt.Color(255, 204, 204));
         jPanelFormularioAgregarAutomovil.setPreferredSize(new java.awt.Dimension(800, 227));
         jPanelFormularioAgregarAutomovil.setRequestFocusEnabled(false);
-        
+
         jLabelPatente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelPatente.setText("Patente");
-        
+
         jTextFieldPatente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jTextFieldPatente.setName("patente");
-        
+        jTextFieldPatente.setName("patente"); // NOI18N
+
         jLabelMarca.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelMarca.setText("Marca");
-        
-        jTextFieldMarca.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jTextFieldMarca.setName("marca");
-        
+
         jLabelModelo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelModelo.setText("Modelo");
         jLabelModelo.setToolTipText("");
-        
-        jTextFieldModelo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jTextFieldModelo.setName("modelo");
-        
+
         jLabelAnioFabricacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelAnioFabricacion.setText("<html><p>Año de</p> fabricacion</html>");
-        
+
         jLabelCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelCliente.setText("DNI Cliente");
-        
+
         jComboBoxCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jComboBoxCliente.setName("dni");
-        
+        jComboBoxCliente.setName("DNI cliente"); // NOI18N
+
         jTextFieldAnioFabricacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jTextFieldAnioFabricacion.setName("año de fabricacion");
-        
+        jTextFieldAnioFabricacion.setName("año de fabricacion"); // NOI18N
+
         jCheckBoxHabilitarCliente.setBackground(new java.awt.Color(255, 204, 204));
         jCheckBoxHabilitarCliente.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jCheckBoxHabilitarCliente.setText("En caso de no tener el dni del cliente");
-        
+
+        jComboBoxMarca.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jComboBoxMarca.setToolTipText("");
+        jComboBoxMarca.setName("marca"); // NOI18N
+
+        jComboBoxModelo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jComboBoxModelo.setToolTipText("");
+        jComboBoxModelo.setName("modelo"); // NOI18N
+
         javax.swing.GroupLayout jPanelFormularioAgregarAutomovilLayout = new javax.swing.GroupLayout(jPanelFormularioAgregarAutomovil);
         jPanelFormularioAgregarAutomovil.setLayout(jPanelFormularioAgregarAutomovilLayout);
         jPanelFormularioAgregarAutomovilLayout.setHorizontalGroup(
@@ -212,10 +246,10 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
                                                         .addComponent(jLabelPatente, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                                                         .addComponent(jLabelMarca, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                                 .addGap(18, 18, 18)
-                                                .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(jTextFieldPatente, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                                .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                        .addComponent(jTextFieldPatente, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                                                        .addComponent(jComboBoxMarca, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(jComboBoxModelo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                                 .addContainerGap(46, Short.MAX_VALUE))
                         .addGroup(jPanelFormularioAgregarAutomovilLayout.createSequentialGroup()
                                 .addGap(25, 25, 25)
@@ -230,13 +264,13 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
                                         .addComponent(jTextFieldPatente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(jLabelPatente))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabelMarca)
-                                        .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jComboBoxMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(10, 10, 10)
                                 .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabelModelo)
-                                        .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jComboBoxModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(jLabelAnioFabricacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -245,47 +279,51 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
                                 .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabelCliente)
                                         .addComponent(jComboBoxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 4, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jCheckBoxHabilitarCliente))
         );
-        
+
         jPanelFormularioAgregarCliente.setBackground(new java.awt.Color(255, 204, 204));
-        
+
         jLabelTituloCliente.setBackground(new java.awt.Color(0, 153, 0));
         jLabelTituloCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelTituloCliente.setForeground(new java.awt.Color(255, 255, 255));
         jLabelTituloCliente.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelTituloCliente.setText("Agregar Cliente");
         jLabelTituloCliente.setOpaque(true);
-        
+
         jPanelFormularioCliente.setBackground(new java.awt.Color(255, 204, 204));
-        
+
         jLabelDNICliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelDNICliente.setText("DNI");
-        
+
         jLabelNombreCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelNombreCliente.setText("Nombre");
-        
+
         jLabelApellidoCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelApellidoCliente.setText("Apellido");
-        
+
         jLabelMailCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelMailCliente.setText("Mail");
-        
+
         jLabelTelefonoCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelTelefonoCliente.setText("Telefono");
-        
+
         jTextFieldTelefonoCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jTextFieldTelefonoCliente.setName("telefono");
-        
+        jTextFieldTelefonoCliente.setName("telefono"); // NOI18N
+
         jTextFieldMailCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jTextFieldMailCliente.setName("mail");
+        jTextFieldMailCliente.setName("mail"); // NOI18N
+
         jTextFieldApellidoCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jTextFieldApellidoCliente.setName("apellido");
+        jTextFieldApellidoCliente.setName("apellido"); // NOI18N
+
         jTextFieldNombreCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jTextFieldNombreCliente.setName("nombre");
+        jTextFieldNombreCliente.setName("nombre"); // NOI18N
+
         jTextFieldDNICliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jTextFieldDNICliente.setName("dni");
+        jTextFieldDNICliente.setName("DNI"); // NOI18N
+
         javax.swing.GroupLayout jPanelFormularioClienteLayout = new javax.swing.GroupLayout(jPanelFormularioCliente);
         jPanelFormularioCliente.setLayout(jPanelFormularioClienteLayout);
         jPanelFormularioClienteLayout.setHorizontalGroup(
@@ -338,7 +376,7 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
                                         .addComponent(jLabelTelefonoCliente))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        
+
         javax.swing.GroupLayout jPanelFormularioAgregarClienteLayout = new javax.swing.GroupLayout(jPanelFormularioAgregarCliente);
         jPanelFormularioAgregarCliente.setLayout(jPanelFormularioAgregarClienteLayout);
         jPanelFormularioAgregarClienteLayout.setHorizontalGroup(
@@ -355,7 +393,7 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
                                 .addComponent(jPanelFormularioCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(33, 33, 33))
         );
-        
+
         javax.swing.GroupLayout jPanelFormularioLayout = new javax.swing.GroupLayout(super.getPanelFormulario());
         super.getPanelFormulario().setLayout(jPanelFormularioLayout);
         jPanelFormularioLayout.setHorizontalGroup(
@@ -377,7 +415,7 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
                                 .addGap(0, 0, 0))
         );
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -390,14 +428,14 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         jLabelPatente = new javax.swing.JLabel();
         jTextFieldPatente = new javax.swing.JTextField();
         jLabelMarca = new javax.swing.JLabel();
-        jTextFieldMarca = new javax.swing.JTextField();
         jLabelModelo = new javax.swing.JLabel();
-        jTextFieldModelo = new javax.swing.JTextField();
         jLabelAnioFabricacion = new javax.swing.JLabel();
         jLabelCliente = new javax.swing.JLabel();
         jComboBoxCliente = new javax.swing.JComboBox<>();
         jTextFieldAnioFabricacion = new javax.swing.JTextField();
         jCheckBoxHabilitarCliente = new javax.swing.JCheckBox();
+        jComboBoxMarca = new javax.swing.JComboBox<>();
+        jComboBoxModelo = new javax.swing.JComboBox<>();
         jPanelFormularioAgregarCliente = new javax.swing.JPanel();
         jLabelTituloCliente = new javax.swing.JLabel();
         jPanelFormularioCliente = new javax.swing.JPanel();
@@ -442,17 +480,14 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         jLabelPatente.setText("Patente");
 
         jTextFieldPatente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldPatente.setName("patente"); // NOI18N
 
         jLabelMarca.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelMarca.setText("Marca");
 
-        jTextFieldMarca.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
         jLabelModelo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelModelo.setText("Modelo");
         jLabelModelo.setToolTipText("");
-
-        jTextFieldModelo.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
         jLabelAnioFabricacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelAnioFabricacion.setText("<html><p>Año de</p> fabricacion</html>");
@@ -461,12 +496,22 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         jLabelCliente.setText("DNI Cliente");
 
         jComboBoxCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jComboBoxCliente.setName("DNI cliente"); // NOI18N
 
         jTextFieldAnioFabricacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldAnioFabricacion.setName("año de fabricacion"); // NOI18N
 
         jCheckBoxHabilitarCliente.setBackground(new java.awt.Color(255, 204, 204));
         jCheckBoxHabilitarCliente.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jCheckBoxHabilitarCliente.setText("En caso de no tener el dni del cliente");
+
+        jComboBoxMarca.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jComboBoxMarca.setToolTipText("");
+        jComboBoxMarca.setName("marca"); // NOI18N
+
+        jComboBoxModelo.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jComboBoxModelo.setToolTipText("");
+        jComboBoxModelo.setName("modelo"); // NOI18N
 
         javax.swing.GroupLayout jPanelFormularioAgregarAutomovilLayout = new javax.swing.GroupLayout(jPanelFormularioAgregarAutomovil);
         jPanelFormularioAgregarAutomovil.setLayout(jPanelFormularioAgregarAutomovilLayout);
@@ -475,24 +520,24 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
             .addGroup(jPanelFormularioAgregarAutomovilLayout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jLabelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelAnioFabricacion))
+                    .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabelModelo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelPatente, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                        .addComponent(jLabelMarca, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelFormularioAgregarAutomovilLayout.createSequentialGroup()
-                        .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jLabelCliente, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelAnioFabricacion))
-                        .addGap(18, 18, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jComboBoxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldAnioFabricacion, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanelFormularioAgregarAutomovilLayout.createSequentialGroup()
-                        .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jLabelModelo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelPatente, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
-                            .addComponent(jLabelMarca, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldPatente, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jComboBoxModelo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jTextFieldPatente, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE)
+                        .addComponent(jComboBoxMarca, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(46, Short.MAX_VALUE))
             .addGroup(jPanelFormularioAgregarAutomovilLayout.createSequentialGroup()
                 .addGap(25, 25, 25)
@@ -507,22 +552,25 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
                     .addComponent(jTextFieldPatente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelPatente))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelMarca)
-                    .addComponent(jTextFieldMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelModelo)
-                    .addComponent(jTextFieldModelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabelMarca)
+                    .addComponent(jComboBoxMarca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(3, 3, 3)
                 .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabelAnioFabricacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldAnioFabricacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelModelo)
+                    .addComponent(jComboBoxModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelFormularioAgregarAutomovilLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabelAnioFabricacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelFormularioAgregarAutomovilLayout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jTextFieldAnioFabricacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelFormularioAgregarAutomovilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelCliente)
                     .addComponent(jComboBoxCliente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 4, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jCheckBoxHabilitarCliente))
         );
 
@@ -553,14 +601,19 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         jLabelTelefonoCliente.setText("Telefono");
 
         jTextFieldTelefonoCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldTelefonoCliente.setName("telefono"); // NOI18N
 
         jTextFieldMailCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldMailCliente.setName("mail"); // NOI18N
 
         jTextFieldApellidoCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldApellidoCliente.setName("apellido"); // NOI18N
 
         jTextFieldNombreCliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldNombreCliente.setName("nombre"); // NOI18N
 
         jTextFieldDNICliente.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jTextFieldDNICliente.setName("DNI"); // NOI18N
 
         javax.swing.GroupLayout jPanelFormularioClienteLayout = new javax.swing.GroupLayout(jPanelFormularioCliente);
         jPanelFormularioCliente.setLayout(jPanelFormularioClienteLayout);
@@ -701,11 +754,21 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
             }
         }
     }
+    private class CambiarModelosSegunMarca implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            colocarModeloSegunMarca();
+        }
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAgregar;
     private javax.swing.JCheckBox jCheckBoxHabilitarCliente;
     private javax.swing.JComboBox<String> jComboBoxCliente;
+    private javax.swing.JComboBox<String> jComboBoxMarca;
+    private javax.swing.JComboBox<String> jComboBoxModelo;
     private javax.swing.JLabel jLabelAnioFabricacion;
     private javax.swing.JLabel jLabelApellidoCliente;
     private javax.swing.JLabel jLabelCliente;
@@ -727,8 +790,6 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
     private javax.swing.JTextField jTextFieldApellidoCliente;
     private javax.swing.JTextField jTextFieldDNICliente;
     private javax.swing.JTextField jTextFieldMailCliente;
-    private javax.swing.JTextField jTextFieldMarca;
-    private javax.swing.JTextField jTextFieldModelo;
     private javax.swing.JTextField jTextFieldNombreCliente;
     private javax.swing.JTextField jTextFieldPatente;
     private javax.swing.JTextField jTextFieldTelefonoCliente;
