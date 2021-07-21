@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Date;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
+import pkgfinal.CollectionToArray;
 import taller.modelo.clases.Servicio;
 import taller.modelo.clases.TipoSeccion;
 
@@ -52,8 +53,6 @@ public class JFrameFormularioServicio extends JFrameFormularioTemplate {
         estilosFormulario();
         colocarPatentesAutomoviles(patentesAutomoviles);
 
-       
-
     }
 
     private void validarCampos() {
@@ -74,9 +73,7 @@ public class JFrameFormularioServicio extends JFrameFormularioTemplate {
     }
 
     private void colocarPatentesAutomoviles(Collection<String> patentesAutomoviles) {
-        String[] patentes = new String[patentesAutomoviles.size()];
-        patentesAutomoviles.toArray(patentes);
-        jComboBoxPatenteAuto.setModel(new javax.swing.DefaultComboBoxModel<>(patentes));
+        jComboBoxPatenteAuto.setModel(new javax.swing.DefaultComboBoxModel<>(CollectionToArray.conversionCollectionString(patentesAutomoviles)));
     }
 
     public Servicio getServicio() {

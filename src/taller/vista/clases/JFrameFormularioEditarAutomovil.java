@@ -7,7 +7,6 @@ package taller.vista.clases;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.util.ArrayList;
 import java.util.Collection;
 import taller.modelo.clases.Automovil;
 import taller.modelo.clases.Marca;
@@ -67,14 +66,14 @@ public class JFrameFormularioEditarAutomovil extends JFrameFormularioTemplate {
         colocarMarcasYPorDefectoLaMarcaDelAutomovilElegido();
         colocarModeloYPorDefectoElModeloDelAutomovilElegido();
         jTextFieldAnioFabricacion.setText(au.getAnioFabricacion() + "");
-        colocarDNIClientes(dniClientes);
+        colocarDNIClientesYColocarElDelClientePorDefecto(dniClientes);
     }
 
-    private void colocarDNIClientes(Collection<String> dniClientes) {
+    private void colocarDNIClientesYColocarElDelClientePorDefecto(Collection<String> dniClientes) {
         String[] dni = new String[dniClientes.size()];
-        dniClientes.toArray(dni);
-        jComboBoxCliente.setModel(new javax.swing.DefaultComboBoxModel<>(dni));
-        jComboBoxCliente.setSelectedIndex(colocarPorDefectoElClienteEnComboBox(dniClientes, au.getDniCliente()));
+        jComboBoxCliente.setModel(new javax.swing.DefaultComboBoxModel<>(dniClientes.toArray(dni)));
+        jComboBoxCliente.setSelectedItem(au.getDniCliente());
+
     }
 
     public Automovil getAutomovilEditado() {
@@ -107,61 +106,25 @@ public class JFrameFormularioEditarAutomovil extends JFrameFormularioTemplate {
         }
     }
 
-    private int colocarPorDefectoElClienteEnComboBox(Collection<String> dniClientes, String dato) {
-        int posicion = 0;
-        boolean encontrado = false;
-        ArrayList<String> dni = (ArrayList<String>) dniClientes;
-        while (posicion < dni.size() && !encontrado) {
-            if (dni.get(posicion).equalsIgnoreCase(dato)) {
-                encontrado = true;
-            }
-            posicion++;
-        }
-        return --posicion;
-    }
+   
 
     private void colocarMarcasYPorDefectoLaMarcaDelAutomovilElegido() {
         Marca[] marcas = Marca.values();
         String[] categoriasAColocar = new String[marcas.length];
-
         for (int i = 0; i < categoriasAColocar.length; i++) {
             categoriasAColocar[i] = marcas[i].name();
         }
-
         jComboBoxMarca.setModel(new javax.swing.DefaultComboBoxModel<>(categoriasAColocar));
-        jComboBoxMarca.setSelectedIndex(buscarMarcaDelAutomovil());
+        jComboBoxMarca.setSelectedItem(au.getMarca());
     }
 
-    private int buscarMarcaDelAutomovil() {
-        int posicion = 0;
-        boolean encontrado = false;
-        Marca[] marcas = Marca.values();
-        while (posicion < marcas.length && !encontrado) {
-            if (marcas[posicion].name().equalsIgnoreCase(au.getMarca())) {
-                encontrado = true;
-            }
-            posicion++;
-        }
-        return --posicion;
-    }
 
     private void colocarModeloYPorDefectoElModeloDelAutomovilElegido() {
         String[] modelos = Marca.valueOf((String) jComboBoxMarca.getSelectedItem()).getNombreModelos();
         jComboBoxModelo.setModel(new javax.swing.DefaultComboBoxModel<>(modelos));
-        jComboBoxModelo.setSelectedIndex(buscarModeloDelAutomovil(modelos));
+        jComboBoxModelo.setSelectedItem(au.getModelo());
     }
-
-    private int buscarModeloDelAutomovil(String[] modelos) {
-        int posicion = 0;
-        boolean encontrado = false;
-        while (posicion < modelos.length && !encontrado) {
-            if (modelos[posicion].equalsIgnoreCase(au.getModelo())) {
-                encontrado = true;
-            }
-            posicion++;
-        }
-        return --posicion;
-    }
+ 
 
     private void estilosFormulario() {
 

@@ -14,7 +14,6 @@ public enum Marca {
     FIAT(new String[]{
         "Freemont",
         "Doblò",
-        "Doblò",
         "Punto",
         "Panda",
         "500",

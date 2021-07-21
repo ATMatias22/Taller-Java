@@ -10,6 +10,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Collection;
+import pkgfinal.CollectionToArray;
 import taller.modelo.clases.Automovil;
 import taller.modelo.clases.TipoSeccion;
 import taller.modelo.clases.Cliente;
@@ -67,18 +68,15 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         setLocationRelativeTo(parent);
         estilosFormulario();
         colocarDNIClientes(dniClientes);
-        this.jCheckBoxHabilitarCliente.addActionListener(new MostrarFormularioCliente());
-        this.jComboBoxMarca.addActionListener(new CambiarModelosSegunMarca());
         colocarMarcas();
         colocarModeloSegunMarca();
-        System.out.println(jComboBoxCliente.getSelectedObjects().length);
+        this.jCheckBoxHabilitarCliente.addActionListener(new MostrarFormularioCliente());
+        this.jComboBoxMarca.addActionListener(new CambiarModelosSegunMarca());
 
     }
 
     private void colocarDNIClientes(Collection<String> dniClientes) {
-        String[] dni = new String[dniClientes.size()];
-        dniClientes.toArray(dni);
-        jComboBoxCliente.setModel(new javax.swing.DefaultComboBoxModel<>(dni));
+        jComboBoxCliente.setModel(new javax.swing.DefaultComboBoxModel<>(CollectionToArray.conversionCollectionString(dniClientes)));
     }
 
     public Automovil getAutomovilAAgregar() {
@@ -146,13 +144,13 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
             throw new IllegalStateException("El campo \"" + jTextFieldAnioFabricacion.getName() + "\" no es un numero valido");
         }
     }
-    
-    private void validarCamposAutomovilConDni(){
+
+    private void validarCamposAutomovilConDni() {
         validarCamposAutomovilSinDni();
         if (VALIDACIONES.estaVacio((String) jComboBoxCliente.getSelectedItem())) {
             throw new IllegalStateException("El campo \"" + jComboBoxCliente.getName() + "\" esta vacio");
         }
-        
+
     }
 
     public boolean conCliente() {
@@ -180,7 +178,6 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
     private void colocarModeloSegunMarca() {
         String marcaElegida = (String) jComboBoxMarca.getSelectedItem();
         jComboBoxModelo.setModel(new javax.swing.DefaultComboBoxModel<>(Marca.valueOf(marcaElegida).getNombreModelos()));
-
     }
 
     private void estilosFormulario() {
@@ -754,13 +751,13 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
             }
         }
     }
-    private class CambiarModelosSegunMarca implements ActionListener{
+
+    private class CambiarModelosSegunMarca implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             colocarModeloSegunMarca();
         }
-        
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

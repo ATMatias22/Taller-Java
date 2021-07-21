@@ -7,7 +7,6 @@ package taller.vista.clases;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import taller.modelo.clases.Servicio;
@@ -29,18 +28,17 @@ public class JFrameFormularioEditarServicio extends JFrameFormularioServicio {
     public JFrameFormularioEditarServicio(Servicio se, Component parent, Collection<String> patentesAutomoviles)  {
         super(parent, patentesAutomoviles,TITULO, TEXTO_BOTON, COLOR_FONDO, COLOR_TEXTO, HEIGHT_PANEL_FORMULARIO);
         this.se = se;
-        iniciar(patentesAutomoviles);
+        iniciar();
     }
 
-    private void iniciar(Collection<String> patentesAutomoviles)  {
-        colocarServicioEnFormulario(patentesAutomoviles);
+    private void iniciar()  {
+        colocarServicioEnFormulario();
     }
 
-    private void colocarServicioEnFormulario(Collection<String> patentesAutomoviles)  {
+    private void colocarServicioEnFormulario()  {
         getTextFieldCosto().setText(se.getCosto() + "");
         getTextFieldKms().setText(se.getCantKms() + "");
-        getComboBoxPatentes().setSelectedIndex(colocarPorDefectoLaPatenteEnComboBox(patentesAutomoviles, se.getPatenteDelAutomovil()));
-//        setearFecha(se.getFechaDeRealizacion());
+        getComboBoxPatentes().setSelectedItem(se.getPatenteDelAutomovil());
         setearFecha(se.getFechaDeRealizacion());
     }
     
@@ -49,19 +47,6 @@ public class JFrameFormularioEditarServicio extends JFrameFormularioServicio {
         Servicio sNuevo = super.getServicio();
         sNuevo.setIdServicio(se.getIdServicio());
         return sNuevo;
-    }
-
-    public int colocarPorDefectoLaPatenteEnComboBox(Collection<String> patentesAutomoviles, String dato) {
-        int posicion = 0;
-        boolean encontrado = false;
-        ArrayList<String> patentes = (ArrayList<String>) patentesAutomoviles;
-        while (posicion < patentes.size() && !encontrado) {
-            if (patentes.get(posicion).equalsIgnoreCase(dato)) {
-                encontrado = true;
-            }
-            posicion++;
-        }
-        return --posicion;
     }
 
     @SuppressWarnings("unchecked")
@@ -77,7 +62,6 @@ public class JFrameFormularioEditarServicio extends JFrameFormularioServicio {
         jLabelPatenteAuto = new javax.swing.JLabel();
         jLabelCantKMS = new javax.swing.JLabel();
         jTextFieldCantKMS = new javax.swing.JTextField();
-        rSDateChooserFechaRealizacion = new newscomponents.RSDateChooser();
         jComboBoxPatenteAuto = new javax.swing.JComboBox<>();
         jButtonEditar = new javax.swing.JButton();
 
@@ -114,11 +98,6 @@ public class JFrameFormularioEditarServicio extends JFrameFormularioServicio {
 
         jTextFieldCantKMS.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
-        rSDateChooserFechaRealizacion.setBackground(new java.awt.Color(0, 0, 0));
-        rSDateChooserFechaRealizacion.setBgColor(new java.awt.Color(0, 0, 0));
-        rSDateChooserFechaRealizacion.setDate(null);
-        rSDateChooserFechaRealizacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
         jComboBoxPatenteAuto.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
         javax.swing.GroupLayout jPanelFormularioLayout = new javax.swing.GroupLayout(jPanelFormulario);
@@ -132,9 +111,8 @@ public class JFrameFormularioEditarServicio extends JFrameFormularioServicio {
                     .addComponent(jLabelPatenteAuto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelCosto)
                     .addComponent(jLabelCantKMS, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                 .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rSDateChooserFechaRealizacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jComboBoxPatenteAuto, 0, 212, Short.MAX_VALUE)
                         .addComponent(jTextFieldCantKMS, javax.swing.GroupLayout.DEFAULT_SIZE, 212, Short.MAX_VALUE))
@@ -144,9 +122,7 @@ public class JFrameFormularioEditarServicio extends JFrameFormularioServicio {
         jPanelFormularioLayout.setVerticalGroup(
             jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFormularioLayout.createSequentialGroup()
-                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabelFechaRealizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rSDateChooserFechaRealizacion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabelFechaRealizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -220,6 +196,5 @@ public class JFrameFormularioEditarServicio extends JFrameFormularioServicio {
     private javax.swing.JPanel jPanelPrincipal;
     private javax.swing.JTextField jTextFieldCantKMS;
     private javax.swing.JTextField jTextFieldCosto;
-    private newscomponents.RSDateChooser rSDateChooserFechaRealizacion;
     // End of variables declaration//GEN-END:variables
 }

@@ -37,7 +37,6 @@ public class JFrameFormularioAgregarServicio extends JFrameFormularioServicio {
         jLabelPatenteAuto = new javax.swing.JLabel();
         jLabelCantKMS = new javax.swing.JLabel();
         jTextFieldCantKMS = new javax.swing.JTextField();
-        rSDateChooserFechaRealizacion = new newscomponents.RSDateChooser();
         jComboBoxPatenteAuto = new javax.swing.JComboBox<>();
         jLabelTitulo = new javax.swing.JLabel();
         jButtonAgregar = new javax.swing.JButton();
@@ -67,10 +66,6 @@ public class JFrameFormularioAgregarServicio extends JFrameFormularioServicio {
 
         jTextFieldCantKMS.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
-        rSDateChooserFechaRealizacion.setBackground(new java.awt.Color(0, 0, 0));
-        rSDateChooserFechaRealizacion.setBgColor(new java.awt.Color(0, 0, 0));
-        rSDateChooserFechaRealizacion.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-
         jComboBoxPatenteAuto.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
         javax.swing.GroupLayout jPanelFormularioLayout = new javax.swing.GroupLayout(jPanelFormulario);
@@ -88,16 +83,13 @@ public class JFrameFormularioAgregarServicio extends JFrameFormularioServicio {
                 .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jComboBoxPatenteAuto, javax.swing.GroupLayout.Alignment.LEADING, 0, 212, Short.MAX_VALUE)
                     .addComponent(jTextFieldCosto, javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rSDateChooserFechaRealizacion, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jTextFieldCantKMS))
                 .addGap(42, 42, 42))
         );
         jPanelFormularioLayout.setVerticalGroup(
             jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelFormularioLayout.createSequentialGroup()
-                .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(rSDateChooserFechaRealizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabelFechaRealizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jLabelFechaRealizacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17)
                 .addGroup(jPanelFormularioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldCosto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -182,6 +174,5 @@ public class JFrameFormularioAgregarServicio extends JFrameFormularioServicio {
     private javax.swing.JPanel jPanelPrincipal;
     private javax.swing.JTextField jTextFieldCantKMS;
     private javax.swing.JTextField jTextFieldCosto;
-    private newscomponents.RSDateChooser rSDateChooserFechaRealizacion;
     // End of variables declaration//GEN-END:variables
 }
