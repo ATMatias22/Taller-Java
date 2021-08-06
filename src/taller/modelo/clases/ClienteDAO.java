@@ -93,8 +93,13 @@ public class ClienteDAO {
         try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query);) {
             cargarDatosDeClienteEnSentencia(cl, ps);
             ps.executeUpdate();
+        } catch (SQLException sqle) {
+            if (sqle.getErrorCode() == 19) {
+                throw new RuntimeException("No puede colocar el dni " + cl.getDni() + " debido a que ya esta en la base de datos");
+            }
+            throw new RuntimeException("No se pudo agregar clientes\n" + sqle.getMessage());
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo agregar clientes\n" + cl + " " + ex.getMessage());
+            throw new RuntimeException("No se pudo agregar clientes\n" + ex.getMessage());
         }
     }
 

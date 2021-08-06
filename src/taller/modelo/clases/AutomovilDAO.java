@@ -78,6 +78,11 @@ public class AutomovilDAO {
         try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query);) {
             cargarDatosDeAutomovilEnSentencia(au, ps);
             ps.executeUpdate();
+        } catch (SQLException sqle) {
+            if (sqle.getErrorCode() == 19) {
+                throw new RuntimeException("No puede colocar la patente " + au.getPatente() + " debido a que ya esta en la base de datos");
+            }
+            throw new RuntimeException("No se pudieron agregar los datos \n" + au, sqle);
         } catch (Exception ex) {
             throw new RuntimeException("No se pudo agregar el automovil\n" + au, ex);
         }
@@ -87,14 +92,31 @@ public class AutomovilDAO {
         ConexionBD.getConexion().setAutoCommit(false);
         String queryAutomovil = "INSERT INTO Automovil VALUES (null,?,?,?,?,?)";
         String queryCliente = "INSERT INTO Cliente VALUES (null,?,?,?,?,?)";
+            
+        int numeroError = 0;
+        //COLOCAMOS NUMEROS PARA DETECTAR EL ERROR DE LA CLAVE UNIQUE, COMO EL ERRORCODE ES EL 19 Y EN EL CASO QUE HAYA UN ERROR
+        //EN AMBAS CLAVES UNICAS (EN EL CLIENTE EL DNI Y EN EL AUTO LA PATENTE), DISTINGAMOS QUE ERROR TIRAR YA QUE AMBOS
+        //SON ERRORCODE 19 (EL 0 INDICA QUE HUBO UN ERROR EN EL DNI Y EL 1 INDICA QUE HUBO ERROR EN LA PATENTE)
+        
         try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(queryCliente)) {
             cargarDatosDeClienteEnSentencia(cl, ps);
             ps.executeUpdate();
             try (PreparedStatement pr = ConexionBD.getConexion().prepareStatement(queryAutomovil)) {
+                numeroError = 1;
                 cargarDatosDeAutomovilEnSentencia(au, pr);
                 pr.executeUpdate();
             }
             ConexionBD.getConexion().commit();
+        } catch (SQLException sqle) {
+            ConexionBD.getConexion().rollback();
+            if (sqle.getErrorCode() == 19) {
+                if (numeroError == 0) {
+                    throw new RuntimeException("No puede colocar el dni " + cl.getDni() + " debido a que ya esta en la base de datos");
+                } else {
+                    throw new RuntimeException("No puede colocar la patente " + au.getPatente() + " debido a que ya esta en la base de datos");
+                }
+            }
+            throw new RuntimeException("No se pudieron agregar los datos \n" + au + "\n" + cl + sqle);
         } catch (Exception ex) {
             ConexionBD.getConexion().rollback();
             throw new RuntimeException("No se pudieron agregar los datos \n" + au + "\n" + cl + ex);
