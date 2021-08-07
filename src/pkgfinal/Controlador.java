@@ -286,7 +286,7 @@ public class Controlador {
             if (vistaEditarCliente != null) {
                 vistaEditarCliente.cerrar();
             }
-            vistaEditarCliente = new JFrameFormularioEditarCliente(vistaCliente.getCliente(), vistaPrincipal);
+            vistaEditarCliente = new JFrameFormularioEditarCliente(vistaCliente.getCliente(), vistaCliente);
             vistaEditarCliente.addActionListenerAccionBoton(new HandlerJFrameEditarBotonEditarCliente());
         }
     }

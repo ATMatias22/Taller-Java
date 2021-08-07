@@ -64,7 +64,7 @@ public class JFrameFormularioServicio extends JFrameFormularioTemplate {
         if (!Validaciones.esNumeroDouble(jTextFieldCosto.getText())) {
             throw new IllegalStateException("El campo " + jTextFieldCosto.getName() + " no es un numero valido");
         }
-        if (Validaciones.estaVacio((String) jComboBoxPatenteAuto.getSelectedItem())) {
+        if (Validaciones.esNull(jComboBoxPatenteAuto.getSelectedItem())) {
             throw new IllegalStateException("El campo " + jComboBoxPatenteAuto.getName() + " está vacío");
         }
         if (!Validaciones.esNumeroEntero(jTextFieldCantKMS.getText())) {

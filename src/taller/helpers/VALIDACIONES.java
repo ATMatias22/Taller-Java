@@ -42,6 +42,10 @@ public class Validaciones {
         return cad.isBlank();
     }
     
+    public final static boolean esNull(Object o) {
+        return o == null;
+    }
+    
      public final static boolean esFecha(Date d) {
         return d != null ;
     }

@@ -168,6 +168,7 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
         if (Validaciones.estaVacio((String) jComboBoxMarca.getSelectedItem())) {
             throw new IllegalStateException("El campo \"" + jComboBoxMarca.getName() + "\" está vacío");
         }
+        
         if (Validaciones.estaVacio((String) jComboBoxModelo.getSelectedItem())) {
             throw new IllegalStateException("El campo \"" + jComboBoxModelo.getName() + "\" está vacío");
         }
@@ -179,7 +180,7 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
 
     private void validarCamposAutomovilConDni() {
         validarCamposAutomovilSinDni();
-        if (Validaciones.estaVacio((String) jComboBoxCliente.getSelectedItem())) {
+        if (Validaciones.esNull(jComboBoxCliente.getSelectedItem())) {
             throw new IllegalStateException("El campo \"" + jComboBoxCliente.getName() + "\" esta vacio");
         }
 
