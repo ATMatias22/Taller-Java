@@ -24,7 +24,7 @@ import taller.interfaces.SeccionDeNegocio;
  *
  * @author Matias
  */
-public class JFrameSecciones<T extends SeccionDeNegocio> extends javax.swing.JFrame {
+public abstract class JFrameSecciones<T extends SeccionDeNegocio> extends javax.swing.JFrame {
 
     private TipoSeccion c;
     private final static String PATH_RECURSOS = "/taller/vista/recursos/";

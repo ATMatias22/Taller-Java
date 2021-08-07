@@ -17,7 +17,7 @@ import taller.modelo.clases.Cliente;
  *
  * @author Matias
  */
-public class JFrameFormularioCliente extends JFrameFormularioTemplate {
+public abstract  class JFrameFormularioCliente extends JFrameFormularioTemplate {
 
     private final static String NOMBRE_LOGO = TipoSeccion.CLIENTE.getNombreLogoMini();
 

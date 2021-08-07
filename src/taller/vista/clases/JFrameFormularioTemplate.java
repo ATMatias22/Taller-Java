@@ -17,7 +17,7 @@ import javax.swing.JPanel;
  *
  * @author Matias
  */
-public class JFrameFormularioTemplate extends javax.swing.JFrame {
+public abstract class JFrameFormularioTemplate extends javax.swing.JFrame {
 
     private final static String PATH_RECURSOS = "/taller/vista/recursos/";
     private final static int WIDTH_JFRAME = 457;

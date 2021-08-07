@@ -23,7 +23,7 @@ import taller.modelo.clases.TipoSeccion;
  *
  * @author Matias
  */
-public class JFrameFormularioServicio extends JFrameFormularioTemplate {
+public abstract  class JFrameFormularioServicio extends JFrameFormularioTemplate {
 
     private final static String NOMBRE_LOGO = TipoSeccion.SERVICIO.getNombreLogoMini();
 

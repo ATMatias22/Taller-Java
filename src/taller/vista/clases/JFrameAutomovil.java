@@ -16,7 +16,7 @@ import taller.interfaces.SeccionDeNegocio;
  *
  * @author Matias
  */
-public class JFrameAutomovil<T extends SeccionDeNegocio> extends JFrameSecciones<T> {
+public  class JFrameAutomovil<T extends SeccionDeNegocio> extends JFrameSecciones<T> {
 
     private Automovil au;
     private final static String TITULO = "Automoviles";
