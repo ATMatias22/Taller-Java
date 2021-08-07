@@ -5,6 +5,7 @@
  */
 package taller.vista.clases;
 
+import taller.helpers.Validaciones;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -15,7 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import pkgfinal.CollectionToArray;
+import taller.helpers.CollectionToArray;
 import taller.modelo.clases.Automovil;
 import taller.modelo.clases.TipoSeccion;
 import taller.modelo.clases.Cliente;
@@ -142,43 +143,43 @@ public class JFrameFormularioAgregarAutomovil extends JFrameFormularioTemplate {
     }
 
     private void validarCamposCliente() {
-        if (VALIDACIONES.estaVacio(jTextFieldDNICliente.getText())) {
+        if (Validaciones.estaVacio(jTextFieldDNICliente.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldDNICliente.getName() + "\" está vacío");
         }
-        if (VALIDACIONES.estaVacio(jTextFieldNombreCliente.getText())) {
+        if (Validaciones.estaVacio(jTextFieldNombreCliente.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldNombreCliente.getName() + "\" está vacío");
         }
-        if (VALIDACIONES.estaVacio(jTextFieldApellidoCliente.getText())) {
+        if (Validaciones.estaVacio(jTextFieldApellidoCliente.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldApellidoCliente.getName() + "\" está vacío");
         }
 
-        if (!VALIDACIONES.esMailValido(jTextFieldMailCliente.getText())) {
+        if (!Validaciones.esMailValido(jTextFieldMailCliente.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldMailCliente.getName() + "\" no es un mail valido");
         }
-        if (!VALIDACIONES.esNumeroEntero(jTextFieldTelefonoCliente.getText())) {
+        if (!Validaciones.esNumeroEntero(jTextFieldTelefonoCliente.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldTelefonoCliente.getName() + "\" no es un numero");
         }
     }
 
     private void validarCamposAutomovilSinDni() {
-        if (VALIDACIONES.estaVacio(jTextFieldPatente.getText())) {
+        if (Validaciones.estaVacio(jTextFieldPatente.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldPatente.getName() + "\" está vacío");
         }
-        if (VALIDACIONES.estaVacio((String) jComboBoxMarca.getSelectedItem())) {
+        if (Validaciones.estaVacio((String) jComboBoxMarca.getSelectedItem())) {
             throw new IllegalStateException("El campo \"" + jComboBoxMarca.getName() + "\" está vacío");
         }
-        if (VALIDACIONES.estaVacio((String) jComboBoxModelo.getSelectedItem())) {
+        if (Validaciones.estaVacio((String) jComboBoxModelo.getSelectedItem())) {
             throw new IllegalStateException("El campo \"" + jComboBoxModelo.getName() + "\" está vacío");
         }
 
-        if (!VALIDACIONES.esNumeroEntero(jTextFieldAnioFabricacion.getText())) {
+        if (!Validaciones.esNumeroEntero(jTextFieldAnioFabricacion.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldAnioFabricacion.getName() + "\" no es un numero valido");
         }
     }
 
     private void validarCamposAutomovilConDni() {
         validarCamposAutomovilSinDni();
-        if (VALIDACIONES.estaVacio((String) jComboBoxCliente.getSelectedItem())) {
+        if (Validaciones.estaVacio((String) jComboBoxCliente.getSelectedItem())) {
             throw new IllegalStateException("El campo \"" + jComboBoxCliente.getName() + "\" esta vacio");
         }
 

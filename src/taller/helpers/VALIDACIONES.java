@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package taller.vista.clases;
+package taller.helpers;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ import java.util.Date;
  *
  * @author Matias
  */
-public class VALIDACIONES {
+public class Validaciones {
 
     public final static boolean esMailValido(String cad) {
         return cad.contains("@") && cad.contains(".");

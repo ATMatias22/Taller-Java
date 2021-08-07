@@ -4,19 +4,20 @@
  * and open the template in the editor.
  */
 package taller.modelo.clases;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import taller.interfaces.Constantes;
 
 /**
  *
  * @author Matias
  */
 public class AutomovilDAO {
+    
 
     public Collection<Automovil> obtenerAutomoviles() {
         try (Statement stmt = ConexionBD.getConexion().createStatement()) {
@@ -29,7 +30,7 @@ public class AutomovilDAO {
                 return automoviles;
             }
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudieron obtener los automoviles", ex);
+            throw new RuntimeException("No se pudieron obtener los automoviles\n"+ ex.getMessage());
         }
     }
 
@@ -44,7 +45,7 @@ public class AutomovilDAO {
                 return automoviles;
             }
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudieron filtrar los automoviles", ex);
+            throw new RuntimeException("No se pudieron filtrar los automoviles\n" +ex.getMessage());
         }
     }
 
@@ -57,7 +58,7 @@ public class AutomovilDAO {
                 return automovil;
             }
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo obtener el automovil con ID " + id, ex);
+            throw new RuntimeException("No se pudo obtener el automovil con ID " + id +"\n"+ex.getMessage());
         }
 
     }
@@ -79,12 +80,12 @@ public class AutomovilDAO {
             cargarDatosDeAutomovilEnSentencia(au, ps);
             ps.executeUpdate();
         } catch (SQLException sqle) {
-            if (sqle.getErrorCode() == 19) {
+            if (sqle.getErrorCode() == Constantes.UK_ERROR) {
                 throw new RuntimeException("No puede colocar la patente " + au.getPatente() + " debido a que ya esta en la base de datos");
             }
-            throw new RuntimeException("No se pudieron agregar los datos \n" + au, sqle);
+            throw new RuntimeException("No se pudieron agregar los datos \n" + sqle.getMessage());
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo agregar el automovil\n" + au, ex);
+            throw new RuntimeException("Error \n"+ ex.getMessage());
         }
     }
 
@@ -92,12 +93,12 @@ public class AutomovilDAO {
         ConexionBD.getConexion().setAutoCommit(false);
         String queryAutomovil = "INSERT INTO Automovil VALUES (null,?,?,?,?,?)";
         String queryCliente = "INSERT INTO Cliente VALUES (null,?,?,?,?,?)";
-            
+
         int numeroError = 0;
         //COLOCAMOS NUMEROS PARA DETECTAR EL ERROR DE LA CLAVE UNIQUE, COMO EL ERRORCODE ES EL 19 Y EN EL CASO QUE HAYA UN ERROR
         //EN AMBAS CLAVES UNICAS (EN EL CLIENTE EL DNI Y EN EL AUTO LA PATENTE), DISTINGAMOS QUE ERROR TIRAR YA QUE AMBOS
         //SON ERRORCODE 19 (EL 0 INDICA QUE HUBO UN ERROR EN EL DNI Y EL 1 INDICA QUE HUBO ERROR EN LA PATENTE)
-        
+
         try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(queryCliente)) {
             cargarDatosDeClienteEnSentencia(cl, ps);
             ps.executeUpdate();
@@ -109,17 +110,17 @@ public class AutomovilDAO {
             ConexionBD.getConexion().commit();
         } catch (SQLException sqle) {
             ConexionBD.getConexion().rollback();
-            if (sqle.getErrorCode() == 19) {
+            if (sqle.getErrorCode() == Constantes.UK_ERROR) {
                 if (numeroError == 0) {
                     throw new RuntimeException("No puede colocar el dni " + cl.getDni() + " debido a que ya esta en la base de datos");
                 } else {
                     throw new RuntimeException("No puede colocar la patente " + au.getPatente() + " debido a que ya esta en la base de datos");
                 }
             }
-            throw new RuntimeException("No se pudieron agregar los datos \n" + au + "\n" + cl + sqle);
+            throw new RuntimeException("No se pudieron agregar los datos \n"+ sqle.getMessage());
         } catch (Exception ex) {
             ConexionBD.getConexion().rollback();
-            throw new RuntimeException("No se pudieron agregar los datos \n" + au + "\n" + cl + ex);
+            throw new RuntimeException("Error \n" + ex.getMessage());
         } finally {
             ConexionBD.getConexion().setAutoCommit(true);
         }
@@ -142,34 +143,36 @@ public class AutomovilDAO {
     }
 
     public void eliminarAutomovil(int id) throws SQLException {
-        String query = "PRAGMA Foreign_keys = ON;DELETE FROM Automovil WHERE idAutomovil = " + id;
+        String query = "DELETE FROM Automovil WHERE idAutomovil = " + id;
         try (Statement s = ConexionBD.getConexion().createStatement()) {
+            s.execute(Constantes.ACTIVAR_PRAGMA_FK);
             s.executeUpdate(query);
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo borrar el automovil con id " + id, ex);
-
+            throw new RuntimeException("No se pudo borrar el automovil con id " + id +"\n"+ex.getMessage());
         }
     }
 
     public void editarAutomovil(Automovil au) throws SQLException {
-//        String campos = "patente = ?, marca = ?, modelo = ?, anioFabricacion = ?";
-//        campos += ", dniCliente = ?";
-//        String query = "UPDATE Automovil SET " + campos + " WHERE idAutomovil = " + au.getIdAutomovil();
-//        try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query)) {
-//            cargarDatosDeAutomovilEnSentencia(au, ps);
-//            ps.executeUpdate();
-//        } catch (Exception ex) {
-//            throw new RuntimeException("No se pudo actualizar el automovil\n" + au, ex);
-//        }
+        String campos = "patente = ?, marca = ?, modelo = ?, anioFabricacion = ?";
+        campos += ", dniCliente = ?";
+        String query = "UPDATE Automovil SET " + campos + " WHERE idAutomovil = " + au.getIdAutomovil();
 
-        String campos = "patente='" + au.getPatente() + "', marca='" + au.getMarca() + "', modelo='" + au.getModelo() + "', anioFabricacion=" + au.getAnioFabricacion() + ", dniCliente = '" + au.getDniCliente() + "'";
-        String query = "PRAGMA Foreign_keys = ON;UPDATE Automovil SET " + campos + " WHERE idAutomovil = " + au.getIdAutomovil();
         try (Statement s = ConexionBD.getConexion().createStatement()) {
-            s.executeUpdate(query);
+            s.execute(Constantes.ACTIVAR_PRAGMA_FK);
+            try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query)) {
+                cargarDatosDeAutomovilEnSentencia(au, ps);
+                ps.executeUpdate();
+            }
+        }catch (SQLException sqle) {
+            if (sqle.getErrorCode() == Constantes.UK_ERROR) {
+                throw new RuntimeException("No puede colocar la patente " + au.getPatente() + " debido a que ya esta en la base de datos");
+            }
+            throw new RuntimeException("No se pudieron agregar los datos \n"+ sqle.getMessage());
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo actualizar el automovil\n" + au, ex);
-
+            throw new RuntimeException("Error\n" + ex.getMessage());
         }
+
+
     }
 
     //----------------------------------------------------------------------------------

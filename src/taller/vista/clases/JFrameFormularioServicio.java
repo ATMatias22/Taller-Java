@@ -5,6 +5,7 @@
  */
 package taller.vista.clases;
 
+import taller.helpers.Validaciones;
 import com.toedter.calendar.JSpinnerDateEditor;
 import java.awt.Color;
 import java.awt.Component;
@@ -14,7 +15,7 @@ import java.util.Collection;
 import java.util.Date;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
-import pkgfinal.CollectionToArray;
+import taller.helpers.CollectionToArray;
 import taller.modelo.clases.Servicio;
 import taller.modelo.clases.TipoSeccion;
 
@@ -57,16 +58,16 @@ public class JFrameFormularioServicio extends JFrameFormularioTemplate {
 
     private void validarCampos() {
 
-        if (!VALIDACIONES.esFecha(jDateChooserFechaRealizacion.getDate())) {
+        if (!Validaciones.esFecha(jDateChooserFechaRealizacion.getDate())) {
             throw new IllegalStateException("El campo \" " + jDateChooserFechaRealizacion.getName() + " \" está vacío");
         }
-        if (!VALIDACIONES.esNumeroDouble(jTextFieldCosto.getText())) {
+        if (!Validaciones.esNumeroDouble(jTextFieldCosto.getText())) {
             throw new IllegalStateException("El campo " + jTextFieldCosto.getName() + " no es un numero valido");
         }
-        if (VALIDACIONES.estaVacio((String) jComboBoxPatenteAuto.getSelectedItem())) {
+        if (Validaciones.estaVacio((String) jComboBoxPatenteAuto.getSelectedItem())) {
             throw new IllegalStateException("El campo " + jComboBoxPatenteAuto.getName() + " está vacío");
         }
-        if (!VALIDACIONES.esNumeroEntero(jTextFieldCantKMS.getText())) {
+        if (!Validaciones.esNumeroEntero(jTextFieldCantKMS.getText())) {
             throw new IllegalStateException("El campo " + jTextFieldCantKMS.getName() + " no es un numero valido");
         }
 

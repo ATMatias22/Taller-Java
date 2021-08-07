@@ -5,6 +5,7 @@
  */
 package taller.vista.clases;
 
+import taller.helpers.Validaciones;
 import java.awt.Color;
 import java.awt.Component;
 import java.util.Collection;
@@ -89,20 +90,20 @@ public class JFrameFormularioEditarAutomovil extends JFrameFormularioTemplate {
     }
 
     private void validarCamposAutomovil() {
-        if (VALIDACIONES.estaVacio(jTextFieldPatente.getText())) {
+        if (Validaciones.estaVacio(jTextFieldPatente.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldPatente.getName() + "\" está vacío");
         }
-        if (VALIDACIONES.estaVacio((String) jComboBoxMarca.getSelectedItem())) {
+        if (Validaciones.estaVacio((String) jComboBoxMarca.getSelectedItem())) {
             throw new IllegalStateException("El campo \"" + jComboBoxMarca.getName() + "\" está vacío");
         }
-        if (VALIDACIONES.estaVacio((String) jComboBoxModelo.getSelectedItem())) {
+        if (Validaciones.estaVacio((String) jComboBoxModelo.getSelectedItem())) {
             throw new IllegalStateException("El campo \"" + jComboBoxModelo.getName() + "\" está vacío");
         }
 
-        if (!VALIDACIONES.esNumeroEntero(jTextFieldAnioFabricacion.getText())) {
+        if (!Validaciones.esNumeroEntero(jTextFieldAnioFabricacion.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldAnioFabricacion.getName() + "\" no es un numero valido");
         }
-        if (VALIDACIONES.estaVacio((String) jComboBoxCliente.getSelectedItem())) {
+        if (Validaciones.estaVacio((String) jComboBoxCliente.getSelectedItem())) {
             throw new IllegalStateException("El campo \"" + jComboBoxCliente.getName() + "\" esta vacio");
         }
     }

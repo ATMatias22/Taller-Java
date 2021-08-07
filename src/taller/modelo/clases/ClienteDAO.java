@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import taller.interfaces.Constantes;
 
 /**
  *
@@ -29,7 +30,7 @@ public class ClienteDAO {
                 return clientes;
             }
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudieron obtener los clientes", ex);
+            throw new RuntimeException("No se pudieron obtener los clientes\n"+ ex.getMessage());
         }
     }
 
@@ -44,7 +45,7 @@ public class ClienteDAO {
                 return dniClientes;
             }
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudieron obtener los dni de los clientes", ex);
+            throw new RuntimeException("No se pudieron obtener los dni de los clientes\n"+ ex.getMessage());
         }
     }
 
@@ -59,7 +60,7 @@ public class ClienteDAO {
                 return clientes;
             }
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudieron filtrar los clientes", ex);
+            throw new RuntimeException("No se pudieron filtrar los clientes\n"+ ex.getMessage());
         }
     }
 
@@ -72,7 +73,7 @@ public class ClienteDAO {
                 return cliente;
             }
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo obtener clientes con ID " + id, ex);
+            throw new RuntimeException("No se pudo obtener clientes con ID " + id+"\n"+ ex.getMessage());
         }
 
     }
@@ -94,12 +95,12 @@ public class ClienteDAO {
             cargarDatosDeClienteEnSentencia(cl, ps);
             ps.executeUpdate();
         } catch (SQLException sqle) {
-            if (sqle.getErrorCode() == 19) {
+            if (sqle.getErrorCode() == Constantes.UK_ERROR) {
                 throw new RuntimeException("No puede colocar el dni " + cl.getDni() + " debido a que ya esta en la base de datos");
             }
             throw new RuntimeException("No se pudo agregar clientes\n" + sqle.getMessage());
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo agregar clientes\n" + ex.getMessage());
+            throw new RuntimeException("Error\n" + ex.getMessage());
         }
     }
 
@@ -112,32 +113,35 @@ public class ClienteDAO {
     }
 
     public void eliminarCliente(int id) throws SQLException {
-        String query = "PRAGMA Foreign_keys = ON;DELETE FROM Cliente WHERE idCliente = " + id;
-
+        String query = "DELETE FROM Cliente WHERE idCliente = " + id;
         try (Statement s = ConexionBD.getConexion().createStatement()) {
+            s.execute(Constantes.ACTIVAR_PRAGMA_FK);
             s.executeUpdate(query);
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo borrar contacto con id " + id, ex);
+            throw new RuntimeException("No se pudo borrar contacto con id " + id +"\n"+ ex.getMessage());
         }
     }
 
     public void editarCliente(Cliente cl) throws SQLException {
-//        String campos = "dni = ?, nombre = ?, apellido = ?, mail = ?";
-//        campos += ", telefono = ?";
-//        String query = "UPDATE Cliente SET " + campos + " WHERE idCliente = " + cl.getIdCliente();
-//        try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query)) {
-//            cargarDatosDeClienteEnSentencia(cl, ps);
-//            ps.executeUpdate();
-//        } catch (Exception ex) {
-//            throw new RuntimeException("No se pudo actualizar clientes\n" + cl, ex);
-//        }
-        String campos = "dni='" + cl.getDni() + "', nombre='" + cl.getNombre() + "', apellido='" + cl.getApellido() + "', mail='" + cl.getMail() + "', telefono=" + cl.getTelefono();
-        String query = "PRAGMA Foreign_keys = ON;UPDATE Cliente SET " + campos + " WHERE idCliente = " + cl.getIdCliente();
+        String campos = "dni = ?, nombre = ?, apellido = ?, mail = ?";
+        campos += ", telefono = ?";
+        String query = "UPDATE Cliente SET " + campos + " WHERE idCliente = " + cl.getIdCliente();
+
         try (Statement s = ConexionBD.getConexion().createStatement()) {
-            s.executeUpdate(query);
+            s.execute(Constantes.ACTIVAR_PRAGMA_FK);
+            try (PreparedStatement ps = ConexionBD.getConexion().prepareStatement(query)) {
+                cargarDatosDeClienteEnSentencia(cl, ps);
+                ps.executeUpdate();
+            }
+        } catch (SQLException sqle) {
+            if (sqle.getErrorCode() == Constantes.UK_ERROR) {
+                throw new RuntimeException("No puede colocar el dni " + cl.getDni() + " debido a que ya esta en la base de datos");
+            }
+            throw new RuntimeException("No se pudo agregar clientes\n" + sqle.getMessage());
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo actualizar clientes\n" + cl, ex);
+            throw new RuntimeException("Error\n" + ex.getMessage());
         }
+
     }
 
 }

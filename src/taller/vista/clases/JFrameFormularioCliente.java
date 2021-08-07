@@ -5,6 +5,7 @@
  */
 package taller.vista.clases;
 
+import taller.helpers.Validaciones;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.JLabel;
@@ -82,20 +83,20 @@ public class JFrameFormularioCliente extends JFrameFormularioTemplate {
     }
 
     private void validarCampos() {
-        if (VALIDACIONES.estaVacio(jTextFieldDNI.getText())) {
+        if (Validaciones.estaVacio(jTextFieldDNI.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldDNI.getName() + "\" está vacío");
         }
-        if (VALIDACIONES.estaVacio(jTextFieldNombre.getText())) {
+        if (Validaciones.estaVacio(jTextFieldNombre.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldNombre.getName() + "\" está vacío");
         }
-        if (VALIDACIONES.estaVacio(jTextFieldApellido.getText())) {
+        if (Validaciones.estaVacio(jTextFieldApellido.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldApellido.getName() + "\" está vacío");
         }
 
-        if (!VALIDACIONES.esMailValido(jTextFieldMail.getText())) {
+        if (!Validaciones.esMailValido(jTextFieldMail.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldMail.getName() + "\" no es un mail valido");
         }
-        if (!VALIDACIONES.esNumeroEntero(jTextFieldTelefono.getText())) {
+        if (!Validaciones.esNumeroEntero(jTextFieldTelefono.getText())) {
             throw new IllegalStateException("El campo \"" + jTextFieldTelefono.getName() + "\" no es un numero");
         }
     }

@@ -29,7 +29,7 @@ public class ServicioDAO {
                 return servicios;
             }
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudieron obtener los servicios", ex);
+            throw new RuntimeException("No se pudieron obtener los servicios\n"+ex.getMessage());
         }
     }
 
@@ -44,7 +44,7 @@ public class ServicioDAO {
                 return patenteAutomoviles;
             }
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudieron obtener las patentes de los automoviles", ex);
+            throw new RuntimeException("No se pudieron obtener las patentes de los automoviles\n"+ex.getMessage());
         }
     }
 
@@ -59,7 +59,7 @@ public class ServicioDAO {
                 return servicios;
             }
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudieron filtrar los servicios", ex);
+            throw new RuntimeException("No se pudieron filtrar los servicios\n"+ex.getMessage());
         }
     }
 
@@ -72,7 +72,7 @@ public class ServicioDAO {
                 return servicio;
             }
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo obtener el servicio con ID " + id, ex);
+            throw new RuntimeException("No se pudo obtener el servicio con ID " + id + "\n"+ex.getMessage());
         }
 
     }
@@ -83,7 +83,7 @@ public class ServicioDAO {
             cargarDatosDeServicioEnSentencia(se, ps);
             ps.executeUpdate();
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo agregar servicio\n" + se + " " + ex.getMessage());
+            throw new RuntimeException("No se pudo agregar servicio\n"+ ex.getMessage());
         }
     }
 
@@ -110,7 +110,7 @@ public class ServicioDAO {
             ps.setInt(1, id);
             ps.execute();
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo borrar el servicio con id " + id, ex);
+            throw new RuntimeException("No se pudo borrar el servicio con id " + id + "\n"+ex.getMessage());
         }
     }
 
@@ -121,7 +121,7 @@ public class ServicioDAO {
             cargarDatosDeServicioEnSentencia(se, ps);
             ps.executeUpdate();
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudo actualizar el servicio\n" + se, ex);
+            throw new RuntimeException("No se pudo actualizar el servicio\n"+ ex.getMessage());
         }
     }
 
@@ -142,7 +142,7 @@ public class ServicioDAO {
                 return automoviles;
             }
         } catch (Exception ex) {
-            throw new RuntimeException("No se pudieron obtener los automoviles", ex);
+            throw new RuntimeException("No se pudieron obtener los automoviles\n"+ex.getMessage());
         }
     }
 }
