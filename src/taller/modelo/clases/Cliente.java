@@ -5,6 +5,7 @@
  */
 package taller.modelo.clases;
 
+import java.util.ArrayList;
 import taller.interfaces.SeccionDeNegocio;
 
 /**
@@ -27,6 +28,10 @@ public class Cliente implements SeccionDeNegocio {
         this.apellido = apellido;
         this.mail = mail;
         this.telefono = telefono;
+    }
+    
+    public Cliente(){
+        
     }
 
     public int getIdCliente() {
@@ -65,6 +70,11 @@ public class Cliente implements SeccionDeNegocio {
     @Override
     public Object[] getArrayAtributos() {
         return new Object[]{this.getIdCliente(), this.getDni(), this.getNombre(), this.getApellido(), this.getMail(), this.getTelefono()};
+    }
+
+    @Override
+    public SeccionDeNegocio convertir(ArrayList<Object> ob) {
+        return new Cliente((int) ob.get(0), (String) ob.get(1), (String) ob.get(2), (String) ob.get(3), (String) ob.get(4), (int) ob.get(5));
     }
 
 

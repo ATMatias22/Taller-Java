@@ -5,6 +5,7 @@
  */
 package taller.modelo.clases;
 
+import java.util.ArrayList;
 import taller.interfaces.SeccionDeNegocio;
 
 /**
@@ -19,6 +20,11 @@ public class Automovil implements SeccionDeNegocio {
     private String modelo;
     private int anioFabricacion;
     private String dniCliente;
+    
+    
+    public Automovil(){
+        
+    }
 
     public Automovil(int idAutomovil, String patente, String marca, String modelo, int anioFabricacion, String dniCliente) {
         this.idAutomovil = idAutomovil;
@@ -71,6 +77,11 @@ public class Automovil implements SeccionDeNegocio {
     @Override
     public Object[] getArrayAtributos() {
         return new Object[]{this.getIdAutomovil(), this.getPatente(), this.getMarca(), this.getModelo(), this.getAnioFabricacion(), this.getDniCliente()};
+    }
+
+    @Override
+     public  SeccionDeNegocio convertir(ArrayList<Object> ob) {
+        return new Automovil((int) ob.get(0), (String) ob.get(1), (String) ob.get(2), (String) ob.get(3), (int) ob.get(4), (String) ob.get(5));
     }
 
     

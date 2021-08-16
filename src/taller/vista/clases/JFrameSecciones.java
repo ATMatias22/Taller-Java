@@ -8,14 +8,15 @@ package taller.vista.clases;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import taller.modelo.clases.TipoSeccion;
 import taller.interfaces.SeccionDeNegocio;
@@ -24,17 +25,20 @@ import taller.interfaces.SeccionDeNegocio;
  *
  * @author Matias
  */
-public abstract class JFrameSecciones<T extends SeccionDeNegocio> extends javax.swing.JFrame {
+public class JFrameSecciones<T extends SeccionDeNegocio> extends javax.swing.JFrame {
 
+    private T seccion;
+    private final  T seccionReserva;
     private TipoSeccion c;
     private final static String PATH_RECURSOS = "/taller/vista/recursos/";
 
-    public JFrameSecciones(String titulo, TipoSeccion c, JFrame parent) {
+    public JFrameSecciones(TipoSeccion c, JFrame parent, T seccion) {
         initComponents();
         this.setVisible(true);
         this.setLocationRelativeTo(parent);
         this.c = c;
-        colocarTitulos(titulo);
+        this.seccion = seccion;
+        this.seccionReserva = seccion;
         iniciar(c, c.getNombreLogo());
     }
 
@@ -257,14 +261,16 @@ public abstract class JFrameSecciones<T extends SeccionDeNegocio> extends javax.
     }// </editor-fold>//GEN-END:initComponents
 
     private void iniciar(TipoSeccion c, String nombreDeImagen) {
+        jTableDatos.addMouseListener(new LlenarFormularioConLaSeccionSeleccionado());
+        colocarTitulos(c.getNombre());
         insertarColumnasEnLaTabla(c.getNombreDeCategoriasParaLaTabla());
         insertarFiltrosEnElJComboBox(c.getNombreDeCategoriasParaElFiltro());
         puedeEditarColumnas(false, c.getNombreDeCategoriasParaLaTabla());
         ocultarColumnaID();
-        getTabla().setRowSelectionAllowed(false);
+        jTableDatos.setRowSelectionAllowed(false);
         habilitarODeshabiliarBotones(false);
         jLabelLogo.setIcon(getImagen(nombreDeImagen));
-        habilitarBotonDeListar(false);
+        habilitarBotonDeListar();
         jLabelAviso.setText("Debe hacer doble click para poder editar o eliminar un " + c.getNombre());
 
     }
@@ -332,7 +338,7 @@ public abstract class JFrameSecciones<T extends SeccionDeNegocio> extends javax.
 
     private void agregarFila(T e) {
         Object[] datos = e.getArrayAtributos();
-        DefaultTableModel dtm = (DefaultTableModel) getTabla().getModel();
+        DefaultTableModel dtm = (DefaultTableModel) jTableDatos.getModel();
         dtm.addRow(datos);
     }
 
@@ -345,7 +351,7 @@ public abstract class JFrameSecciones<T extends SeccionDeNegocio> extends javax.
     }
 
     public void vaciar() {
-        DefaultTableModel dtm = (DefaultTableModel) getTabla().getModel();
+        DefaultTableModel dtm = (DefaultTableModel) jTableDatos.getModel();
         for (int i = 0; i < dtm.getRowCount(); i++) {
             dtm.removeRow(i);
             i -= 1;
@@ -353,16 +359,8 @@ public abstract class JFrameSecciones<T extends SeccionDeNegocio> extends javax.
         habilitarODeshabiliarBotones(false);
     }
 
-    public JTable getTabla() {
-        return this.jTableDatos;
-    }
-
     public JComboBox getComboBox() {
         return this.jComboBoxFiltrar;
-    }
-    
-    public JButton getButtonListar(){
-        return this.jButtonListarAntiguedad;
     }
 
     public void cerrar() {
@@ -381,8 +379,13 @@ public abstract class JFrameSecciones<T extends SeccionDeNegocio> extends javax.
         }
     }
 
-    public void habilitarBotonDeListar(boolean flag) {
-        jButtonListarAntiguedad.setVisible(flag);
+    public void habilitarBotonDeListar() {
+        if (c == TipoSeccion.SERVICIO) {
+            jButtonListarAntiguedad.setVisible(true);
+        } else {
+            jButtonListarAntiguedad.setVisible(false);
+        }
+
     }
 
     public String obtenerFiltroSeleccionado() {
@@ -436,6 +439,43 @@ public abstract class JFrameSecciones<T extends SeccionDeNegocio> extends javax.
         this.jComboBoxFiltrar.addActionListener(al);
     }
 
+    public void addActionListenerListarAutomoviles(ActionListener al) {
+        jButtonListarAntiguedad.addActionListener(al);
+    }
+
+    public T getSeccion() {
+        if (seccion == null) {
+            throw new RuntimeException("Debe seleccionar un " + c.getNombre());
+        }
+        return seccion;
+    }
+
+    private void llenarFormularioConDatos(int fila) {
+
+        ArrayList<Object> objs = new ArrayList();
+        for (int i = 0; i < c.getNombreDeCategoriasParaLaTabla().length; i++) {
+            objs.add(jTableDatos.getValueAt(fila, i));
+        }
+        seccion = (T) seccionReserva.convertir(objs);
+    }
+
+    private class LlenarFormularioConLaSeccionSeleccionado extends MouseAdapter {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                jTableDatos.setRowSelectionAllowed(true);
+                int filaSeleccionada = jTableDatos.rowAtPoint(e.getPoint());
+                llenarFormularioConDatos(filaSeleccionada);
+                habilitarODeshabiliarBotones(true);
+            } else if (e.getClickCount() == 1) {
+
+                seccion = null;
+                jTableDatos.setRowSelectionAllowed(false);
+                habilitarODeshabiliarBotones(false);
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAgregar;

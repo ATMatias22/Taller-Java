@@ -5,6 +5,8 @@
  */
 package taller.interfaces;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Matias
@@ -13,7 +15,8 @@ public interface SeccionDeNegocio {
     
   
     Object[] getArrayAtributos();
- 
+    SeccionDeNegocio convertir(ArrayList<Object> ob);
+
     
     
 }

@@ -7,6 +7,7 @@ package taller.modelo.clases;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import taller.interfaces.SeccionDeNegocio;
 
 /**
@@ -27,6 +28,10 @@ public class Servicio implements SeccionDeNegocio {
         this.costo = costo;
         this.patenteDelAutomovil = patenteDelAutomovil;
         this.cantKms = cantKms;
+    }
+    
+    public Servicio(){
+        
     }
 
     public void setIdServicio(int idServicio) {
@@ -67,6 +72,11 @@ public class Servicio implements SeccionDeNegocio {
     @Override
     public Object[] getArrayAtributos() {
         return new Object[]{this.getIdServicio(), obtenerFechaLegible(), this.getCosto(), this.getPatenteDelAutomovil(), this.cantKms};
+    }
+
+    @Override
+    public SeccionDeNegocio convertir(ArrayList<Object> ob) {
+        return new Servicio((int) ob.get(0), (String) ob.get(1), (double) ob.get(2), (String) ob.get(3), (int) ob.get(4));
     }
 
 }

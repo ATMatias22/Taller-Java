@@ -16,8 +16,6 @@ import taller.modelo.clases.Cliente;
 import taller.modelo.clases.ClienteDAO;
 import taller.modelo.clases.Servicio;
 import taller.modelo.clases.ServicioDAO;
-import taller.vista.clases.JFrameAutomovil;
-import taller.vista.clases.JFrameCliente;
 import taller.vista.clases.JFrameFormularioAgregarCliente;
 import taller.vista.clases.JFrameFormularioAgregarAutomovil;
 import taller.vista.clases.JFrameFormularioAgregarServicio;
@@ -26,7 +24,7 @@ import taller.vista.clases.JFrameFormularioEditarCliente;
 import taller.vista.clases.JFrameFormularioEditarServicio;
 import taller.vista.clases.JFrameListarAutomovilesAntiguedad;
 import taller.vista.clases.JFramePrincipal;
-import taller.vista.clases.JFrameServicio;
+import taller.vista.clases.JFrameSecciones;
 
 /**
  *
@@ -38,9 +36,9 @@ public class Controlador {
     private ClienteDAO clienteDAO;
     private AutomovilDAO automovilDAO;
     private ServicioDAO servicioDAO;
-    private JFrameCliente<Cliente> vistaCliente;
-    private JFrameAutomovil<Automovil> vistaAutomovil;
-    private JFrameServicio<Servicio> vistaServicio;
+    private JFrameSecciones<Cliente> vistaCliente;
+    private JFrameSecciones<Automovil> vistaAutomovil;
+    private JFrameSecciones<Servicio> vistaServicio;
     private JFrameFormularioEditarCliente vistaEditarCliente;
     private JFrameFormularioEditarAutomovil vistaEditarAutomovil;
     private JFrameFormularioEditarServicio vistaEditarServicio;
@@ -97,7 +95,7 @@ public class Controlador {
 
     public void eliminarCliente() {
         try {
-            Cliente c = vistaCliente.getCliente();
+            Cliente c = vistaCliente.getSeccion();
             if (vistaCliente.confirmacion("Esta seguro que desea eliminar al cliente")) {
                 clienteDAO.eliminarCliente(c.getIdCliente());
                 vistaCliente.actualizarListaTabla(clienteDAO.obtenerClientes());
@@ -152,7 +150,7 @@ public class Controlador {
 
     public void eliminarAutomovil() {
         try {
-            Automovil a = vistaAutomovil.getAutomovil();
+            Automovil a = vistaAutomovil.getSeccion();
             if (vistaAutomovil.confirmacion("Esta seguro que desea eliminar al automovil")) {
                 automovilDAO.eliminarAutomovil(a.getIdAutomovil());
                 vistaAutomovil.actualizarListaTabla(automovilDAO.obtenerAutomoviles());
@@ -196,7 +194,7 @@ public class Controlador {
 
     public void eliminarServicio() {
         try {
-            Servicio s = vistaServicio.getServicio();
+            Servicio s = vistaServicio.getSeccion();
             if (vistaServicio.confirmacion("Esta seguro que desea eliminar al servicio")) {
                 servicioDAO.eliminarServicio(s.getIdServicio());
                 vistaServicio.actualizarListaTabla(servicioDAO.obtenerServicios());
@@ -236,21 +234,21 @@ public class Controlador {
                 if(vistaCliente != null){
                     vistaCliente.cerrar();
                 }
-                vistaCliente = new JFrameCliente(vistaPrincipal);
+                vistaCliente = new JFrameSecciones(TipoSeccion.CLIENTE,vistaPrincipal,new Cliente());
                 vistaCliente.mostrarEnTabla(clienteDAO.obtenerClientes());
                 addAllListenersCliente();
             } else if (cat.equals(TipoSeccion.AUTOMOVIL)) {
                 if(vistaAutomovil != null){
                     vistaAutomovil.cerrar();
                 }
-                vistaAutomovil = new JFrameAutomovil(vistaPrincipal);
+                vistaAutomovil = new JFrameSecciones(TipoSeccion.AUTOMOVIL,vistaPrincipal, new Automovil());
                 vistaAutomovil.mostrarEnTabla(automovilDAO.obtenerAutomoviles());
                 addAllListenersAutomovil();
             } else if (cat.equals(TipoSeccion.SERVICIO)) {
                 if(vistaServicio != null){
                     vistaServicio.cerrar();
                 }
-                vistaServicio = new JFrameServicio(vistaPrincipal);
+                vistaServicio = new JFrameSecciones(TipoSeccion.SERVICIO,vistaPrincipal, new Servicio());
                 vistaServicio.mostrarEnTabla(servicioDAO.obtenerServicios());
                 addAllListenersServicio();
             }
@@ -286,7 +284,7 @@ public class Controlador {
             if (vistaEditarCliente != null) {
                 vistaEditarCliente.cerrar();
             }
-            vistaEditarCliente = new JFrameFormularioEditarCliente(vistaCliente.getCliente(), vistaCliente);
+            vistaEditarCliente = new JFrameFormularioEditarCliente(vistaCliente.getSeccion(), vistaCliente);
             vistaEditarCliente.addActionListenerAccionBoton(new HandlerJFrameEditarBotonEditarCliente());
         }
     }
@@ -357,7 +355,7 @@ public class Controlador {
                 vistaEditarAutomovil.cerrar();
             }
 
-            vistaEditarAutomovil = new JFrameFormularioEditarAutomovil(vistaAutomovil.getAutomovil(), vistaAutomovil, clienteDAO.obtenerDNIClientes());
+            vistaEditarAutomovil = new JFrameFormularioEditarAutomovil(vistaAutomovil.getSeccion(), vistaAutomovil, clienteDAO.obtenerDNIClientes());
             vistaEditarAutomovil.addActionListenerAccionBoton(new HandlerJFrameEditarBotonEditarAutomovil());
         }
     }
@@ -423,7 +421,7 @@ public class Controlador {
             if (vistaEditarServicio != null) {
                 vistaEditarServicio.cerrar();
             }
-            vistaEditarServicio = new JFrameFormularioEditarServicio(vistaServicio.getServicio(), vistaServicio, servicioDAO.obtenerPatentesAutomoviles());
+            vistaEditarServicio = new JFrameFormularioEditarServicio(vistaServicio.getSeccion(), vistaServicio, servicioDAO.obtenerPatentesAutomoviles());
             vistaEditarServicio.addActionListenerAccionBoton(new HandlerJFrameEditarBotonEditarServicio());
         }
     }
